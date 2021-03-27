@@ -42,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
                   dropdownValue = newValue;
                 });
               },
-              items: <String>["One", 'Two', 'Three', 'Four']
+              items: <String>["One", 'Two', 'Three']
                   .map<DropdownMenuItem<String>>((String value) {
                 return DropdownMenuItem<String>(
                   value: value,
@@ -57,11 +57,25 @@ class _LoginPageState extends State<LoginPage> {
             ElevatedButton(
               child: Text("Go To Home"),
               onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ),
-                );
+                if (dropdownValue == 'One') {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => HomePageWorker(),
+                    ),
+                  );
+                } else if (dropdownValue == 'Two') {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => HomePageClient(),
+                    ),
+                  );
+                } else {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => HomePageIndividual(),
+                    ),
+                  );
+                }
               },
             ),
           ],
@@ -72,12 +86,12 @@ class _LoginPageState extends State<LoginPage> {
 }
 
 //----------------------HOME--------------------------------
-class HomePage extends StatefulWidget {
+class HomePageWorker extends StatefulWidget {
   @override
-  _HomePageState createState() => _HomePageState();
+  _HomePageWorkerState createState() => _HomePageWorkerState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageWorkerState extends State<HomePageWorker> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -300,7 +314,7 @@ class CustomDrawerState extends State<CustomDrawer> {
             onTap: () {
               Navigator.of(contextCallback).push(
                 MaterialPageRoute(
-                  builder: (contextCallback) => HomePage(),
+                  builder: (contextCallback) => HomePageWorker(),
                 ),
               );
             },
