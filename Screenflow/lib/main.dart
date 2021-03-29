@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'Worker.dart';
+import 'Client.dart';
+import 'Individual.dart';
 
 void main() {
   runApp(
@@ -10,10 +13,10 @@ void main() {
 
 class LoginPage extends StatefulWidget {
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   String dropdownValue = 'One';
 
   @override
@@ -83,182 +86,9 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-}
 
-//----------------------HOME--------------------------------
-class HomePageWorker extends StatefulWidget {
-  @override
-  _HomePageWorkerState createState() => _HomePageWorkerState();
-}
-
-class _HomePageWorkerState extends State<HomePageWorker> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home Page"),
-        backgroundColor: Colors.black87,
-      ),
-      drawer: CustomDrawerState().createCustomDrawer(context),
-      body: ListView(
-        children: <Widget>[
-          ListTile(
-            title: Text("Client 1"),
-            leading: Icon(
-              Icons.account_circle,
-            ),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ClientPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Client 2"),
-            leading: Icon(
-              Icons.account_circle,
-            ),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ClientPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Client 3"),
-            leading: Icon(
-              Icons.account_circle,
-            ),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ClientPage(),
-                ),
-              );
-            },
-          ),
-          ListTile(
-            title: Text("Client 4"),
-            leading: Icon(
-              Icons.account_circle,
-            ),
-            onTap: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => ClientPage(),
-                ),
-              );
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-//----------------------CLIENT--------------------------------
-class ClientPage extends StatefulWidget {
-  @override
-  _ClientPageState createState() => _ClientPageState();
-}
-
-class _ClientPageState extends State<ClientPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Client Page"),
-        backgroundColor: Colors.black87,
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              child: Text("Edit Routine"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => RoutinePage(),
-                  ),
-                );
-              },
-            ),
-            ElevatedButton(
-              child: Text("Edit Quiz"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => QuizPage(),
-                  ),
-                );
-              },
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class RoutinePage extends StatefulWidget {
-  @override
-  _RoutinePageState createState() => _RoutinePageState();
-}
-
-class _RoutinePageState extends State<RoutinePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Routine Page"),
-        backgroundColor: Colors.black87,
-      ),
-    );
-  }
-}
-
-class QuizPage extends StatefulWidget {
-  @override
-  _QuizPageState createState() => _QuizPageState();
-}
-
-class _QuizPageState extends State<QuizPage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Quiz Page"),
-        backgroundColor: Colors.black87,
-      ),
-    );
-  }
-}
-
-//----------------PROFILE----------------------------
-class ProfilePage extends StatefulWidget {
-  @override
-  _ProfilePageState createState() => _ProfilePageState();
-}
-
-class _ProfilePageState extends State<ProfilePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile Page"),
-        backgroundColor: Colors.black87,
-      ),
-      drawer: CustomDrawerState().createCustomDrawer(context),
-      body: Center(
-        child: Text("USERNAME"),
-      ),
-    );
+  getUserType() {
+    return dropdownValue;
   }
 }
 
@@ -280,7 +110,7 @@ class CustomDrawerState extends State<CustomDrawer> {
     return Scaffold();
   }
 
-  createCustomDrawer(BuildContext contextCallback) {
+  createCustomDrawer(BuildContext contextCallback, String typeUser) {
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -312,11 +142,25 @@ class CustomDrawerState extends State<CustomDrawer> {
               style: TextStyle(fontSize: 18),
             ),
             onTap: () {
-              Navigator.of(contextCallback).push(
-                MaterialPageRoute(
-                  builder: (contextCallback) => HomePageWorker(),
-                ),
-              );
+              if (typeUser == "One") {
+                Navigator.of(contextCallback).push(
+                  MaterialPageRoute(
+                    builder: (contextCallback) => HomePageWorker(),
+                  ),
+                );
+              } else if (typeUser == "Two") {
+                Navigator.of(contextCallback).push(
+                  MaterialPageRoute(
+                    builder: (contextCallback) => HomePageClient(),
+                  ),
+                );
+              } else {
+                Navigator.of(contextCallback).push(
+                  MaterialPageRoute(
+                    builder: (contextCallback) => HomePageIndividual(),
+                  ),
+                );
+              }
             },
           ),
           ListTile(
@@ -330,7 +174,7 @@ class CustomDrawerState extends State<CustomDrawer> {
             onTap: () {
               Navigator.of(contextCallback).push(
                 MaterialPageRoute(
-                  builder: (contextCallback) => ProfilePage(),
+                  builder: (contextCallback) => ProfilePage(typeUser),
                 ),
               );
             },
@@ -368,3 +212,29 @@ class CustomDrawerState extends State<CustomDrawer> {
     );
   }
 }
+
+
+//----------------PROFILE----------------------------
+class ProfilePage extends StatefulWidget {
+  final String typeUser;
+  ProfilePage(this.typeUser);
+  @override
+  _ProfilePageState createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Profile Page"),
+        backgroundColor: Colors.black87,
+      ),
+      drawer: CustomDrawerState().createCustomDrawer(context, widget.typeUser),
+      body: Center(
+        child: Text("USERNAME"),
+      ),
+    );
+  }
+}
+
