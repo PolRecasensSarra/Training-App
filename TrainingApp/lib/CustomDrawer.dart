@@ -1,8 +1,8 @@
-import 'dart:developer';
-
+import 'package:TrainingApp/HomeClientPage.dart';
+import 'package:TrainingApp/HomeIndividualPage.dart';
 import 'package:TrainingApp/main.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
+import 'HomeWorkerPage.dart';
 import 'ProfilePage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -73,13 +73,31 @@ class CustomDrawerState extends State<CustomDrawer>
                 style: TextStyle(fontSize: 18),
               ),
               onTap: () {
-                Navigator.of(contextCallback).push(
-                  MaterialPageRoute(
-                    builder: (contextCallback) => HomePage(
-                      userType: typeUser,
+                if (typeUser == UserType.worker) {
+                  Navigator.of(contextCallback).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => HomeWorkerPage(
+                        userType: typeUser,
+                      ),
                     ),
-                  ),
-                );
+                  );
+                } else if (typeUser == UserType.client) {
+                  Navigator.of(contextCallback).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => HomeClientPage(
+                        userType: typeUser,
+                      ),
+                    ),
+                  );
+                } else if (typeUser == UserType.individual) {
+                  Navigator.of(contextCallback).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => HomeIndividualPage(
+                        userType: typeUser,
+                      ),
+                    ),
+                  );
+                }
               }),
           ListTile(
             leading: Icon(

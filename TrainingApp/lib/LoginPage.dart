@@ -1,6 +1,8 @@
 import 'package:TrainingApp/main.dart';
 import 'package:flutter/material.dart';
-import 'HomePage.dart';
+import 'HomeWorkerPage.dart';
+import 'HomeClientPage.dart';
+import 'HomeIndividualPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -65,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 if (dropdownValue.type == "Worker") {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(
+                      builder: (context) => HomeWorkerPage(
                         userType: UserType.worker,
                       ),
                     ),
@@ -73,7 +75,7 @@ class _LoginPageState extends State<LoginPage> {
                 } else if (dropdownValue.type == "Client") {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(
+                      builder: (context) => HomeClientPage(
                         userType: UserType.client,
                       ),
                     ),
@@ -81,7 +83,7 @@ class _LoginPageState extends State<LoginPage> {
                 } else if (dropdownValue.type == "Individual") {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => HomePage(
+                      builder: (context) => HomeIndividualPage(
                         userType: UserType.individual,
                       ),
                     ),
