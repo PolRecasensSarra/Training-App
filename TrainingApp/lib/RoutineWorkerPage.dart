@@ -8,6 +8,22 @@ class RoutineWorkerPage extends StatefulWidget {
 class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Edit Routine"),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              child: Text("Add exercise"),
+              onPressed: () {},
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
