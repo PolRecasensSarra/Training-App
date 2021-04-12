@@ -30,8 +30,27 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
             const EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.arrow_back_ios),
+                  onPressed: () {},
+                ),
+                Text(
+                  "Day of the Week",
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.arrow_forward_ios),
+                  onPressed: () {},
+                ),
+              ],
+            ),
             ElevatedButton(
               child: Text("Daily Routine"),
               onPressed: () {
@@ -41,10 +60,6 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                   ),
                 );
               },
-            ),
-            ElevatedButton(
-              child: Text("Edit"),
-              onPressed: () {},
             ),
           ],
         ),

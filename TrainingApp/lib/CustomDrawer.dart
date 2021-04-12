@@ -57,7 +57,7 @@ class CustomDrawerState extends State<CustomDrawer>
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.blue[300],
               backgroundImage: NetworkImage(
-                "https://www.google.com/url?sa=i&url=https%3A%2F%2Fmoonvillageassociation.org%2Fdefault-profile-picture1%2F&psig=AOvVaw0OHo7efIsXmUoUYK5d62uV&ust=1616785696213000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCKiRvveRzO8CFQAAAAAdAAAAABAD",
+                "https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png",
               ),
             ),
             decoration: BoxDecoration(

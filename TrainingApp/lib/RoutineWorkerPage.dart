@@ -1,3 +1,5 @@
+import 'package:TrainingApp/AddExercisePage.dart';
+import 'package:TrainingApp/CreateSurvey.dart';
 import 'package:flutter/material.dart';
 
 class RoutineWorkerPage extends StatefulWidget {
@@ -13,15 +15,87 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
         title: Text("Edit Routine"),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              child: Text("Add exercise"),
-              onPressed: () {},
-            ),
-          ],
+        child: Padding(
+          padding:
+              const EdgeInsets.only(left: 20, right: 20, top: 28, bottom: 28),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(Icons.arrow_back_ios),
+                    onPressed: () {},
+                  ),
+                  Text(
+                    "Day of the Week",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.arrow_forward_ios),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              Expanded(
+                child: ListView(
+                  children: <Widget>[
+                    Card(
+                      child: ListTile(
+                        title: Text('Exercici 1'),
+                        trailing: Icon(Icons.delete),
+                        onTap: () {},
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text('Exercici 2'),
+                        trailing: Icon(Icons.delete),
+                        onTap: () {},
+                      ),
+                    ),
+                    Card(
+                      child: ListTile(
+                        title: Text('Exercici 3'),
+                        trailing: Icon(Icons.delete),
+                        onTap: () {},
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                child: Text("Add exercise"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => AddExercisePage(),
+                    ),
+                  );
+                },
+              ),
+              ElevatedButton(
+                child: Text("Create Survey"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => CreateSurveyPage(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );

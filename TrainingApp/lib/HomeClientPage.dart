@@ -1,3 +1,4 @@
+import 'package:TrainingApp/ClientSurvey.dart';
 import 'package:TrainingApp/main.dart';
 import 'package:flutter/material.dart';
 import 'CustomDrawer.dart';
@@ -44,7 +45,13 @@ class _HomeClientPageState extends State<HomeClientPage> {
             ),
             ElevatedButton(
               child: Text("Survey"),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (contextCallback) => ClientSurveyPage(),
+                  ),
+                );
+              },
             ),
           ],
         ),
