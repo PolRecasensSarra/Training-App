@@ -56,6 +56,9 @@ class CustomDrawerState extends State<CustomDrawer>
             accountEmail: Text('username@gmail.com'),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.blue[300],
+              foregroundImage: NetworkImage(
+                "https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png",
+              ),
               backgroundImage: NetworkImage(
                 "https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png",
               ),

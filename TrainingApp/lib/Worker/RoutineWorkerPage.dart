@@ -1,6 +1,9 @@
+import 'package:training_app/main.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
+
+import '../main.dart';
 
 class RoutineWorkerPage extends StatefulWidget {
   @override
@@ -79,7 +82,9 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (contextCallback) => AddExercisePage(),
+                      builder: (contextCallback) => AddExercisePage(
+                        userType: UserType.worker,
+                      ),
                     ),
                   );
                 },

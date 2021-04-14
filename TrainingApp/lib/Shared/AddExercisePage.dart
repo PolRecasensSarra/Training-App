@@ -1,6 +1,11 @@
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class AddExercisePage extends StatefulWidget {
+  final UserType userType;
+  AddExercisePage({@required this.userType});
   @override
   _AddExercisePageState createState() => _AddExercisePageState();
 }
@@ -45,7 +50,13 @@ class _AddExercisePageState extends State<AddExercisePage> {
               ),
               ElevatedButton(
                 child: Text("ENTER"),
-                onPressed: () {},
+                onPressed: () {
+                  if (widget.userType == UserType.worker) {
+                    Navigator.of(context).pop();
+                  } else if (widget.userType == UserType.individual) {
+                    Navigator.of(context).pop();
+                  }
+                },
               ),
             ],
           ),

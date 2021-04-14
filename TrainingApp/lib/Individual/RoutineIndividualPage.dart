@@ -1,5 +1,7 @@
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../Shared/AddExercisePage.dart';
+import '../main.dart';
 
 class RoutineIndividualPage extends StatefulWidget {
   @override
@@ -60,7 +62,9 @@ class _RoutineIndividualPageState extends State<RoutineIndividualPage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (contextCallback) => AddExercisePage(),
+                      builder: (contextCallback) => AddExercisePage(
+                        userType: UserType.individual,
+                      ),
                     ),
                   );
                 },
