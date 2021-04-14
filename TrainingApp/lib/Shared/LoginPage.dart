@@ -1,8 +1,8 @@
-import 'package:TrainingApp/main.dart';
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import 'HomeWorkerPage.dart';
-import 'HomeClientPage.dart';
-import 'HomeIndividualPage.dart';
+import '../Worker/HomeWorkerPage.dart';
+import '../Client/HomeClientPage.dart';
+import '../Individual/HomeIndividualPage.dart';
 
 class LoginPage extends StatefulWidget {
   @override

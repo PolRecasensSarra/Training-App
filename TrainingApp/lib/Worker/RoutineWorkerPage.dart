@@ -1,5 +1,5 @@
-import 'package:TrainingApp/AddExercisePage.dart';
-import 'package:TrainingApp/CreateSurvey.dart';
+import 'package:training_app/Shared/AddExercisePage.dart';
+import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
 
 class RoutineWorkerPage extends StatefulWidget {

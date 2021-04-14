@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'AddExercisePage.dart';
+import '../Shared/AddExercisePage.dart';
 
 class RoutineIndividualPage extends StatefulWidget {
   @override

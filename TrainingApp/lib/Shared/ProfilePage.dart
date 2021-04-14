@@ -1,9 +1,9 @@
-import 'package:TrainingApp/main.dart';
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import 'CustomDrawer.dart';
+import '../CustomDrawer.dart';
 
 class ProfilePage extends StatefulWidget {
-  UserType userType;
+  final UserType userType;
   ProfilePage({@required this.userType});
   @override
   _ProfilePageState createState() => _ProfilePageState();

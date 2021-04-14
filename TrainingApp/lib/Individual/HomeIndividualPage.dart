@@ -1,10 +1,10 @@
-import 'package:TrainingApp/main.dart';
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import 'CustomDrawer.dart';
+import '../CustomDrawer.dart';
 import 'RoutineIndividualPage.dart';
 
 class HomeIndividualPage extends StatefulWidget {
-  UserType userType;
+  final UserType userType;
   HomeIndividualPage({@required this.userType});
   @override
   _HomeIndividualPageState createState() => _HomeIndividualPageState();

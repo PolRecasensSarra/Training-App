@@ -1,9 +1,9 @@
-import 'package:TrainingApp/HomeClientPage.dart';
-import 'package:TrainingApp/HomeIndividualPage.dart';
-import 'package:TrainingApp/main.dart';
+import 'package:training_app/Client/HomeClientPage.dart';
+import 'package:training_app/Individual/HomeIndividualPage.dart';
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import 'HomeWorkerPage.dart';
-import 'ProfilePage.dart';
+import 'Worker/HomeWorkerPage.dart';
+import 'Shared/ProfilePage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {

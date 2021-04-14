@@ -1,11 +1,11 @@
-import 'package:TrainingApp/ClientSurvey.dart';
-import 'package:TrainingApp/main.dart';
+import 'package:training_app/Client/ClientSurvey.dart';
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import 'CustomDrawer.dart';
+import '../CustomDrawer.dart';
 import 'RoutineClientPage.dart';
 
 class HomeClientPage extends StatefulWidget {
-  UserType userType;
+  final UserType userType;
   HomeClientPage({@required this.userType});
   @override
   _HomeClientPageState createState() => _HomeClientPageState();

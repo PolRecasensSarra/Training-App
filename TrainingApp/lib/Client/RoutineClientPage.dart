@@ -1,4 +1,4 @@
-import 'package:TrainingApp/ClientSurvey.dart';
+import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:flutter/material.dart';
 
 class RoutineClientPage extends StatefulWidget {

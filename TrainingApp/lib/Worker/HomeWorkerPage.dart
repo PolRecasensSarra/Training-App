@@ -1,11 +1,11 @@
-import 'package:TrainingApp/main.dart';
+import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import 'CustomDrawer.dart';
-import 'RoutineIndividualPage.dart';
+import '../CustomDrawer.dart';
+import '../Individual/RoutineIndividualPage.dart';
 import 'RoutineWorkerPage.dart';
 
 class HomeWorkerPage extends StatefulWidget {
-  UserType userType;
+  final UserType userType;
   HomeWorkerPage({@required this.userType});
   @override
   _HomeWorkerPageState createState() => _HomeWorkerPageState();
