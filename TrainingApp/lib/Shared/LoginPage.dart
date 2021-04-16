@@ -11,12 +11,19 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   Item dropdownValue;
+  int _selectedIndex = 0;
 
   List<Item> users = <Item>[
     const Item("Worker"),
     const Item("Client"),
     const Item("Individual"),
   ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +33,28 @@ class _LoginPageState extends State<LoginPage> {
           "Login Page",
         ),
       ),
-      body: Center(
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            label: "Sign In",
+            icon: Icon(Icons.login),
+          ),
+          BottomNavigationBarItem(
+            label: "Sign Up",
+            icon: Icon(Icons.app_registration),
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.orangeAccent[700],
+        onTap: _onItemTapped,
+      ),
+      body: toggleSignInSignUp(_selectedIndex),
+    );
+  }
+
+  toggleSignInSignUp(int index) {
+    if (index == 0) {
+      return Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -93,8 +121,17 @@ class _LoginPageState extends State<LoginPage> {
             ),
           ],
         ),
-      ),
-    );
+      );
+    } else {
+      return Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Sign Up"),
+          ],
+        ),
+      );
+    }
   }
 }
 

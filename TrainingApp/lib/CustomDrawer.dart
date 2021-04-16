@@ -1,5 +1,6 @@
 import 'package:training_app/Client/HomeClientPage.dart';
 import 'package:training_app/Individual/HomeIndividualPage.dart';
+import 'package:training_app/Services/auth.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import 'Worker/HomeWorkerPage.dart';
@@ -35,6 +36,8 @@ class CustomDrawerState extends State<CustomDrawer>
       print('could not launch $command');
     }
   }
+
+  final AuthService _auth = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -147,6 +150,18 @@ class CustomDrawerState extends State<CustomDrawer>
                 // applicationIcon: No va
                 applicationLegalese: 'license here',
               );
+            },
+          ),
+          ListTile(
+            leading: Icon(
+              Icons.settings_power,
+            ),
+            title: Text(
+              'Sign Out',
+              style: TextStyle(fontSize: 18),
+            ),
+            onTap: () async {
+              await _auth.signOut();
             },
           ),
         ],
