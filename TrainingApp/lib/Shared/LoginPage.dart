@@ -1,3 +1,4 @@
+import 'package:training_app/Services/auth.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../Worker/HomeWorkerPage.dart';
@@ -13,6 +14,16 @@ class _LoginPageState extends State<LoginPage> {
   Item dropdownValue;
   int _selectedIndex = 0;
   List<String> _titleList = ["Sign in to App", "Register to App"];
+
+  final _formKey = GlobalKey<FormState>();
+
+  final AuthService _auth = AuthService();
+
+  //Text field states
+  String email = "";
+  String password = "";
+  String referral = "";
+  String error = "";
 
   List<Item> users = <Item>[
     const Item("Worker"),
@@ -83,7 +94,9 @@ class _LoginPageState extends State<LoginPage> {
                       Icons.email,
                     ),
                   ),
-                  onChanged: (val) {},
+                  onChanged: (val) {
+                    email = val;
+                  },
                 ),
                 SizedBox(
                   height: 50.0,
@@ -94,7 +107,9 @@ class _LoginPageState extends State<LoginPage> {
                     hintText: 'password',
                     icon: Icon(Icons.lock),
                   ),
-                  onChanged: (val) {},
+                  onChanged: (val) {
+                    password = val;
+                  },
                 ),
                 SizedBox(
                   height: 50.0,
@@ -105,7 +120,9 @@ class _LoginPageState extends State<LoginPage> {
                     child: ElevatedButton(
                       //TODO: canviar això pel logIn de firebase
                       child: Text("Sign In"),
-                      onPressed: () {},
+                      onPressed: () async {
+                        print("Ready to log in");
+                      },
                     ),
                   ),
                 ),
@@ -120,6 +137,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40),
           child: Form(
+            key: _formKey,
             child: Column(
               children: [
                 DropdownButton<Item>(
@@ -150,7 +168,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(
                   width: 200.0,
-                  height: 50.0,
+                  height: 30.0,
                 ),
                 userContainer(),
               ],
@@ -176,7 +194,12 @@ class _LoginPageState extends State<LoginPage> {
                 Icons.email,
               ),
             ),
-            onChanged: (val) {},
+            validator: (val) => val.isEmpty ? "Enter an email" : null,
+            onChanged: (val) {
+              setState(() {
+                email = val;
+              });
+            },
           ),
           SizedBox(
             height: 50.0,
@@ -187,16 +210,42 @@ class _LoginPageState extends State<LoginPage> {
               hintText: 'Enter your password',
               icon: Icon(Icons.lock),
             ),
-            onChanged: (val) {},
+            validator: (val) =>
+                val.length < 6 ? "Enter a password 6+ characters long" : null,
+            onChanged: (val) {
+              setState(() {
+                password = val;
+              });
+            },
           ),
           SizedBox(
             height: 50.0,
           ),
           ElevatedButton(
             //TODO: canviar això pel logIn de firebase
-            child: Text("Sign In"),
-            onPressed: () {},
+            child: Text("Register"),
+            onPressed: () async {
+              if (_formKey.currentState.validate()) {
+                dynamic result =
+                    await _auth.registerWithEmailAndPassword(email, password);
+                if (result == null) {
+                  setState(() {
+                    error = "Please supply a valid email";
+                  });
+                }
+              }
+            },
           ),
+          SizedBox(
+            height: 12.0,
+          ),
+          Text(
+            error,
+            style: TextStyle(
+              color: Colors.red,
+              fontSize: 14,
+            ),
+          )
         ],
       );
     }
@@ -211,7 +260,12 @@ class _LoginPageState extends State<LoginPage> {
                 Icons.email,
               ),
             ),
-            onChanged: (val) {},
+            validator: (val) => val.isEmpty ? "Enter an email" : null,
+            onChanged: (val) {
+              setState(() {
+                email = val;
+              });
+            },
           ),
           SizedBox(
             height: 50.0,
@@ -222,15 +276,24 @@ class _LoginPageState extends State<LoginPage> {
               hintText: 'Enter your password',
               icon: Icon(Icons.lock),
             ),
-            onChanged: (val) {},
+            validator: (val) =>
+                val.length < 6 ? "Enter a password 6+ characters long" : null,
+            onChanged: (val) {
+              setState(() {
+                password = val;
+              });
+            },
           ),
           SizedBox(
             height: 50.0,
           ),
           ElevatedButton(
             //TODO: canviar això pel logIn de firebase
-            child: Text("Sign In"),
-            onPressed: () {},
+            child: Text("Register"),
+            onPressed: () async {
+              if (_formKey.currentState.validate())
+                print(email + "   " + password);
+            },
           ),
         ],
       );
@@ -246,10 +309,15 @@ class _LoginPageState extends State<LoginPage> {
                 Icons.email,
               ),
             ),
-            onChanged: (val) {},
+            validator: (val) => val.isEmpty ? "Enter an email" : null,
+            onChanged: (val) {
+              setState(() {
+                email = val;
+              });
+            },
           ),
           SizedBox(
-            height: 50.0,
+            height: 30.0,
           ),
           TextFormField(
             obscureText: true,
@@ -257,25 +325,39 @@ class _LoginPageState extends State<LoginPage> {
               hintText: 'Enter your password',
               icon: Icon(Icons.lock),
             ),
-            onChanged: (val) {},
+            validator: (val) =>
+                val.length < 6 ? "Enter a password 6+ characters long" : null,
+            onChanged: (val) {
+              setState(() {
+                password = val;
+              });
+            },
           ),
           SizedBox(
-            height: 50.0,
+            height: 30.0,
           ),
           TextFormField(
             decoration: InputDecoration(
               hintText: 'Enter referral code',
               icon: Icon(Icons.animation),
             ),
-            onChanged: (val) {},
+            validator: (val) => val.isEmpty ? "Enter a referral code" : null,
+            onChanged: (val) {
+              setState(() {
+                referral = val;
+              });
+            },
           ),
           SizedBox(
             height: 50.0,
           ),
           ElevatedButton(
             //TODO: canviar això pel logIn de firebase
-            child: Text("Sign In"),
-            onPressed: () {},
+            child: Text("Register"),
+            onPressed: () async {
+              if (_formKey.currentState.validate())
+                print(email + "   " + password + "    " + referral);
+            },
           ),
         ],
       );
