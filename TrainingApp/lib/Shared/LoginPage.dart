@@ -1,9 +1,6 @@
 import 'package:training_app/Services/auth.dart';
-import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
-import '../Worker/HomeWorkerPage.dart';
-import '../Client/HomeClientPage.dart';
-import '../Individual/HomeIndividualPage.dart';
+import 'package:training_app/Shared/Loading.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -18,11 +15,12 @@ class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
 
   final AuthService _auth = AuthService();
-
+  bool loading = false;
   //Text field states
   String email = "";
   String password = "";
   String referral = "";
+  String username = "";
   String error = "";
 
   List<Item> users = <Item>[
@@ -39,34 +37,36 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        title: Text(
-          _titleList[_selectedIndex],
-        ),
-        actions: <Widget>[
-          Image.network(
-              "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png")
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.grey[800],
-        items: [
-          BottomNavigationBarItem(
-            label: "Sign In",
-            icon: Icon(Icons.login),
-          ),
-          BottomNavigationBarItem(
-            label: "Sign Up",
-            icon: Icon(Icons.app_registration),
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-      ),
-      body: toggleSignInSignUp(_selectedIndex),
-    );
+    return loading
+        ? Loading()
+        : Scaffold(
+            resizeToAvoidBottomInset: false,
+            appBar: AppBar(
+              title: Text(
+                _titleList[_selectedIndex],
+              ),
+              actions: <Widget>[
+                Image.network(
+                    "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png")
+              ],
+            ),
+            bottomNavigationBar: BottomNavigationBar(
+              backgroundColor: Colors.grey[800],
+              items: [
+                BottomNavigationBarItem(
+                  label: "Sign In",
+                  icon: Icon(Icons.login),
+                ),
+                BottomNavigationBarItem(
+                  label: "Sign Up",
+                  icon: Icon(Icons.app_registration),
+                ),
+              ],
+              currentIndex: _selectedIndex,
+              onTap: _onItemTapped,
+            ),
+            body: toggleSignInSignUp(_selectedIndex),
+          );
   }
 
   toggleSignInSignUp(int index) {
@@ -74,60 +74,82 @@ class _LoginPageState extends State<LoginPage> {
       //------------------------------ LOGIN---------------------
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40),
-          child: Form(
-            child: Column(
-              children: [
-                Text(
-                  "Training App",
-                  style: TextStyle(
-                    fontSize: 28,
-                  ),
-                ),
-                SizedBox(
-                  height: 70.0,
-                ),
-                TextFormField(
-                  decoration: InputDecoration(
-                    hintText: 'Email',
-                    icon: Icon(
-                      Icons.email,
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          child: ListView(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    Text(
+                      "Training App",
+                      style: TextStyle(
+                        fontSize: 28,
+                      ),
                     ),
-                  ),
-                  onChanged: (val) {
-                    email = val;
-                  },
-                ),
-                SizedBox(
-                  height: 50.0,
-                ),
-                TextFormField(
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    hintText: 'password',
-                    icon: Icon(Icons.lock),
-                  ),
-                  onChanged: (val) {
-                    password = val;
-                  },
-                ),
-                SizedBox(
-                  height: 50.0,
-                ),
-                Expanded(
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: ElevatedButton(
-                      //TODO: canviar això pel logIn de firebase
-                      child: Text("Sign In"),
-                      onPressed: () async {
-                        print("Ready to log in");
+                    SizedBox(
+                      height: 70.0,
+                    ),
+                    TextFormField(
+                      validator: (val) => val.isEmpty ? "Enter an email" : null,
+                      decoration: InputDecoration(
+                        hintText: 'Email',
+                        icon: Icon(
+                          Icons.email,
+                        ),
+                      ),
+                      onChanged: (val) {
+                        email = val;
                       },
                     ),
-                  ),
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                    TextFormField(
+                      validator: (val) =>
+                          val.isEmpty ? "Enter a password" : null,
+                      obscureText: true,
+                      decoration: InputDecoration(
+                        hintText: 'password',
+                        icon: Icon(Icons.lock),
+                      ),
+                      onChanged: (val) {
+                        password = val;
+                      },
+                    ),
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                    ElevatedButton(
+                      child: Text("Sign In"),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          setState(() => loading = true);
+                          dynamic result = await _auth
+                              .signInWithEmailAndPassword(email, password);
+                          if (result == null) {
+                            setState(() {
+                              error = "Email or password incorrect";
+                              loading = false;
+                            });
+                          }
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
@@ -135,44 +157,79 @@ class _LoginPageState extends State<LoginPage> {
       //------------------------------ REGISTER---------------------
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 40),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: [
-                DropdownButton<Item>(
-                  hint: Text("Select user"),
-                  value: dropdownValue,
-                  icon: const Icon(
-                    Icons.arrow_downward,
-                    color: Colors.white,
-                  ),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(fontSize: 18),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.white,
-                  ),
-                  onChanged: (newValue) {
-                    setState(() {
-                      dropdownValue = newValue;
-                    });
-                  },
-                  items: users.map((Item user) {
-                    return DropdownMenuItem<Item>(
-                      value: user,
-                      child: Text(user.type),
-                    );
-                  }).toList(),
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          child: ListView(
+            children: [
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    DropdownButton<Item>(
+                      hint: Text("Select user"),
+                      value: dropdownValue,
+                      icon: const Icon(
+                        Icons.arrow_downward,
+                        color: Colors.white,
+                      ),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(fontSize: 18),
+                      underline: Container(
+                        height: 2,
+                        color: Colors.white,
+                      ),
+                      onChanged: (newValue) {
+                        setState(() {
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items: users.map((Item user) {
+                        return DropdownMenuItem<Item>(
+                          value: user,
+                          child: Text(user.type),
+                        );
+                      }).toList(),
+                    ),
+                    SizedBox(
+                      width: 200.0,
+                      height: 30.0,
+                    ),
+                    userContainer(), // ALL THE STUFF FOR EVERY USER
+                    SizedBox(
+                      height: 50.0,
+                    ),
+                    ElevatedButton(
+                      //TODO: canviar això pel logIn de firebase
+                      child: Text("Register"),
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          setState(() => loading = true);
+                          dynamic result =
+                              await _auth.registerWithEmailAndPassword(email,
+                                  password, username, dropdownValue.type);
+                          if (result == null) {
+                            setState(() {
+                              error = "Please supply a valid email";
+                              loading = false;
+                            });
+                          }
+                        }
+                      },
+                    ),
+                    SizedBox(
+                      height: 12.0,
+                    ),
+                    Text(
+                      error,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 14,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  width: 200.0,
-                  height: 30.0,
-                ),
-                userContainer(),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );
@@ -189,6 +246,25 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           TextFormField(
             decoration: InputDecoration(
+              hintText: 'Enter your Username',
+              icon: Icon(
+                Icons.person,
+              ),
+            ),
+            validator: (val) => val.isEmpty
+                ? "Enter a username"
+                : null, //TODO: mirar que no existeixi ja aquest nom d'usuari
+            onChanged: (val) {
+              setState(() {
+                username = val;
+              });
+            },
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
               hintText: 'Enter your Email',
               icon: Icon(
                 Icons.email,
@@ -202,7 +278,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 50.0,
+            height: 30.0,
           ),
           TextFormField(
             obscureText: true,
@@ -218,34 +294,6 @@ class _LoginPageState extends State<LoginPage> {
               });
             },
           ),
-          SizedBox(
-            height: 50.0,
-          ),
-          ElevatedButton(
-            //TODO: canviar això pel logIn de firebase
-            child: Text("Register"),
-            onPressed: () async {
-              if (_formKey.currentState.validate()) {
-                dynamic result =
-                    await _auth.registerWithEmailAndPassword(email, password);
-                if (result == null) {
-                  setState(() {
-                    error = "Please supply a valid email";
-                  });
-                }
-              }
-            },
-          ),
-          SizedBox(
-            height: 12.0,
-          ),
-          Text(
-            error,
-            style: TextStyle(
-              color: Colors.red,
-              fontSize: 14,
-            ),
-          )
         ],
       );
     }
@@ -255,6 +303,25 @@ class _LoginPageState extends State<LoginPage> {
         children: [
           TextFormField(
             decoration: InputDecoration(
+              hintText: 'Enter your Username',
+              icon: Icon(
+                Icons.person,
+              ),
+            ),
+            validator: (val) => val.isEmpty
+                ? "Enter a username"
+                : null, //TODO: mirar que no existeixi ja aquest nom d'usuari
+            onChanged: (val) {
+              setState(() {
+                username = val;
+              });
+            },
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
+          TextFormField(
+            decoration: InputDecoration(
               hintText: 'Enter your Email',
               icon: Icon(
                 Icons.email,
@@ -268,7 +335,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 50.0,
+            height: 30.0,
           ),
           TextFormField(
             obscureText: true,
@@ -284,17 +351,6 @@ class _LoginPageState extends State<LoginPage> {
               });
             },
           ),
-          SizedBox(
-            height: 50.0,
-          ),
-          ElevatedButton(
-            //TODO: canviar això pel logIn de firebase
-            child: Text("Register"),
-            onPressed: () async {
-              if (_formKey.currentState.validate())
-                print(email + "   " + password);
-            },
-          ),
         ],
       );
     }
@@ -302,6 +358,25 @@ class _LoginPageState extends State<LoginPage> {
     else if (dropdownValue.type == "Client") {
       return Column(
         children: [
+          TextFormField(
+            decoration: InputDecoration(
+              hintText: 'Enter your Username',
+              icon: Icon(
+                Icons.person,
+              ),
+            ),
+            validator: (val) => val.isEmpty
+                ? "Enter a username"
+                : null, //TODO: mirar que no existeixi ja aquest nom d'usuari
+            onChanged: (val) {
+              setState(() {
+                username = val;
+              });
+            },
+          ),
+          SizedBox(
+            height: 30.0,
+          ),
           TextFormField(
             decoration: InputDecoration(
               hintText: 'Enter your Email',
@@ -346,17 +421,6 @@ class _LoginPageState extends State<LoginPage> {
               setState(() {
                 referral = val;
               });
-            },
-          ),
-          SizedBox(
-            height: 50.0,
-          ),
-          ElevatedButton(
-            //TODO: canviar això pel logIn de firebase
-            child: Text("Register"),
-            onPressed: () async {
-              if (_formKey.currentState.validate())
-                print(email + "   " + password + "    " + referral);
             },
           ),
         ],
