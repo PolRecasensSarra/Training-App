@@ -26,6 +26,12 @@ class AuthService {
   Future registerWithEmailAndPassword(
       String email, String password, String username, String userType) async {
     try {
+      bool repeated =
+          await DatabaseService(userName: username, userType: userType)
+              .checkIfUserNameIsTaken();
+
+      if (repeated) return null;
+
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User user = result.user;

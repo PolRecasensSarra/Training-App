@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:training_app/main.dart';
 
 class DatabaseService {
   final String userName;
@@ -11,8 +12,31 @@ class DatabaseService {
   }
 
   Future updateUserData() async {
-    return await userCollection.doc(userName).set({
-      'Clients': "",
-    });
+    if (userType == "Worker") {
+      return await userCollection.doc(userName).set({
+        'clients': "",
+      });
+    } else if (userType == "Client") {
+      return await userCollection.doc(userName).set({
+        'worker': "",
+      });
+    } else {
+      return await userCollection.doc(userName).set({
+        'individual': "",
+      });
+    }
+  }
+
+  Future checkIfUserNameIsTaken() async {
+    DocumentSnapshot doc = await userCollection.doc("Worker").get();
+    if (doc.exists) return true;
+
+    doc = await userCollection.doc("Client").get();
+    if (doc.exists) return true;
+
+    doc = await userCollection.doc("Individual").get();
+    if (doc.exists) return true;
+
+    return false;
   }
 }
