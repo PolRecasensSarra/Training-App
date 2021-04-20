@@ -154,7 +154,7 @@ class CustomDrawerState extends State<CustomDrawer>
           ),
           ListTile(
             leading: Icon(
-              Icons.settings_power,
+              Icons.power_settings_new,
             ),
             title: Text(
               'Sign Out',

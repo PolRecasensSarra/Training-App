@@ -209,7 +209,7 @@ class _LoginPageState extends State<LoginPage> {
                                   password, username, dropdownValue.type);
                           if (result == null) {
                             setState(() {
-                              error = "Please supply a valid email";
+                              error = "Invalid email or username already taken";
                               loading = false;
                             });
                           }

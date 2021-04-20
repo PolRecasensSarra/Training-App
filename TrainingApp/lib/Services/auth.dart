@@ -36,11 +36,15 @@ class AuthService {
           email: email, password: password);
       User user = result.user;
 
+      await FirebaseAuth.instance.currentUser
+          .updateProfile(displayName: username);
+      await FirebaseAuth.instance.currentUser.reload();
+
       //create a new document for the user
       await DatabaseService(userName: username, userType: userType)
           .updateUserData();
 
-      return user;
+      return FirebaseAuth.instance.currentUser;
     } catch (e) {
       print(e.toString());
       return null;
