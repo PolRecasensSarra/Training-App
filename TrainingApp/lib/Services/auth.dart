@@ -23,13 +23,13 @@ class AuthService {
   }
 
   //register with email and password
-  Future registerWithEmailAndPassword(
-      String email, String password, String username, String userType) async {
+  Future registerWithEmailAndPasswordWorker(
+      String email, String password, String username) async {
     try {
+      //Avoid repeated Usernames
       bool repeated =
-          await DatabaseService(userName: username, userType: userType)
+          await DatabaseService(userName: username, userType: "Worker")
               .checkIfUserNameIsTaken();
-
       if (repeated) return null;
 
       UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -41,8 +41,43 @@ class AuthService {
       await FirebaseAuth.instance.currentUser.reload();
 
       //create a new document for the user
-      await DatabaseService(userName: username, userType: userType)
-          .updateUserData();
+      await DatabaseService(userName: username, userType: "Worker")
+          .updateUserDataWorker();
+
+      return FirebaseAuth.instance.currentUser;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  //register with email and password for Client
+  Future registerWithEmailAndPasswordClient(
+      String email, String password, String username, String referral) async {
+    try {
+      //Avoid repeated Usernames
+      bool repeated =
+          await DatabaseService(userName: username, userType: "Client")
+              .checkIfUserNameIsTaken();
+      if (repeated) return null;
+
+      //Check if the referral worker is correct
+      bool validReferral =
+          await DatabaseService(userName: username, userType: "Client")
+              .checkIfReferralWorkerExist(referral);
+      if (!validReferral) return null;
+
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+
+      await FirebaseAuth.instance.currentUser
+          .updateProfile(displayName: username);
+      await FirebaseAuth.instance.currentUser.reload();
+
+      //create a new document for the user
+      await DatabaseService(userName: username, userType: "Client")
+          .updateUserDataClient(referral);
 
       return FirebaseAuth.instance.currentUser;
     } catch (e) {

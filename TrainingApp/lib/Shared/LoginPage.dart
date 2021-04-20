@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_app/Shared/Loading.dart';
@@ -204,9 +206,16 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed: () async {
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
-                          dynamic result =
-                              await _auth.registerWithEmailAndPassword(email,
-                                  password, username, dropdownValue.type);
+                          dynamic result;
+                          if (dropdownValue.type == "Worker") {
+                            result =
+                                await _auth.registerWithEmailAndPasswordWorker(
+                                    email, password, username);
+                          } else if (dropdownValue.type == "Client") {
+                            result =
+                                await _auth.registerWithEmailAndPasswordClient(
+                                    email, password, username, referral);
+                          }
                           if (result == null) {
                             setState(() {
                               error = "Invalid email or username already taken";
@@ -365,9 +374,7 @@ class _LoginPageState extends State<LoginPage> {
                 Icons.person,
               ),
             ),
-            validator: (val) => val.isEmpty
-                ? "Enter a username"
-                : null, //TODO: mirar que no existeixi ja aquest nom d'usuari
+            validator: (val) => val.isEmpty ? "Enter a username" : null,
             onChanged: (val) {
               setState(() {
                 username = val;
@@ -413,10 +420,15 @@ class _LoginPageState extends State<LoginPage> {
           ),
           TextFormField(
             decoration: InputDecoration(
-              hintText: 'Enter referral code',
+              hintText: 'Enter worker username',
               icon: Icon(Icons.animation),
             ),
-            validator: (val) => val.isEmpty ? "Enter a referral code" : null,
+            validator: (val) {
+              if (val.isEmpty)
+                return "Enter a referral code";
+              else
+                return null;
+            },
             onChanged: (val) {
               setState(() {
                 referral = val;

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:training_app/main.dart';
 
 class DatabaseService {
   final String userName;
@@ -11,30 +10,49 @@ class DatabaseService {
     userCollection = FirebaseFirestore.instance.collection(userType);
   }
 
-  Future updateUserData() async {
-    if (userType == "Worker") {
-      return await userCollection.doc(userName).set({
-        'clients': "",
-      });
-    } else if (userType == "Client") {
-      return await userCollection.doc(userName).set({
-        'worker': "",
-      });
-    } else {
-      return await userCollection.doc(userName).set({
-        'individual': "",
-      });
-    }
+  Future updateUserDataWorker() async {
+    return await userCollection.doc(userName).set({});
+  }
+
+  Future updateUserDataClient(String worker) async {
+    //Set the client to the worker
+    FirebaseFirestore.instance.collection("Worker").doc(worker).set({
+      'clients': userName,
+    });
+
+    //Set the client's worker to client database
+    return await userCollection.doc(userName).set({
+      'worker': worker,
+    });
   }
 
   Future checkIfUserNameIsTaken() async {
-    DocumentSnapshot doc = await userCollection.doc("Worker").get();
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(userName)
+        .get();
     if (doc.exists) return true;
 
-    doc = await userCollection.doc("Client").get();
+    doc = await FirebaseFirestore.instance
+        .collection("Client")
+        .doc(userName)
+        .get();
     if (doc.exists) return true;
 
-    doc = await userCollection.doc("Individual").get();
+    doc = await FirebaseFirestore.instance
+        .collection("Individual")
+        .doc(userName)
+        .get();
+    if (doc.exists) return true;
+
+    return false;
+  }
+
+  Future checkIfReferralWorkerExist(String workerName) async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(workerName)
+        .get();
     if (doc.exists) return true;
 
     return false;
