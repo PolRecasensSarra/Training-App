@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
@@ -5,8 +6,8 @@ import '../CustomDrawer.dart';
 import 'RoutineClientPage.dart';
 
 class HomeClientPage extends StatefulWidget {
-  final UserType userType;
-  HomeClientPage({@required this.userType});
+  final User user;
+  HomeClientPage({@required this.user});
   @override
   _HomeClientPageState createState() => _HomeClientPageState();
 }
@@ -14,12 +15,16 @@ class HomeClientPage extends StatefulWidget {
 class _HomeClientPageState extends State<HomeClientPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Home"),
+        ),
+        drawer: CustomDrawerState()
+            .createCustomDrawer(context, UserType.client, widget.user),
+        body: homePageClient(),
       ),
-      drawer: CustomDrawerState().createCustomDrawer(context, widget.userType),
-      body: homePageClient(),
     );
   }
 

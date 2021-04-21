@@ -86,6 +86,35 @@ class AuthService {
     }
   }
 
+  //register with email and password
+  Future registerWithEmailAndPasswordIndividual(
+      String email, String password, String username) async {
+    try {
+      //Avoid repeated Usernames
+      bool repeated =
+          await DatabaseService(userName: username, userType: "Individual")
+              .checkIfUserNameIsTaken();
+      if (repeated) return null;
+
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User user = result.user;
+
+      await FirebaseAuth.instance.currentUser
+          .updateProfile(displayName: username);
+      await FirebaseAuth.instance.currentUser.reload();
+
+      //create a new document for the user
+      await DatabaseService(userName: username, userType: "Individual")
+          .updateUserDataIndividual();
+
+      return FirebaseAuth.instance.currentUser;
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
   //Login with email and password
   Future signInWithEmailAndPassword(String email, String password) async {
     try {

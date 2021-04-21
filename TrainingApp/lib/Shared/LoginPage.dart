@@ -1,8 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:training_app/Client/HomeClientPage.dart';
+import 'package:training_app/Individual/HomeIndividualPage.dart';
 import 'package:training_app/Services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_app/Shared/Loading.dart';
+import 'package:training_app/Worker/HomeWorkerPage.dart';
+
+import '../main.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -41,33 +46,38 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return loading
         ? Loading()
-        : Scaffold(
-            resizeToAvoidBottomInset: false,
-            appBar: AppBar(
-              title: Text(
-                _titleList[_selectedIndex],
+        : WillPopScope(
+            onWillPop: () async => false,
+            child: Scaffold(
+              resizeToAvoidBottomInset: true,
+              appBar: AppBar(
+                leading: Container(),
+                leadingWidth: 0.0,
+                title: Text(
+                  _titleList[_selectedIndex],
+                ),
+                actions: <Widget>[
+                  Image.network(
+                      "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png")
+                ],
               ),
-              actions: <Widget>[
-                Image.network(
-                    "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png")
-              ],
+              bottomNavigationBar: BottomNavigationBar(
+                backgroundColor: Colors.grey[800],
+                items: [
+                  BottomNavigationBarItem(
+                    label: "Sign In",
+                    icon: Icon(Icons.login),
+                  ),
+                  BottomNavigationBarItem(
+                    label: "Sign Up",
+                    icon: Icon(Icons.app_registration),
+                  ),
+                ],
+                currentIndex: _selectedIndex,
+                onTap: _onItemTapped,
+              ),
+              body: toggleSignInSignUp(_selectedIndex),
             ),
-            bottomNavigationBar: BottomNavigationBar(
-              backgroundColor: Colors.grey[800],
-              items: [
-                BottomNavigationBarItem(
-                  label: "Sign In",
-                  icon: Icon(Icons.login),
-                ),
-                BottomNavigationBarItem(
-                  label: "Sign Up",
-                  icon: Icon(Icons.app_registration),
-                ),
-              ],
-              currentIndex: _selectedIndex,
-              onTap: _onItemTapped,
-            ),
-            body: toggleSignInSignUp(_selectedIndex),
           );
   }
 
@@ -134,6 +144,8 @@ class _LoginPageState extends State<LoginPage> {
                               error = "Email or password incorrect";
                               loading = false;
                             });
+                          } else {
+                            navigateToUserHomePage(result);
                           }
                         }
                       },
@@ -215,12 +227,43 @@ class _LoginPageState extends State<LoginPage> {
                             result =
                                 await _auth.registerWithEmailAndPasswordClient(
                                     email, password, username, referral);
+                          } else if (dropdownValue.type == "Individual") {
+                            result = await _auth
+                                .registerWithEmailAndPasswordIndividual(
+                                    email, password, username);
                           }
                           if (result == null) {
                             setState(() {
                               error = "Invalid email or username already taken";
                               loading = false;
                             });
+                          } else {
+                            if (dropdownValue.type == "Worker") {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (contextCallback) => HomeWorkerPage(
+                                    user: result,
+                                  ),
+                                ),
+                              );
+                            } else if (dropdownValue.type == "Client") {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (contextCallback) => HomeClientPage(
+                                    user: result,
+                                  ),
+                                ),
+                              );
+                            } else {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (contextCallback) =>
+                                      HomeIndividualPage(
+                                    user: result,
+                                  ),
+                                ),
+                              );
+                            }
                           }
                         }
                       },
@@ -436,6 +479,50 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
         ],
+      );
+    }
+  }
+
+  navigateToUserHomePage(User user) async {
+    DocumentSnapshot dc = await FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(user.displayName)
+        .get();
+    if (dc.exists) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (contextCallback) => HomeWorkerPage(
+            user: user,
+          ),
+        ),
+      );
+    }
+
+    dc = await FirebaseFirestore.instance
+        .collection("Client")
+        .doc(user.displayName)
+        .get();
+    if (dc.exists) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (contextCallback) => HomeClientPage(
+            user: user,
+          ),
+        ),
+      );
+    }
+
+    dc = await FirebaseFirestore.instance
+        .collection("Individual")
+        .doc(user.displayName)
+        .get();
+    if (dc.exists) {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (contextCallback) => HomeIndividualPage(
+            user: user,
+          ),
+        ),
       );
     }
   }

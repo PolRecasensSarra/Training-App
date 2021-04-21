@@ -14,6 +14,10 @@ class DatabaseService {
     return await userCollection.doc(userName).set({});
   }
 
+  Future updateUserDataIndividual() async {
+    return await userCollection.doc(userName).set({});
+  }
+
   Future updateUserDataClient(String worker) async {
     //Set the client to the worker
     FirebaseFirestore.instance.collection("Worker").doc(worker).set({

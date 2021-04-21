@@ -1,6 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Client/HomeClientPage.dart';
 import 'package:training_app/Individual/HomeIndividualPage.dart';
 import 'package:training_app/Services/auth.dart';
+import 'package:training_app/Shared/LoginPage.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import 'Worker/HomeWorkerPage.dart';
@@ -44,19 +46,20 @@ class CustomDrawerState extends State<CustomDrawer>
     return Scaffold();
   }
 
-  createCustomDrawer(BuildContext contextCallback, UserType typeUser) {
+  createCustomDrawer(
+      BuildContext contextCallback, UserType typeUser, User user) {
     return Drawer(
       child: ListView(
         children: <Widget>[
           UserAccountsDrawerHeader(
             accountName: Text(
-              'Name SecondName LastName',
+              user.displayName,
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            accountEmail: Text('username@gmail.com'),
+            accountEmail: Text(user.email),
             currentAccountPicture: CircleAvatar(
               backgroundColor: Colors.blue[300],
               foregroundImage: NetworkImage(
@@ -83,7 +86,7 @@ class CustomDrawerState extends State<CustomDrawer>
                   Navigator.of(contextCallback).push(
                     MaterialPageRoute(
                       builder: (contextCallback) => HomeWorkerPage(
-                        userType: typeUser,
+                        user: user,
                       ),
                     ),
                   );
@@ -91,7 +94,7 @@ class CustomDrawerState extends State<CustomDrawer>
                   Navigator.of(contextCallback).push(
                     MaterialPageRoute(
                       builder: (contextCallback) => HomeClientPage(
-                        userType: typeUser,
+                        user: user,
                       ),
                     ),
                   );
@@ -99,7 +102,7 @@ class CustomDrawerState extends State<CustomDrawer>
                   Navigator.of(contextCallback).push(
                     MaterialPageRoute(
                       builder: (contextCallback) => HomeIndividualPage(
-                        userType: typeUser,
+                        user: user,
                       ),
                     ),
                   );
@@ -116,7 +119,10 @@ class CustomDrawerState extends State<CustomDrawer>
             onTap: () {
               Navigator.of(contextCallback).push(
                 MaterialPageRoute(
-                  builder: (contextCallback) => ProfilePage(userType: typeUser),
+                  builder: (contextCallback) => ProfilePage(
+                    userType: typeUser,
+                    user: user,
+                  ),
                 ),
               );
             },
@@ -162,6 +168,11 @@ class CustomDrawerState extends State<CustomDrawer>
             ),
             onTap: () async {
               await _auth.signOut();
+              Navigator.of(contextCallback).push(
+                MaterialPageRoute(
+                  builder: (contextCallback) => LoginPage(),
+                ),
+              );
             },
           ),
         ],

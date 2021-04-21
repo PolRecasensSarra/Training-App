@@ -3,7 +3,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:training_app/Services/auth.dart';
-import 'Shared/ProviderPage.dart';
+
+import 'Shared/LoginPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,10 +30,10 @@ class MyApp extends StatelessWidget {
           primaryColor: Colors.indigo,
         ),
         themeMode: ThemeMode.dark,
-        home: ProviderPage(),
+        home: LoginPage(),
       ),
     );
   }
 }
 
-enum UserType { worker, client, individual }
+enum UserType { worker, client, individual, none }

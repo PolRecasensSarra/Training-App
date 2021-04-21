@@ -1,11 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
 import 'RoutineIndividualPage.dart';
 
 class HomeIndividualPage extends StatefulWidget {
-  final UserType userType;
-  HomeIndividualPage({@required this.userType});
+  final User user;
+  HomeIndividualPage({@required this.user});
   @override
   _HomeIndividualPageState createState() => _HomeIndividualPageState();
 }
@@ -13,12 +14,16 @@ class HomeIndividualPage extends StatefulWidget {
 class _HomeIndividualPageState extends State<HomeIndividualPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Home"),
+    return WillPopScope(
+      onWillPop: () async => false,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text("Home"),
+        ),
+        drawer: CustomDrawerState()
+            .createCustomDrawer(context, UserType.individual, widget.user),
+        body: homePageIndividual(),
       ),
-      drawer: CustomDrawerState().createCustomDrawer(context, widget.userType),
-      body: homePageIndividual(),
     );
   }
 
