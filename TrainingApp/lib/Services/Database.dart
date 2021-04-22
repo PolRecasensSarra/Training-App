@@ -18,16 +18,18 @@ class DatabaseService {
     return await userCollection.doc(userName).set({});
   }
 
-  Future updateUserDataClient(String worker) async {
+  updateUserDataClient(String worker) async {
     //Set the client to the worker
-    FirebaseFirestore.instance.collection("Worker").doc(worker).set({
-      'clients': userName,
-    });
+    FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(worker)
+        .collection("clients")
+        .doc(userName)
+        .set({});
 
     //Set the client's worker to client database
-    return await userCollection.doc(userName).set({
-      'worker': worker,
-    });
+    userCollection.doc(userName).set({});
+    userCollection.doc(userName).collection("worker").doc(worker).set({});
   }
 
   Future checkIfUserNameIsTaken() async {
@@ -60,5 +62,27 @@ class DatabaseService {
     if (doc.exists) return true;
 
     return false;
+  }
+
+  Future<DocumentSnapshot> getDocumentSnapshot() async {
+    DocumentSnapshot doc = await FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(userName)
+        .get();
+    if (doc.exists) return doc;
+
+    doc = await FirebaseFirestore.instance
+        .collection("Client")
+        .doc(userName)
+        .get();
+    if (doc.exists) return doc;
+
+    doc = await FirebaseFirestore.instance
+        .collection("Individual")
+        .doc(userName)
+        .get();
+    if (doc.exists) return doc;
+
+    return null;
   }
 }

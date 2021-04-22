@@ -23,7 +23,7 @@ class AuthService {
   }
 
   //register with email and password
-  Future registerWithEmailAndPasswordWorker(
+  Future<User> registerWithEmailAndPasswordWorker(
       String email, String password, String username) async {
     try {
       //Avoid repeated Usernames

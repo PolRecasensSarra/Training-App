@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Client/HomeClientPage.dart';
 import 'package:training_app/Individual/HomeIndividualPage.dart';
+import 'package:training_app/Services/Database.dart';
 import 'package:training_app/Services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_app/Shared/Loading.dart';
@@ -276,7 +277,7 @@ class _LoginPageState extends State<LoginPage> {
                         if (dropdownValue == null) return;
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
-                          dynamic result;
+                          User result;
                           if (dropdownValue.type == "Worker") {
                             result =
                                 await _auth.registerWithEmailAndPasswordWorker(
@@ -297,27 +298,42 @@ class _LoginPageState extends State<LoginPage> {
                             });
                           } else {
                             if (dropdownValue.type == "Worker") {
+                              DocumentSnapshot doc = await DatabaseService(
+                                      userName: result.displayName,
+                                      userType: dropdownValue.type)
+                                  .getDocumentSnapshot();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (contextCallback) => HomeWorkerPage(
                                     user: result,
+                                    document: doc,
                                   ),
                                 ),
                               );
                             } else if (dropdownValue.type == "Client") {
+                              DocumentSnapshot doc = await DatabaseService(
+                                      userName: result.displayName,
+                                      userType: dropdownValue.type)
+                                  .getDocumentSnapshot();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (contextCallback) => HomeClientPage(
                                     user: result,
+                                    document: doc,
                                   ),
                                 ),
                               );
-                            } else {
+                            } else if (dropdownValue.type == "Individual") {
+                              DocumentSnapshot doc = await DatabaseService(
+                                      userName: result.displayName,
+                                      userType: dropdownValue.type)
+                                  .getDocumentSnapshot();
                               Navigator.of(context).push(
                                 MaterialPageRoute(
                                   builder: (contextCallback) =>
                                       HomeIndividualPage(
                                     user: result,
+                                    document: doc,
                                   ),
                                 ),
                               );
@@ -729,6 +745,7 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(
           builder: (contextCallback) => HomeWorkerPage(
             user: user,
+            document: dc,
           ),
         ),
       );
@@ -743,6 +760,7 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(
           builder: (contextCallback) => HomeClientPage(
             user: user,
+            document: dc,
           ),
         ),
       );
@@ -757,10 +775,33 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(
           builder: (contextCallback) => HomeIndividualPage(
             user: user,
+            document: dc,
           ),
         ),
       );
     }
+  }
+
+  Future<DocumentSnapshot> getUserDocumentSnapshot(User user) async {
+    DocumentSnapshot dc = await FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(user.displayName)
+        .get();
+    if (dc.exists) return dc;
+
+    dc = await FirebaseFirestore.instance
+        .collection("Client")
+        .doc(user.displayName)
+        .get();
+    if (dc.exists) return dc;
+
+    dc = await FirebaseFirestore.instance
+        .collection("Individual")
+        .doc(user.displayName)
+        .get();
+    if (dc.exists) return dc;
+
+    return null;
   }
 }
 

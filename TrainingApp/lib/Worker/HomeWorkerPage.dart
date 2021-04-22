@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
@@ -6,8 +7,9 @@ import '../Individual/RoutineIndividualPage.dart';
 import 'RoutineWorkerPage.dart';
 
 class HomeWorkerPage extends StatefulWidget {
+  final DocumentSnapshot document;
   final User user;
-  HomeWorkerPage({@required this.user});
+  HomeWorkerPage({@required this.user, @required this.document});
   @override
   _HomeWorkerPageState createState() => _HomeWorkerPageState();
 }
@@ -21,8 +23,8 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
         appBar: AppBar(
           title: Text("Home"),
         ),
-        drawer: CustomDrawerState()
-            .createCustomDrawer(context, UserType.worker, widget.user),
+        drawer: CustomDrawerState().createCustomDrawer(
+            context, UserType.worker, widget.user, widget.document),
         body: homePageWorker(),
       ),
     );
@@ -52,7 +54,8 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                     leading: Icon(
                       Icons.account_circle,
                     ),
-                    title: Text('Pol Recasens Sarrà'),
+                    title: Text("eeee" //widget.document.data()['clients'],
+                        ),
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

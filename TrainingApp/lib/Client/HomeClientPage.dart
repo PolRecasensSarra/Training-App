@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:training_app/main.dart';
@@ -6,8 +7,9 @@ import '../CustomDrawer.dart';
 import 'RoutineClientPage.dart';
 
 class HomeClientPage extends StatefulWidget {
+  final DocumentSnapshot document;
   final User user;
-  HomeClientPage({@required this.user});
+  HomeClientPage({@required this.user, @required this.document});
   @override
   _HomeClientPageState createState() => _HomeClientPageState();
 }
@@ -21,8 +23,8 @@ class _HomeClientPageState extends State<HomeClientPage> {
         appBar: AppBar(
           title: Text("Home"),
         ),
-        drawer: CustomDrawerState()
-            .createCustomDrawer(context, UserType.client, widget.user),
+        drawer: CustomDrawerState().createCustomDrawer(
+            context, UserType.client, widget.user, widget.document),
         body: homePageClient(),
       ),
     );

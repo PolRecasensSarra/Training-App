@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Client/HomeClientPage.dart';
 import 'package:training_app/Individual/HomeIndividualPage.dart';
@@ -47,8 +48,8 @@ class CustomDrawerState extends State<CustomDrawer>
     return Scaffold();
   }
 
-  createCustomDrawer(
-      BuildContext contextCallback, UserType typeUser, User user) {
+  createCustomDrawer(BuildContext contextCallback, UserType typeUser, User user,
+      DocumentSnapshot document) {
     return Drawer(
       child: ListView(
         children: <Widget>[
@@ -88,6 +89,7 @@ class CustomDrawerState extends State<CustomDrawer>
                     MaterialPageRoute(
                       builder: (contextCallback) => HomeWorkerPage(
                         user: user,
+                        document: document,
                       ),
                     ),
                   );
@@ -96,6 +98,7 @@ class CustomDrawerState extends State<CustomDrawer>
                     MaterialPageRoute(
                       builder: (contextCallback) => HomeClientPage(
                         user: user,
+                        document: document,
                       ),
                     ),
                   );
@@ -104,6 +107,7 @@ class CustomDrawerState extends State<CustomDrawer>
                     MaterialPageRoute(
                       builder: (contextCallback) => HomeIndividualPage(
                         user: user,
+                        document: document,
                       ),
                     ),
                   );
@@ -123,6 +127,7 @@ class CustomDrawerState extends State<CustomDrawer>
                   builder: (contextCallback) => ProfilePage(
                     userType: typeUser,
                     user: user,
+                    document: document,
                   ),
                 ),
               );
@@ -152,17 +157,12 @@ class CustomDrawerState extends State<CustomDrawer>
             onTap: () {
               showAboutDialog(
                 applicationIcon: Container(
-                  padding: EdgeInsets.all(40),
-                  child: Image.network(
-                    "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png",
-                    fit: BoxFit.cover,
-                  ),
+                  child: Image.asset("assets/logo32.png"),
                 ),
                 context: contextCallback,
                 applicationVersion: '0.01',
                 applicationName: 'Rehealth',
-                // applicationIcon: No va
-                applicationLegalese: 'license here',
+                applicationLegalese: 'MIT License',
               );
             },
           ),
