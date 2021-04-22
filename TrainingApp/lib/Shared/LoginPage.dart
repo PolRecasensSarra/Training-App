@@ -17,7 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   Item dropdownValue;
   int _selectedIndex = 0;
-  List<String> _titleList = ["Sign in to App", "Register to App"];
+  List<String> _titleList = ["Sign in", "Register"];
 
   final _formKey = GlobalKey<FormState>();
 
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
             onWillPop: () async => false,
             child: Scaffold(
               resizeToAvoidBottomInset: true,
-              appBar: AppBar(
+              /*appBar: AppBar(
                 leading: Container(),
                 leadingWidth: 0.0,
                 title: Text(
@@ -60,17 +60,22 @@ class _LoginPageState extends State<LoginPage> {
                   Image.network(
                       "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png")
                 ],
-              ),
+              ),*/
               bottomNavigationBar: BottomNavigationBar(
+                fixedColor: Colors.blue[50],
+                selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 backgroundColor: Colors.grey[800],
                 items: [
                   BottomNavigationBarItem(
                     label: "Sign In",
-                    icon: Icon(Icons.login),
+                    icon: Icon(Icons.login, color: Colors.greenAccent),
                   ),
                   BottomNavigationBarItem(
                     label: "Sign Up",
-                    icon: Icon(Icons.app_registration),
+                    icon: Icon(
+                      Icons.app_registration,
+                      color: Colors.blueAccent,
+                    ),
                   ),
                 ],
                 currentIndex: _selectedIndex,
@@ -86,28 +91,62 @@ class _LoginPageState extends State<LoginPage> {
       //------------------------------ LOGIN---------------------
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ListView(
             children: [
               Form(
                 key: _formKey,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    SizedBox(
+                      height: 20,
+                    ),
                     Text(
-                      "Training App",
+                      "Welcome to \n Training App",
+                      textAlign: TextAlign.center,
                       style: TextStyle(
-                        fontSize: 28,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                     SizedBox(
-                      height: 70.0,
+                      height: 10,
+                    ),
+                    Text(
+                      "A digital app that allows \n to create exercise routines for your patients",
+                      style: TextStyle(
+                        fontSize: 12,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 50.0,
                     ),
                     TextFormField(
+                      cursorColor: Colors.white,
                       validator: (val) => val.isEmpty ? "Enter an email" : null,
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(8.0), //here your padding
+                        fillColor: Colors.grey[800],
+                        filled: true,
                         hintText: 'Email',
                         icon: Icon(
                           Icons.email,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.grey[700]),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.grey[800]),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.grey[800]),
                         ),
                       ),
                       onChanged: (val) {
@@ -118,12 +157,31 @@ class _LoginPageState extends State<LoginPage> {
                       height: 50.0,
                     ),
                     TextFormField(
+                      cursorColor: Colors.white,
                       validator: (val) =>
                           val.isEmpty ? "Enter a password" : null,
                       obscureText: true,
                       decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(8.0), //here your padding
+                        fillColor: Colors.grey[800],
+                        filled: true,
                         hintText: 'password',
-                        icon: Icon(Icons.lock),
+                        icon: Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.grey[700]),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.grey[800]),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                          borderSide: BorderSide(color: Colors.grey[800]),
+                        ),
                       ),
                       onChanged: (val) {
                         password = val;
@@ -171,7 +229,7 @@ class _LoginPageState extends State<LoginPage> {
       //------------------------------ REGISTER---------------------
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           child: ListView(
             children: [
               Form(
@@ -187,7 +245,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       iconSize: 24,
                       elevation: 16,
-                      style: const TextStyle(fontSize: 18),
+                      style: const TextStyle(fontSize: 16),
                       underline: Container(
                         height: 2,
                         color: Colors.white,
@@ -213,9 +271,9 @@ class _LoginPageState extends State<LoginPage> {
                       height: 50.0,
                     ),
                     ElevatedButton(
-                      //TODO: canviar això pel logIn de firebase
                       child: Text("Register"),
                       onPressed: () async {
+                        if (dropdownValue == null) return;
                         if (_formKey.currentState.validate()) {
                           setState(() => loading = true);
                           dynamic result;
@@ -297,10 +355,27 @@ class _LoginPageState extends State<LoginPage> {
       return Column(
         children: [
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your Username',
               icon: Icon(
                 Icons.person,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
             validator: (val) => val.isEmpty
@@ -316,10 +391,27 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your Email',
               icon: Icon(
                 Icons.email,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
             validator: (val) => val.isEmpty ? "Enter an email" : null,
@@ -333,10 +425,29 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             obscureText: true,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your password',
-              icon: Icon(Icons.lock),
+              icon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
             ),
             validator: (val) =>
                 val.length < 6 ? "Enter a password 6+ characters long" : null,
@@ -354,10 +465,27 @@ class _LoginPageState extends State<LoginPage> {
       return Column(
         children: [
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your Username',
               icon: Icon(
                 Icons.person,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
             validator: (val) => val.isEmpty
@@ -373,10 +501,27 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your Email',
               icon: Icon(
                 Icons.email,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
             validator: (val) => val.isEmpty ? "Enter an email" : null,
@@ -390,10 +535,29 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             obscureText: true,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your password',
-              icon: Icon(Icons.lock),
+              icon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
             ),
             validator: (val) =>
                 val.length < 6 ? "Enter a password 6+ characters long" : null,
@@ -411,10 +575,27 @@ class _LoginPageState extends State<LoginPage> {
       return Column(
         children: [
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your Username',
               icon: Icon(
                 Icons.person,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
             validator: (val) => val.isEmpty ? "Enter a username" : null,
@@ -428,10 +609,27 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your Email',
               icon: Icon(
                 Icons.email,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
             validator: (val) => val.isEmpty ? "Enter an email" : null,
@@ -445,10 +643,29 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             obscureText: true,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter your password',
-              icon: Icon(Icons.lock),
+              icon: Icon(
+                Icons.lock,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
             ),
             validator: (val) =>
                 val.length < 6 ? "Enter a password 6+ characters long" : null,
@@ -462,9 +679,28 @@ class _LoginPageState extends State<LoginPage> {
             height: 30.0,
           ),
           TextFormField(
+            cursorColor: Colors.white,
             decoration: InputDecoration(
+              contentPadding: EdgeInsets.all(8.0), //here your padding
+              fillColor: Colors.grey[800],
+              filled: true,
               hintText: 'Enter worker username',
-              icon: Icon(Icons.animation),
+              icon: Icon(
+                Icons.animation,
+                color: Colors.white,
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[700]),
+              ),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15),
+                borderSide: BorderSide(color: Colors.grey[800]),
+              ),
             ),
             validator: (val) {
               if (val.isEmpty)

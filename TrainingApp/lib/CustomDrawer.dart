@@ -5,6 +5,7 @@ import 'package:training_app/Services/auth.dart';
 import 'package:training_app/Shared/LoginPage.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
+import 'Services/tools.dart';
 import 'Worker/HomeWorkerPage.dart';
 import 'Shared/ProfilePage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -70,7 +71,7 @@ class CustomDrawerState extends State<CustomDrawer>
               ),
             ),
             decoration: BoxDecoration(
-              color: Colors.black87,
+              color: Tools().createMaterialColor(Color(0xFF227A73)),
             ),
           ),
           ListTile(
@@ -150,6 +151,13 @@ class CustomDrawerState extends State<CustomDrawer>
             ),
             onTap: () {
               showAboutDialog(
+                applicationIcon: Container(
+                  padding: EdgeInsets.all(40),
+                  child: Image.network(
+                    "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png",
+                    fit: BoxFit.cover,
+                  ),
+                ),
                 context: contextCallback,
                 applicationVersion: '0.01',
                 applicationName: 'Rehealth',

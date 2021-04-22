@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:training_app/Services/auth.dart';
+import 'package:training_app/Services/tools.dart';
 
 import 'Shared/LoginPage.dart';
 
@@ -22,12 +23,13 @@ class MyApp extends StatelessWidget {
         title: 'Flutter Demo',
         theme: ThemeData(
           brightness: Brightness.light,
-          primarySwatch: Colors.pinkAccent[300],
+          primarySwatch: Colors.indigo,
         ),
         darkTheme: ThemeData(
+          appBarTheme: AppBarTheme(color: Colors.grey[900]),
           brightness: Brightness.dark,
-          primarySwatch: Colors.indigo,
-          primaryColor: Colors.indigo,
+          primarySwatch: Tools().createMaterialColor(Color(0xFF227A73)),
+          primaryColor: Colors.deepPurple[300],
         ),
         themeMode: ThemeMode.dark,
         home: LoginPage(),
