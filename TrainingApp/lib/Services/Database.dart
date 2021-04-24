@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:training_app/Services/tools.dart';
 
 class DatabaseService {
   final String userName;
@@ -21,12 +22,13 @@ class DatabaseService {
 
   updateUserDataClient(String worker) async {
     //Set the client to the worker
+
     FirebaseFirestore.instance
         .collection("Worker")
         .doc(worker)
         .collection("clients")
         .doc(userName)
-        .set({});
+        .set({'color': Tools().generateRandomColor()});
 
     //Set the client's worker to client database
     userCollection.doc(userName).set({});

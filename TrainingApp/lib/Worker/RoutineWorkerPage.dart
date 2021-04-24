@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/main.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
@@ -6,6 +8,14 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 
 class RoutineWorkerPage extends StatefulWidget {
+  final DocumentSnapshot document;
+  final User user;
+  final DocumentSnapshot clientDocument;
+  RoutineWorkerPage(
+      {@required this.user,
+      @required this.document,
+      @required this.clientDocument});
+
   @override
   _RoutineWorkerPageState createState() => _RoutineWorkerPageState();
 }
@@ -15,12 +25,11 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Edit Routine"),
+        title: Text(widget.clientDocument.id + " Routine"),
       ),
       body: Center(
         child: Padding(
-          padding:
-              const EdgeInsets.only(left: 20, right: 20, top: 28, bottom: 28),
+          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

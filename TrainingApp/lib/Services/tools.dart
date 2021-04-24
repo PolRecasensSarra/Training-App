@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math';
 
 class Tools {
   Tools();
@@ -22,4 +23,22 @@ class Tools {
     });
     return MaterialColor(color.value, swatch);
   }
+
+  int generateRandomColor() {
+    Random random = new Random();
+    int randomNumber = random.nextInt(8);
+    return colors[randomNumber];
+  }
+
+  //Color list
+  List<int> colors = [
+    0xFF227A73,
+    0xFF0F52BA,
+    0xFF8F00FF,
+    0xFFFD6A02,
+    0xFF960019,
+    0xFFFF0090,
+    0xFFB80F0A,
+    0xFF3BB143
+  ];
 }

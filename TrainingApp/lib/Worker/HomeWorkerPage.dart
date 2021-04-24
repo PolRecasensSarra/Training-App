@@ -47,6 +47,11 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
       child: Scaffold(
         appBar: AppBar(
           title: Text("Home"),
+          actions: <Widget>[
+            Image.asset(
+              "assets/logo.png",
+            ),
+          ],
         ),
         drawer: CustomDrawerState().createCustomDrawer(
             context, UserType.worker, widget.user, widget.document),
@@ -58,7 +63,7 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
 //--------------- WORKER ----------------------
   homePageWorker() {
     return Padding(
-      padding: const EdgeInsets.all(20.0),
+      padding: const EdgeInsets.symmetric(vertical: 20.0, horizontal: 26.0),
       child: Center(
         child: Column(
           children: [
@@ -66,7 +71,7 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
               "Client List",
               style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18,
+                fontSize: 20,
               ),
             ),
             SizedBox(
@@ -76,7 +81,8 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                 future: getData(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                   if (snapshot.connectionState == ConnectionState.done &&
-                      widget.clients != null) {
+                      widget.clients != null &&
+                      widget.clients.isNotEmpty) {
                     return ListView.separated(
                       shrinkWrap: true,
                       separatorBuilder: (context, index) => Divider(
@@ -88,8 +94,15 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
-                            leading: Icon(
-                              Icons.account_circle,
+                            leading: CircleAvatar(
+                              backgroundColor:
+                                  Color(widget.clients[index].data()['color']),
+                              child: Text(
+                                widget.clients[index].id[0].toUpperCase(),
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold),
+                              ),
                             ),
                             title: Text(
                               widget.clients[index].id,
@@ -98,14 +111,31 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                                 fontSize: 14,
                               ),
                             ),
+                            trailing: IconButton(
+                              icon: Icon(
+                                Icons.arrow_forward_ios,
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (contextCallback) =>
+                                        RoutineWorkerPage(
+                                      user: widget.user,
+                                      document: widget.document,
+                                      clientDocument: widget.clients[index],
+                                    ),
+                                  ),
+                                );
+                              },
+                            ),
                           ),
                         );
                       },
                     );
                   } else if (snapshot.connectionState == ConnectionState.done &&
-                      widget.clients == null) {
+                      (widget.clients == null || widget.clients.isEmpty)) {
                     return Text(
-                      "No data",
+                      "You have no clients",
                       style: TextStyle(color: Colors.red),
                     );
                   }
@@ -115,23 +145,6 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
         ),
       ),
     );
-
-    /*Card(
-                    child: ListTile(
-                      leading: Icon(
-                        Icons.account_circle,
-                      ),
-                      title: Text("eeee" //widget.document.data()['clients'],
-                          ),
-                      onTap: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => RoutineWorkerPage(),
-                          ),
-                        );
-                      },
-                    ),
-                  ),*/
   }
 
 //--------------- INDIVIDUAL ----------------------
