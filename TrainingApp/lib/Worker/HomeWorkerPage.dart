@@ -10,11 +10,36 @@ class HomeWorkerPage extends StatefulWidget {
   final DocumentSnapshot document;
   final User user;
   HomeWorkerPage({@required this.user, @required this.document});
+
+  List<DocumentSnapshot> clients;
+  QuerySnapshot snapshot;
+
   @override
   _HomeWorkerPageState createState() => _HomeWorkerPageState();
 }
 
 class _HomeWorkerPageState extends State<HomeWorkerPage> {
+  setup() async {
+    await setUpStatus();
+  }
+
+  setUpStatus() async {
+    widget.snapshot = await FirebaseFirestore.instance
+        .collection("Worker")
+        .doc(widget.user.displayName)
+        .collection("clients")
+        .get();
+
+    widget.clients = widget.snapshot.docs;
+  }
+
+  @override
+  void initState() {
+    setup();
+    super.initState();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -33,74 +58,80 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
 //--------------- WORKER ----------------------
   homePageWorker() {
     return Padding(
-      padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20, right: 20),
-      child: Column(
-        children: [
-          Text(
-            "Client List",
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 22,
+      padding: const EdgeInsets.all(20.0),
+      child: Center(
+        child: Column(
+          children: [
+            Text(
+              "Client List",
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Expanded(
-            child: ListView(
-              children: <Widget>[
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.account_circle,
-                    ),
-                    title: Text("eeee" //widget.document.data()['clients'],
-                        ),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => RoutineWorkerPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.account_circle,
-                    ),
-                    title: Text('Ivan Ropero'),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => RoutineWorkerPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.account_circle,
-                    ),
-                    title: Text('Oriol Capdevila'),
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) => RoutineWorkerPage(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ],
+            SizedBox(
+              height: 20,
             ),
-          ),
-        ],
+            FutureBuilder(
+                future: getData(),
+                builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      widget.clients != null) {
+                    return ListView.separated(
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) => Divider(
+                        color: Colors.white,
+                        indent: 10,
+                        endIndent: 10,
+                      ),
+                      itemCount: widget.clients.length,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.account_circle,
+                            ),
+                            title: Text(
+                              widget.clients[index].id,
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 14,
+                              ),
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  } else if (snapshot.connectionState == ConnectionState.done &&
+                      widget.clients == null) {
+                    return Text(
+                      "No data",
+                      style: TextStyle(color: Colors.red),
+                    );
+                  }
+                  return CircularProgressIndicator();
+                }),
+          ],
+        ),
       ),
     );
+
+    /*Card(
+                    child: ListTile(
+                      leading: Icon(
+                        Icons.account_circle,
+                      ),
+                      title: Text("eeee" //widget.document.data()['clients'],
+                          ),
+                      onTap: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => RoutineWorkerPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ),*/
   }
 
 //--------------- INDIVIDUAL ----------------------
@@ -135,6 +166,12 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
 
   //----------------------------------------------------------------------
   //----------------------------------------------------------------------
-  //
+  Future<QuerySnapshot> getData() async {
+    return await FirebaseFirestore.instance
+        .collection('Worker')
+        .doc(widget.user.displayName)
+        .collection('clients')
+        .get();
+  }
   //
 }

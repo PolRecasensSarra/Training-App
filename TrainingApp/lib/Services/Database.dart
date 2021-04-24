@@ -10,8 +10,9 @@ class DatabaseService {
     userCollection = FirebaseFirestore.instance.collection(userType);
   }
 
-  Future updateUserDataWorker() async {
-    return await userCollection.doc(userName).set({});
+  updateUserDataWorker() async {
+    userCollection.doc(userName).set({});
+    //userCollection.doc(userName).collection("clients");
   }
 
   Future updateUserDataIndividual() async {
