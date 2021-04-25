@@ -13,7 +13,6 @@ class DatabaseService {
 
   updateUserDataWorker() async {
     userCollection.doc(userName).set({});
-    //userCollection.doc(userName).collection("clients");
   }
 
   Future updateUserDataIndividual() async {

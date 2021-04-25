@@ -57,18 +57,25 @@ class CustomDrawerState extends State<CustomDrawer>
             accountName: Text(
               user.displayName,
               style: TextStyle(
-                fontSize: 16,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            accountEmail: Text(user.email),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Colors.blue[300],
-              foregroundImage: NetworkImage(
-                "https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png",
+            accountEmail: Text(
+              user.email,
+              style: TextStyle(
+                fontSize: 14,
               ),
-              backgroundImage: NetworkImage(
-                "https://www.pavilionweb.com/wp-content/uploads/2017/03/man-300x300.png",
+            ),
+            currentAccountPicture: CircleAvatar(
+              backgroundColor: Color(0xFFBC4B51),
+              child: Text(
+                user.displayName[0].toUpperCase(),
+                style: TextStyle(
+                  fontSize: 28,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
             decoration: BoxDecoration(

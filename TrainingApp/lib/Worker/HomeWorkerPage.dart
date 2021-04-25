@@ -83,13 +83,8 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                   if (snapshot.connectionState == ConnectionState.done &&
                       widget.clients != null &&
                       widget.clients.isNotEmpty) {
-                    return ListView.separated(
+                    return ListView.builder(
                       shrinkWrap: true,
-                      separatorBuilder: (context, index) => Divider(
-                        color: Colors.white,
-                        indent: 10,
-                        endIndent: 10,
-                      ),
                       itemCount: widget.clients.length,
                       itemBuilder: (context, index) {
                         return Card(
