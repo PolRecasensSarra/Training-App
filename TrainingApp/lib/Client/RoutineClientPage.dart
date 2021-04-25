@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:flutter/material.dart';
 
 class RoutineClientPage extends StatefulWidget {
+  final DocumentSnapshot document;
+  final User user;
+  RoutineClientPage({@required this.user, @required this.document});
   @override
   _RoutineClientPageState createState() => _RoutineClientPageState();
 }
@@ -34,20 +39,9 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                 child: ListView(
                   children: <Widget>[
                     Card(
+                      color: Color(widget.document.data()['color']),
                       child: ListTile(
                         title: Text('Exercici 1'),
-                        onTap: () {},
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Exercici 2'),
-                        onTap: () {},
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Exercici 3'),
                         onTap: () {},
                       ),
                     ),
@@ -62,7 +56,10 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (contextCallback) => ClientSurveyPage(),
+                      builder: (contextCallback) => ClientSurveyPage(
+                        document: widget.document,
+                        user: widget.user,
+                      ),
                     ),
                   );
                 },

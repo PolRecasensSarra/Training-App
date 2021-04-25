@@ -24,8 +24,39 @@ class _HomeClientPageState extends State<HomeClientPage> {
     "Saturday",
     "Sunday"
   ];
-  String actualDay;
   int dayIndex = 0;
+  DocumentSnapshot clientDocument;
+
+  setup() async {
+    await getClientWorker();
+  }
+
+  getClientWorker() async {
+    QuerySnapshot snapshot =
+        await FirebaseFirestore.instance //Get the worker ID
+            .collection("Client")
+            .doc(widget.user.displayName)
+            .collection("worker")
+            .get();
+
+    DocumentSnapshot docAux = snapshot.docs[0];
+
+    clientDocument = await FirebaseFirestore
+        .instance //Get the client collection from the worker
+        .collection("Worker")
+        .doc(docAux.id)
+        .collection("clients")
+        .doc(widget.user.displayName)
+        .get();
+    setState(() {});
+  }
+
+  void initState() {
+    setup();
+    super.initState();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -48,90 +79,104 @@ class _HomeClientPageState extends State<HomeClientPage> {
 
 //--------------- CLIENT ----------------------
   homePageClient() {
-    return Center(
-      child: Padding(
-        padding:
-            const EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 16),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {
-                      if (dayIndex == 0)
-                        setState(() {
-                          dayIndex = 6;
-                        });
-                      else
-                        setState(() {
-                          dayIndex--;
-                        });
-                    },
+    if (clientDocument != null && clientDocument.exists) {
+      return Center(
+        child: Padding(
+          padding:
+              const EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 16),
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 3,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        if (dayIndex == 0)
+                          setState(() {
+                            dayIndex = 6;
+                          });
+                        else
+                          setState(() {
+                            dayIndex--;
+                          });
+                      },
+                    ),
                   ),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      days[dayIndex],
-                      style: TextStyle(
-                        fontSize: 18,
+                  Expanded(
+                    flex: 4,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        days[dayIndex],
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                Expanded(
-                  flex: 3,
-                  child: IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
-                    onPressed: () {
-                      if (dayIndex == 6)
-                        setState(() {
-                          dayIndex = 0;
-                        });
-                      else
-                        setState(() {
-                          dayIndex++;
-                        });
-                    },
+                  Expanded(
+                    flex: 3,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () {
+                        if (dayIndex == 6)
+                          setState(() {
+                            dayIndex = 0;
+                          });
+                        else
+                          setState(() {
+                            dayIndex++;
+                          });
+                      },
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              child: Text("Daily Routine"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => RoutineClientPage(),
-                  ),
-                );
-              },
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            ElevatedButton(
-              child: Text("Survey"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (contextCallback) => ClientSurveyPage(),
-                  ),
-                );
-              },
-            ),
-          ],
+                ],
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                child: Text("Daily Routine"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => RoutineClientPage(
+                        user: widget.user,
+                        document: clientDocument,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(
+                height: 30,
+              ),
+              ElevatedButton(
+                child: Text("Survey"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => ClientSurveyPage(
+                        user: widget.user,
+                        document: clientDocument,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              Container(
+                width: 30,
+                height: 30,
+                color: Color(clientDocument.data()['color']),
+              ),
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else
+      return Center(child: CircularProgressIndicator());
   }
 }
