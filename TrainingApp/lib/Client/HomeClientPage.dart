@@ -138,39 +138,44 @@ class _HomeClientPageState extends State<HomeClientPage> {
               SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                child: Text("Daily Routine"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => RoutineClientPage(
-                        user: widget.user,
-                        document: clientDocument,
+              Expanded(
+                flex: 5,
+                child: ElevatedButton(
+                  child: Text("Daily Routine"),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => RoutineClientPage(
+                          user: widget.user,
+                          document: clientDocument,
+                        ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
               SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                child: Text("Survey"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (contextCallback) => ClientSurveyPage(
-                        user: widget.user,
-                        document: clientDocument,
-                      ),
-                    ),
-                  );
-                },
+              Expanded(
+                flex: 4,
+                child: Container(),
               ),
-              Container(
-                width: 30,
-                height: 30,
-                color: Color(clientDocument.data()['color']),
+              Expanded(
+                flex: 1,
+                child: ElevatedButton(
+                  child: Text("Survey"),
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (contextCallback) => ClientSurveyPage(
+                          user: widget.user,
+                          document: clientDocument,
+                        ),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),
