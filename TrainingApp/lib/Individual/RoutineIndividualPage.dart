@@ -59,15 +59,7 @@ class _RoutineIndividualPageState extends State<RoutineIndividualPage> {
               ),
               ElevatedButton(
                 child: Text("Add Exercise"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (contextCallback) => AddExercisePage(
-                        userType: UserType.individual,
-                      ),
-                    ),
-                  );
-                },
+                onPressed: () {},
               ),
             ],
           ),

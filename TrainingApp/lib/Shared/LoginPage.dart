@@ -8,8 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:training_app/Shared/Loading.dart';
 import 'package:training_app/Worker/HomeWorkerPage.dart';
 
-import '../main.dart';
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();

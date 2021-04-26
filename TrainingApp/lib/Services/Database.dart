@@ -87,4 +87,19 @@ class DatabaseService {
 
     return null;
   }
+
+  //------- EXERCISES
+  Future<bool> saveExercise(DocumentSnapshot doc, String day,
+      String exerciseName, String sxr, String description) async {
+    try {
+      doc.reference
+          .collection("Exercises")
+          .doc(day)
+          .set({'name': exerciseName, 'sxr': sxr, 'description': description});
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
 }

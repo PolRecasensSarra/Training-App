@@ -21,6 +21,17 @@ class RoutineWorkerPage extends StatefulWidget {
 }
 
 class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
+  final List<String> days = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday"
+  ];
+  int dayIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,19 +48,49 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  IconButton(
-                    icon: Icon(Icons.arrow_back_ios),
-                    onPressed: () {},
-                  ),
-                  Text(
-                    "Day of the Week",
-                    style: TextStyle(
-                      fontSize: 18,
+                  Expanded(
+                    flex: 3,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_back_ios),
+                      onPressed: () {
+                        if (dayIndex == 0)
+                          setState(() {
+                            dayIndex = 6;
+                          });
+                        else
+                          setState(() {
+                            dayIndex--;
+                          });
+                      },
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(Icons.arrow_forward_ios),
-                    onPressed: () {},
+                  Expanded(
+                    flex: 4,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                        days[dayIndex],
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 3,
+                    child: IconButton(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      onPressed: () {
+                        if (dayIndex == 6)
+                          setState(() {
+                            dayIndex = 0;
+                          });
+                        else
+                          setState(() {
+                            dayIndex++;
+                          });
+                      },
+                    ),
                   ),
                 ],
               ),
@@ -92,7 +133,9 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (contextCallback) => AddExercisePage(
-                        userType: UserType.worker,
+                        user: widget.user,
+                        document: widget.clientDocument,
+                        day: days[dayIndex],
                       ),
                     ),
                   );
