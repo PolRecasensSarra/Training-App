@@ -40,145 +40,180 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        if (dayIndex == 0)
-                          setState(() {
-                            dayIndex = 6;
-                          });
-                        else
-                          setState(() {
-                            dayIndex--;
-                          });
-                      },
-                    ),
-                  ),
-                  Expanded(
-                    flex: 4,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        days[dayIndex],
-                        style: TextStyle(
-                          fontSize: 18,
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 4,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_back_ios),
+                            onPressed: () {
+                              if (dayIndex == 0)
+                                setState(() {
+                                  dayIndex = 6;
+                                });
+                              else
+                                setState(() {
+                                  dayIndex--;
+                                });
+                            },
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 3,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_forward_ios),
-                      onPressed: () {
-                        if (dayIndex == 6)
-                          setState(() {
-                            dayIndex = 0;
-                          });
-                        else
-                          setState(() {
-                            dayIndex++;
-                          });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              FutureBuilder(
-                  future: getData(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: ListTile(
-                              title: Text(
-                                snapshot.data.docs[index].data()['name'],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              subtitle: Text(
-                                snapshot.data.docs[index].data()['sxr'],
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                ),
-                              ),
-                              trailing: IconButton(
-                                icon: Icon(Icons.delete),
-                                onPressed: () async {
-                                  bool result = await deleteExercise(
-                                      snapshot.data.docs[index]);
-                                  if (!result) {
-                                    print(
-                                        "Something went wrond deleting this exercise");
-                                  } else {
-                                    setState(() {});
-                                  }
-                                },
+                        Expanded(
+                          flex: 2,
+                          child: Align(
+                            alignment: Alignment.center,
+                            child: Text(
+                              days[dayIndex],
+                              style: TextStyle(
+                                fontSize: 18,
                               ),
                             ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.connectionState ==
-                            ConnectionState.done &&
-                        (widget.clientDocument == null ||
-                            !widget.clientDocument.exists)) {
-                      return Text(
-                        "Client Document does not exist",
-                        style: TextStyle(color: Colors.red),
-                      );
-                    }
-                    return CircularProgressIndicator();
-                  }),
-              SizedBox(
-                height: 20,
-              ),
-              ElevatedButton(
-                child: Text("Add exercise"),
-                onPressed: () {
-                  Navigator.of(context)
-                      .push(
-                    MaterialPageRoute(
-                      builder: (contextCallback) => AddExercisePage(
-                        user: widget.user,
-                        document: widget.clientDocument,
-                        day: days[dayIndex],
-                      ),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 4,
+                          child: IconButton(
+                            icon: Icon(Icons.arrow_forward_ios),
+                            onPressed: () {
+                              if (dayIndex == 6)
+                                setState(() {
+                                  dayIndex = 0;
+                                });
+                              else
+                                setState(() {
+                                  dayIndex++;
+                                });
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  )
-                      .then((value) {
-                    setState(() {});
-                  });
-                },
-              ),
-              ElevatedButton(
-                child: Text("Create Survey"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (contextCallback) => CreateSurveyPage(),
+                    SizedBox(
+                      height: 20,
                     ),
-                  );
-                },
-              ),
-            ],
+                    FutureBuilder(
+                        future: getData(),
+                        builder:
+                            (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (snapshot.connectionState ==
+                              ConnectionState.done) {
+                            return ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 26),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.docs.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  child: ListTile(
+                                    title: Text(
+                                      snapshot.data.docs[index].data()['name'],
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    subtitle: Text(
+                                      "SxR: " +
+                                          snapshot.data.docs[index]
+                                              .data()['sxr'],
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () async {
+                                        bool result = await deleteExercise(
+                                            snapshot.data.docs[index]);
+                                        if (!result) {
+                                          print(
+                                              "Something went wrond deleting this exercise");
+                                        } else {
+                                          setState(() {});
+                                        }
+                                      },
+                                    ),
+                                    onTap: () {
+                                      showDialog(
+                                          context: context,
+                                          builder: (_) => AlertDialog(
+                                                title: Text("Description"),
+                                                content: Text(snapshot
+                                                    .data.docs[index]
+                                                    .data()['description']),
+                                                actions: <Widget>[
+                                                  IconButton(
+                                                    icon: Icon(
+                                                      Icons.close,
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ],
+                                              ));
+                                    },
+                                  ),
+                                );
+                              },
+                            );
+                          } else if (snapshot.connectionState ==
+                                  ConnectionState.done &&
+                              (widget.clientDocument == null ||
+                                  !widget.clientDocument.exists)) {
+                            return Text(
+                              "Client Document does not exist",
+                              style: TextStyle(color: Colors.red),
+                            );
+                          }
+                          return CircularProgressIndicator();
+                        }),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    ElevatedButton(
+                      child: Text("Add exercise"),
+                      onPressed: () {
+                        Navigator.of(context)
+                            .push(
+                          MaterialPageRoute(
+                            builder: (contextCallback) => AddExercisePage(
+                              user: widget.user,
+                              document: widget.clientDocument,
+                              day: days[dayIndex],
+                            ),
+                          ),
+                        )
+                            .then((value) {
+                          setState(() {});
+                        });
+                      },
+                    ),
+                    ElevatedButton(
+                      child: Text("Create Survey"),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (contextCallback) => CreateSurveyPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
