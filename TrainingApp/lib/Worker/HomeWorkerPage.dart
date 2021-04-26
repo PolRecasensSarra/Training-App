@@ -80,27 +80,25 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
             FutureBuilder(
                 future: getData(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done &&
-                      widget.clients != null &&
-                      widget.clients.isNotEmpty) {
+                  if (snapshot.connectionState == ConnectionState.done) {
                     return ListView.builder(
                       shrinkWrap: true,
-                      itemCount: widget.clients.length,
+                      itemCount: snapshot.data.docs.length,
                       itemBuilder: (context, index) {
                         return Card(
                           child: ListTile(
                             leading: CircleAvatar(
-                              backgroundColor:
-                                  Color(widget.clients[index].data()['color']),
+                              backgroundColor: Color(
+                                  snapshot.data.docs[index].data()['color']),
                               child: Text(
-                                widget.clients[index].id[0].toUpperCase(),
+                                snapshot.data.docs[index].id[0].toUpperCase(),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold),
                               ),
                             ),
                             title: Text(
-                              widget.clients[index].id,
+                              snapshot.data.docs[index].id,
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 14,
@@ -117,7 +115,7 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                                         RoutineWorkerPage(
                                       user: widget.user,
                                       document: widget.document,
-                                      clientDocument: widget.clients[index],
+                                      clientDocument: snapshot.data.docs[index],
                                     ),
                                   ),
                                 );
