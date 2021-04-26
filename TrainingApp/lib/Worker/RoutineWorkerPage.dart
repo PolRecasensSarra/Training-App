@@ -52,7 +52,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 4,
+                          flex: 3,
                           child: IconButton(
                             icon: Icon(Icons.arrow_back_ios),
                             onPressed: () {
@@ -68,7 +68,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                           ),
                         ),
                         Expanded(
-                          flex: 2,
+                          flex: 4,
                           child: Align(
                             alignment: Alignment.center,
                             child: Text(
@@ -80,7 +80,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                           ),
                         ),
                         Expanded(
-                          flex: 4,
+                          flex: 3,
                           child: IconButton(
                             icon: Icon(Icons.arrow_forward_ios),
                             onPressed: () {
@@ -148,9 +148,36 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                           context: context,
                                           builder: (_) => AlertDialog(
                                                 title: Text("Description"),
-                                                content: Text(snapshot
-                                                    .data.docs[index]
-                                                    .data()['description']),
+                                                content: ListView(
+                                                  shrinkWrap: true,
+                                                  children: [
+                                                    Text(snapshot
+                                                        .data.docs[index]
+                                                        .data()['description']),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Container(
+                                                      height: 1,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                      "Image",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Image.asset(
+                                                        "assets/logo.png"),
+                                                  ],
+                                                ),
                                                 actions: <Widget>[
                                                   IconButton(
                                                     icon: Icon(
