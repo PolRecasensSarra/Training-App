@@ -42,8 +42,6 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -97,40 +95,66 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
               SizedBox(
                 height: 20,
               ),
-              Expanded(
-                child: ListView(
-                  children: <Widget>[
-                    Card(
-                      child: ListTile(
-                        title: Text('Exercici 1'),
-                        trailing: Icon(Icons.delete),
-                        onTap: () {},
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Exercici 2'),
-                        trailing: Icon(Icons.delete),
-                        onTap: () {},
-                      ),
-                    ),
-                    Card(
-                      child: ListTile(
-                        title: Text('Exercici 3'),
-                        trailing: Icon(Icons.delete),
-                        onTap: () {},
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              FutureBuilder(
+                  future: getData(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              title: Text(
+                                snapshot.data.docs[index].data()['name'],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              subtitle: Text(
+                                snapshot.data.docs[index].data()['sxr'],
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 14,
+                                ),
+                              ),
+                              trailing: IconButton(
+                                icon: Icon(Icons.delete),
+                                onPressed: () async {
+                                  bool result = await deleteExercise(
+                                      snapshot.data.docs[index]);
+                                  if (!result) {
+                                    print(
+                                        "Something went wrond deleting this exercise");
+                                  } else {
+                                    setState(() {});
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    } else if (snapshot.connectionState ==
+                            ConnectionState.done &&
+                        (widget.clientDocument == null ||
+                            !widget.clientDocument.exists)) {
+                      return Text(
+                        "Client Document does not exist",
+                        style: TextStyle(color: Colors.red),
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  }),
               SizedBox(
                 height: 20,
               ),
               ElevatedButton(
                 child: Text("Add exercise"),
                 onPressed: () {
-                  Navigator.of(context).push(
+                  Navigator.of(context)
+                      .push(
                     MaterialPageRoute(
                       builder: (contextCallback) => AddExercisePage(
                         user: widget.user,
@@ -138,7 +162,10 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                         day: days[dayIndex],
                       ),
                     ),
-                  );
+                  )
+                      .then((value) {
+                    setState(() {});
+                  });
                 },
               ),
               ElevatedButton(
@@ -156,5 +183,29 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
         ),
       ),
     );
+  }
+
+  //----------------------------------------------------------------------
+  Future<QuerySnapshot> getData() async {
+    return await FirebaseFirestore.instance
+        .collection('Worker')
+        .doc(widget.user.displayName)
+        .collection('clients')
+        .doc(widget.clientDocument.id)
+        .collection(days[dayIndex])
+        .get();
+  }
+
+  Future<bool> deleteExercise(DocumentSnapshot document) async {
+    try {
+      await FirebaseFirestore.instance
+          .runTransaction((Transaction myTransaction) async {
+        myTransaction.delete(document.reference);
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }

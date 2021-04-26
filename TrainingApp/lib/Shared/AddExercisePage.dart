@@ -231,7 +231,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                   setState(() {
                                     loading = false;
                                   });
-                                  Navigator.of(context).pop();
+                                  Navigator.of(context).pop(succes);
                                 } else {
                                   setState(
                                       () => error = "Something went wrong");

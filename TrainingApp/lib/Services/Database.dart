@@ -93,8 +93,8 @@ class DatabaseService {
       String exerciseName, String sxr, String description) async {
     try {
       doc.reference
-          .collection("Exercises")
-          .doc(day)
+          .collection(day)
+          .doc(exerciseName)
           .set({'name': exerciseName, 'sxr': sxr, 'description': description});
     } catch (e) {
       print(e);
