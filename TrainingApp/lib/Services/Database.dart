@@ -93,14 +93,21 @@ class DatabaseService {
   }
 
   //------- EXERCISES
-  Future<bool> saveExercise(DocumentSnapshot doc, String day,
-      String exerciseName, String sxr, String description, String image) async {
+  Future<bool> saveExercise(
+      DocumentSnapshot doc,
+      String day,
+      String exerciseName,
+      String sxr,
+      String description,
+      String image,
+      String video) async {
     try {
       doc.reference.collection(day).doc(exerciseName).set({
         'name': exerciseName,
         'sxr': sxr,
         'description': description,
-        'imageURL': image
+        'imageURL': image,
+        'videoURL': video
       });
     } catch (e) {
       print(e);

@@ -23,7 +23,9 @@ class _AddExercisePageState extends State<AddExercisePage> {
   bool loading = false;
   String error = "";
   String pathImage = "";
-  File file;
+  String pathVideo = "";
+  File fileImage;
+  File fileVideo;
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +93,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             },
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 25,
                           ),
                           TextFormField(
                             cursorColor: Colors.white,
@@ -129,7 +131,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             },
                           ),
                           SizedBox(
-                            height: 50,
+                            height: 25,
                           ),
                           TextFormField(
                             keyboardType: TextInputType.multiline,
@@ -169,7 +171,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             },
                           ),
                           SizedBox(
-                            height: 30,
+                            height: 25,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
@@ -195,18 +197,18 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                           color: Colors.white,
                                         ),
                                         Text(
-                                          "Select File",
+                                          "Select Image",
                                           style: TextStyle(color: Colors.white),
                                         ),
                                       ],
                                     ),
                                     onPressed: () async {
-                                      file = await DataStorageService()
+                                      fileImage = await DataStorageService()
                                           .selectFile();
-
-                                      if (file != null) {
+                                      if (fileImage != null) {
                                         setState(() {
-                                          pathImage = file.path.split('/').last;
+                                          pathImage =
+                                              fileImage.path.split('/').last;
                                         });
                                       }
                                     },
@@ -231,6 +233,69 @@ class _AddExercisePageState extends State<AddExercisePage> {
                           SizedBox(
                             height: 8,
                           ),
+                          SizedBox(
+                            height: 15,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Text(
+                                  "Video",
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                              ),
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.centerRight,
+                                  child: ElevatedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.attach_file,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "Select Video",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                    onPressed: () async {
+                                      fileVideo = await DataStorageService()
+                                          .selectFile();
+                                      if (fileVideo != null) {
+                                        setState(() {
+                                          pathVideo =
+                                              fileVideo.path.split('/').last;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              pathVideo,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
                           Container(
                             color: Colors.white,
                             height: 1,
@@ -244,14 +309,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
                                 //Upload Image
-                                String image =
-                                    await DataStorageService().uploadFile(file);
+                                String image = await DataStorageService()
+                                    .uploadFile(fileImage);
+                                //Upload Video
+                                String video = await DataStorageService()
+                                    .uploadFile(fileVideo);
                                 //Upload Exercises
                                 bool succes = await DatabaseService(
                                         userName: widget.user.displayName,
                                         userType: "Worker")
                                     .saveExercise(widget.document, widget.day,
-                                        name, sxr, description, image);
+                                        name, sxr, description, image, video);
                                 if (succes) {
                                   setState(() {
                                     loading = false;

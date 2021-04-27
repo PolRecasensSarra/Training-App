@@ -1,9 +1,13 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:training_app/Shared/Loading.dart';
 import 'package:training_app/main.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
+import 'package:video_player/video_player.dart';
 
 import '../main.dart';
 
@@ -31,6 +35,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
     "Sunday"
   ];
   int dayIndex = 0;
+  VideoPlayerController _controllerVideo;
 
   @override
   Widget build(BuildContext context) {
@@ -183,32 +188,66 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                                     SizedBox(
                                                       height: 10,
                                                     ),
-                                                    Image.network(
-                                                      snapshot.data.docs[index]
+                                                    CachedNetworkImage(
+                                                      imageUrl: snapshot
+                                                          .data.docs[index]
                                                           .data()['imageURL'],
-                                                      fit: BoxFit.scaleDown,
-                                                      loadingBuilder: (BuildContext
-                                                              context,
-                                                          Widget child,
-                                                          ImageChunkEvent
-                                                              loadingProgress) {
-                                                        if (loadingProgress ==
-                                                            null) return child;
-                                                        return Center(
-                                                          child:
-                                                              CircularProgressIndicator(
-                                                            value: loadingProgress
-                                                                        .expectedTotalBytes !=
-                                                                    null
-                                                                ? loadingProgress
-                                                                        .cumulativeBytesLoaded /
-                                                                    loadingProgress
-                                                                        .expectedTotalBytes
-                                                                : null,
-                                                          ),
-                                                        );
-                                                      },
+                                                      placeholder: (context,
+                                                              url) =>
+                                                          SpinKitFadingCircle(
+                                                        color: Colors.teal,
+                                                        size: 50,
+                                                      ),
+                                                      errorWidget: (context,
+                                                              url, error) =>
+                                                          Text(
+                                                        "No images found",
+                                                        style: TextStyle(
+                                                            fontSize: 12),
+                                                      ),
                                                     ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Container(
+                                                      height: 1,
+                                                      color: Colors.white,
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    Text(
+                                                      "Video",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
+                                                    /* Center(
+                                                      child: _controllerVideo
+                                                              .value
+                                                              .isInitialized
+                                                          ? AspectRatio(
+                                                              aspectRatio:
+                                                                  _controllerVideo
+                                                                      .value
+                                                                      .aspectRatio,
+                                                              child: VideoPlayer(
+                                                                  _controllerVideo),
+                                                            )
+                                                          : Container(
+                                                              child: getVideoController(
+                                                                  snapshot
+                                                                          .data
+                                                                          .docs[
+                                                                              index]
+                                                                          .data()[
+                                                                      'videoURL']),
+                                                            ),
+                                                    ),*/
                                                   ],
                                                 ),
                                                 actions: <Widget>[
@@ -302,5 +341,17 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
       print(e);
       return false;
     }
+  }
+
+  getVideoController(String path) {
+    VideoPlayerController ctrl = VideoPlayerController.network(
+        'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4')
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
+      });
+
+    setState(() {
+      _controllerVideo = ctrl;
+    });
   }
 }
