@@ -94,12 +94,14 @@ class DatabaseService {
 
   //------- EXERCISES
   Future<bool> saveExercise(DocumentSnapshot doc, String day,
-      String exerciseName, String sxr, String description) async {
+      String exerciseName, String sxr, String description, String image) async {
     try {
-      doc.reference
-          .collection(day)
-          .doc(exerciseName)
-          .set({'name': exerciseName, 'sxr': sxr, 'description': description});
+      doc.reference.collection(day).doc(exerciseName).set({
+        'name': exerciseName,
+        'sxr': sxr,
+        'description': description,
+        'imageURL': image
+      });
     } catch (e) {
       print(e);
       return false;
@@ -119,5 +121,19 @@ class DataStorageService {
     return File(path);
   }
 
-  Future<dynamic> loadImage() async {}
+  Future<String> uploadFile(File file) async {
+    if (file == null) return "";
+
+    final fileName = file.path.split('/').last;
+    final destination = 'files/$fileName';
+
+    final ref = FirebaseStorage.instance.ref(destination);
+    UploadTask uploadTask = ref.putFile(file);
+
+    if (uploadTask == null) return "";
+
+    final snapshot = await uploadTask.whenComplete(() {});
+    final urlDownload = await snapshot.ref.getDownloadURL();
+    return urlDownload;
+  }
 }

@@ -147,10 +147,19 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                       showDialog(
                                           context: context,
                                           builder: (_) => AlertDialog(
-                                                title: Text("Description"),
                                                 content: ListView(
                                                   shrinkWrap: true,
                                                   children: [
+                                                    Text(
+                                                      "Description",
+                                                      style: TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          fontSize: 20),
+                                                    ),
+                                                    SizedBox(
+                                                      height: 10,
+                                                    ),
                                                     Text(snapshot
                                                         .data.docs[index]
                                                         .data()['description']),
@@ -174,8 +183,32 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                                     SizedBox(
                                                       height: 10,
                                                     ),
-                                                    Image.asset(
-                                                        "assets/logo.png"),
+                                                    Image.network(
+                                                      snapshot.data.docs[index]
+                                                          .data()['imageURL'],
+                                                      fit: BoxFit.scaleDown,
+                                                      loadingBuilder: (BuildContext
+                                                              context,
+                                                          Widget child,
+                                                          ImageChunkEvent
+                                                              loadingProgress) {
+                                                        if (loadingProgress ==
+                                                            null) return child;
+                                                        return Center(
+                                                          child:
+                                                              CircularProgressIndicator(
+                                                            value: loadingProgress
+                                                                        .expectedTotalBytes !=
+                                                                    null
+                                                                ? loadingProgress
+                                                                        .cumulativeBytesLoaded /
+                                                                    loadingProgress
+                                                                        .expectedTotalBytes
+                                                                : null,
+                                                          ),
+                                                        );
+                                                      },
+                                                    ),
                                                   ],
                                                 ),
                                                 actions: <Widget>[

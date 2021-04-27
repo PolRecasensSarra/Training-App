@@ -23,6 +23,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   bool loading = false;
   String error = "";
   String pathImage = "";
+  File file;
 
   @override
   Widget build(BuildContext context) {
@@ -200,7 +201,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                       ],
                                     ),
                                     onPressed: () async {
-                                      File file = await DataStorageService()
+                                      file = await DataStorageService()
                                           .selectFile();
 
                                       if (file != null) {
@@ -242,12 +243,15 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             onPressed: () async {
                               if (_formKey.currentState.validate()) {
                                 setState(() => loading = true);
-
+                                //Upload Image
+                                String image =
+                                    await DataStorageService().uploadFile(file);
+                                //Upload Exercises
                                 bool succes = await DatabaseService(
                                         userName: widget.user.displayName,
                                         userType: "Worker")
                                     .saveExercise(widget.document, widget.day,
-                                        name, sxr, description);
+                                        name, sxr, description, image);
                                 if (succes) {
                                   setState(() {
                                     loading = false;
