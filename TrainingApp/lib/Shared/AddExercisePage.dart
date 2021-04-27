@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +22,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   String error = "";
+  String pathImage = "";
 
   @override
   Widget build(BuildContext context) {
@@ -182,32 +184,51 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               Expanded(
                                 child: Align(
                                   alignment: Alignment.centerRight,
-                                  child: OutlinedButton(
-                                    child: Text(
-                                      "Upload",
-                                      style: TextStyle(color: Colors.white),
+                                  child: ElevatedButton(
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        Icon(
+                                          Icons.attach_file,
+                                          color: Colors.white,
+                                        ),
+                                        Text(
+                                          "Select File",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                      ],
                                     ),
-                                    style: ButtonStyle(
-                                      side: MaterialStateProperty.all(
-                                        BorderSide.lerp(
-                                            BorderSide(
-                                              style: BorderStyle.solid,
-                                              color: Colors.grey[200],
-                                              width: 2.0,
-                                            ),
-                                            BorderSide(
-                                              style: BorderStyle.solid,
-                                              color: Colors.grey[200],
-                                              width: 2.0,
-                                            ),
-                                            10.0),
-                                      ),
-                                    ),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      File file = await DataStorageService()
+                                          .selectFile();
+
+                                      if (file != null) {
+                                        setState(() {
+                                          pathImage = file.path.split('/').last;
+                                        });
+                                      }
+                                    },
                                   ),
                                 ),
                               ),
                             ],
+                          ),
+                          SizedBox(
+                            height: 8,
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              pathImage,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 8,
                           ),
                           Container(
                             color: Colors.white,

@@ -1,6 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:training_app/Services/tools.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'package:flutter/material.dart';
 
 class DatabaseService {
   final String userName;
@@ -102,4 +106,18 @@ class DatabaseService {
     }
     return true;
   }
+}
+
+class DataStorageService {
+  DataStorageService();
+
+  Future<dynamic> selectFile() async {
+    final result = await FilePicker.platform.pickFiles(allowMultiple: false);
+    if (result == null) return;
+    final path = result.files.single.path;
+
+    return File(path);
+  }
+
+  Future<dynamic> loadImage() async {}
 }
