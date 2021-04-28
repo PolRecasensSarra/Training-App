@@ -81,7 +81,8 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
             FutureBuilder(
                 future: getData(),
                 builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.data.docs.isNotEmpty) {
                     return ListView.builder(
                       shrinkWrap: true,
                       itemCount: snapshot.data.docs.length,
@@ -127,10 +128,10 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
                       },
                     );
                   } else if (snapshot.connectionState == ConnectionState.done &&
-                      (widget.clients == null || widget.clients.isEmpty)) {
+                      snapshot.data.docs.isEmpty) {
                     return Text(
                       "You have no clients",
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: Colors.tealAccent),
                     );
                   }
                   return CircularProgressIndicator();

@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -23,6 +24,11 @@ class _ProfilePageState extends State<ProfilePage> {
   File fileImage;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -40,6 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   radius: 50,
                   backgroundColor: Color(0xFFBC4B51),
                   child: CachedNetworkImage(
+                    key: ValueKey(new Random().nextInt(100)),
                     imageUrl: widget.document.data()['profilePic'],
                     placeholder: (context, url) => SpinKitFadingCircle(
                       color: Colors.teal,
@@ -101,6 +108,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 "E-mail",
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
               ),
+              SizedBox(
+                height: 6,
+              ),
               Text(
                 widget.user.email,
               ),
@@ -123,7 +133,6 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   setProfilePicture(String path) async {
-    print(widget.document.data()['profilePic']);
     bool succes;
     if (widget.userType == UserType.worker) {
       succes = await DatabaseService(
@@ -136,9 +145,9 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     if (succes) {
-      setState(() {
-        print(widget.document.data()['profilePic']);
-      });
+      imageCache.clear();
+      imageCache.clearLiveImages();
+      setState(() {});
     }
   }
 }

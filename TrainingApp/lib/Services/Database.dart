@@ -17,7 +17,7 @@ class DatabaseService {
   }
 
   updateUserDataWorker() async {
-    userCollection.doc(userName).set({});
+    userCollection.doc(userName).set({'profilePic': ""});
   }
 
   Future updateUserDataIndividual() async {
@@ -35,7 +35,7 @@ class DatabaseService {
         .set({'color': Tools().generateRandomColor()});
 
     //Set the client's worker to client database
-    userCollection.doc(userName).set({});
+    userCollection.doc(userName).set({'profilePic': ""});
     userCollection.doc(userName).collection("worker").doc(worker).set({});
   }
 
