@@ -226,28 +226,9 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                                     SizedBox(
                                                       height: 10,
                                                     ),
-                                                    /* Center(
-                                                      child: _controllerVideo
-                                                              .value
-                                                              .isInitialized
-                                                          ? AspectRatio(
-                                                              aspectRatio:
-                                                                  _controllerVideo
-                                                                      .value
-                                                                      .aspectRatio,
-                                                              child: VideoPlayer(
-                                                                  _controllerVideo),
-                                                            )
-                                                          : Container(
-                                                              child: getVideoController(
-                                                                  snapshot
-                                                                          .data
-                                                                          .docs[
-                                                                              index]
-                                                                          .data()[
-                                                                      'videoURL']),
-                                                            ),
-                                                    ),*/
+                                                    Text((snapshot
+                                                        .data.docs[index]
+                                                        .data()['videoURL'])),
                                                   ],
                                                 ),
                                                 actions: <Widget>[
@@ -341,17 +322,5 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
       print(e);
       return false;
     }
-  }
-
-  getVideoController(String path) {
-    VideoPlayerController ctrl = VideoPlayerController.network(
-        'https://www.sample-videos.com/video123/mp4/720/big_buck_bunny_720p_20mb.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-      });
-
-    setState(() {
-      _controllerVideo = ctrl;
-    });
   }
 }
