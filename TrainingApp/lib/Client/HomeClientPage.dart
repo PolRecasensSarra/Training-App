@@ -26,6 +26,7 @@ class _HomeClientPageState extends State<HomeClientPage> {
   ];
   int dayIndex = 0;
   DocumentSnapshot clientDocument;
+  DocumentSnapshot workerDocument;
 
   setup() async {
     await getClientWorker();
@@ -39,12 +40,12 @@ class _HomeClientPageState extends State<HomeClientPage> {
             .collection("worker")
             .get();
 
-    DocumentSnapshot docAux = snapshot.docs[0];
+    workerDocument = snapshot.docs[0];
 
     clientDocument = await FirebaseFirestore
         .instance //Get the client collection from the worker
         .collection("Worker")
-        .doc(docAux.id)
+        .doc(workerDocument.id)
         .collection("clients")
         .doc(widget.user.displayName)
         .get();
@@ -146,7 +147,8 @@ class _HomeClientPageState extends State<HomeClientPage> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                         builder: (contextCallback) => RoutineClientPage(
-                          document: clientDocument,
+                          clientDocument: clientDocument,
+                          workerDocument: workerDocument,
                           user: widget.user,
                           day: days[dayIndex],
                         ),
