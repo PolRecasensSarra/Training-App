@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
@@ -139,56 +141,188 @@ class _HomeClientPageState extends State<HomeClientPage> {
               SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                child: Text("Daily Routine"),
-                onPressed: () async {
-                  bool result = await checkIfClientHasRoutine();
-                  if (result) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (contextCallback) => RoutineClientPage(
-                          clientDocument: clientDocument,
-                          workerDocument: workerDocument,
-                          user: widget.user,
-                          day: days[dayIndex],
-                        ),
-                      ),
-                    );
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (_) => AlertDialog(
-                        content: Text("No Routine"),
-                        actions: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.close,
+              FutureBuilder(
+                  future: getData(),
+                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.data.docs.isNotEmpty) {
+                      return ListView.builder(
+                        padding: EdgeInsets.symmetric(horizontal: 26),
+                        shrinkWrap: true,
+                        itemCount: snapshot.data.docs.length,
+                        itemBuilder: (context, index) {
+                          return Card(
+                            child: ListTile(
+                              trailing: Icon(Icons.open_in_new_outlined),
+                              title: Text(
+                                snapshot.data.docs[index].data()['name'],
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                              subtitle: Text(
+                                "SxR: " +
+                                    snapshot.data.docs[index].data()['sxr'],
+                                textAlign: TextAlign.start,
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12,
+                                ),
+                              ),
+                              onTap: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                    content: ListView(
+                                      shrinkWrap: true,
+                                      children: [
+                                        Text(
+                                          "Name",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(snapshot.data.docs[index]
+                                            .data()['name']),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Colors.grey[700],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "Series and Repetitions",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(snapshot.data.docs[index]
+                                            .data()['sxr']),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Colors.grey[700],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "Description",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(snapshot.data.docs[index]
+                                            .data()['description']),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Colors.grey[700],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "Image",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        CachedNetworkImage(
+                                          imageUrl: snapshot.data.docs[index]
+                                              .data()['imageURL'],
+                                          placeholder: (context, url) =>
+                                              SpinKitFadingCircle(
+                                            color: Colors.teal,
+                                            size: 50,
+                                          ),
+                                          errorWidget: (context, url, error) =>
+                                              Text(
+                                            "No images found",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Container(
+                                          height: 1,
+                                          color: Colors.grey[700],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text(
+                                          "Video",
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Text((snapshot.data.docs[index]
+                                            .data()['videoURL'])),
+                                      ],
+                                    ),
+                                  ),
+                                );
+                              },
                             ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                },
-              ),
+                          );
+                        },
+                      );
+                    } else if (snapshot.connectionState ==
+                            ConnectionState.done &&
+                        snapshot.data.docs.isEmpty) {
+                      return Text(
+                        "No routines added yet :(",
+                        style: TextStyle(color: Colors.greenAccent),
+                      );
+                    }
+                    return CircularProgressIndicator();
+                  }),
               SizedBox(
                 height: 30,
               ),
-              ElevatedButton(
-                child: Text("Survey"),
-                onPressed: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (contextCallback) => ClientSurveyPage(
-                        user: widget.user,
-                        document: clientDocument,
-                      ),
-                    ),
-                  );
-                },
+              Expanded(
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: ElevatedButton(
+                    child: Text("Survey"),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (contextCallback) => ClientSurveyPage(
+                            user: widget.user,
+                            document: clientDocument,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
               ),
             ],
           ),
@@ -206,5 +340,9 @@ class _HomeClientPageState extends State<HomeClientPage> {
       return true;
     }
     return false;
+  }
+
+  Future<QuerySnapshot> getData() async {
+    return await clientDocument.reference.collection(days[dayIndex]).get();
   }
 }

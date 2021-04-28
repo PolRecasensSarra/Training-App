@@ -169,7 +169,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                                     ),
                                                     Container(
                                                       height: 1,
-                                                      color: Colors.white,
+                                                      color: Colors.grey[700],
                                                     ),
                                                     SizedBox(
                                                       height: 10,
@@ -207,7 +207,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                                     ),
                                                     Container(
                                                       height: 1,
-                                                      color: Colors.white,
+                                                      color: Colors.grey[700],
                                                     ),
                                                     SizedBox(
                                                       height: 10,
