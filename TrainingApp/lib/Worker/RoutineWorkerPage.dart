@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
@@ -32,6 +33,16 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
   ];
   int dayIndex = 0;
   VideoPlayerController _controllerVideo;
+  String actualDay = "";
+
+  @override
+  void initState() {
+    DateTime date = DateTime.now();
+    actualDay = DateFormat('EEEE').format(date);
+
+    dayIndex = days.indexOf(actualDay);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

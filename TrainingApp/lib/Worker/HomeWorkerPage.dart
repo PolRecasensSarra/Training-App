@@ -19,6 +19,7 @@ class HomeWorkerPage extends StatefulWidget {
 }
 
 class _HomeWorkerPageState extends State<HomeWorkerPage> {
+  String actualDay = "";
   setup() async {
     await setUpStatus();
   }

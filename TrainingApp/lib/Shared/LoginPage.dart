@@ -189,23 +189,26 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 50.0,
                     ),
-                    ElevatedButton(
-                      child: Text("Sign In"),
-                      onPressed: () async {
-                        if (_formKey.currentState.validate()) {
-                          setState(() => loading = true);
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
-                          if (result == null) {
-                            setState(() {
-                              error = "Email or password incorrect";
-                              loading = false;
-                            });
-                          } else {
-                            navigateToUserHomePage(result);
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text("Sign In"),
+                        onPressed: () async {
+                          if (_formKey.currentState.validate()) {
+                            setState(() => loading = true);
+                            dynamic result = await _auth
+                                .signInWithEmailAndPassword(email, password);
+                            if (result == null) {
+                              setState(() {
+                                error = "Email or password incorrect";
+                                loading = false;
+                              });
+                            } else {
+                              navigateToUserHomePage(result);
+                            }
                           }
-                        }
-                      },
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 12.0,
@@ -269,76 +272,82 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 50.0,
                     ),
-                    ElevatedButton(
-                      child: Text("Register"),
-                      onPressed: () async {
-                        if (dropdownValue == null) return;
-                        if (_formKey.currentState.validate()) {
-                          setState(() => loading = true);
-                          User result;
-                          if (dropdownValue.type == "Worker") {
-                            result =
-                                await _auth.registerWithEmailAndPasswordWorker(
-                                    email, password, username);
-                          } else if (dropdownValue.type == "Client") {
-                            result =
-                                await _auth.registerWithEmailAndPasswordClient(
-                                    email, password, username, referral);
-                          } else if (dropdownValue.type == "Individual") {
-                            result = await _auth
-                                .registerWithEmailAndPasswordIndividual(
-                                    email, password, username);
-                          }
-                          if (result == null) {
-                            setState(() {
-                              error = "Invalid email or username already taken";
-                              loading = false;
-                            });
-                          } else {
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        child: Text("Register"),
+                        onPressed: () async {
+                          if (dropdownValue == null) return;
+                          if (_formKey.currentState.validate()) {
+                            setState(() => loading = true);
+                            User result;
                             if (dropdownValue.type == "Worker") {
-                              DocumentSnapshot doc = await DatabaseService(
-                                      userName: result.displayName,
-                                      userType: dropdownValue.type)
-                                  .getDocumentSnapshot();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (contextCallback) => HomeWorkerPage(
-                                    user: result,
-                                    document: doc,
-                                  ),
-                                ),
-                              );
+                              result = await _auth
+                                  .registerWithEmailAndPasswordWorker(
+                                      email, password, username);
                             } else if (dropdownValue.type == "Client") {
-                              DocumentSnapshot doc = await DatabaseService(
-                                      userName: result.displayName,
-                                      userType: dropdownValue.type)
-                                  .getDocumentSnapshot();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (contextCallback) => HomeClientPage(
-                                    user: result,
-                                    document: doc,
-                                  ),
-                                ),
-                              );
+                              result = await _auth
+                                  .registerWithEmailAndPasswordClient(
+                                      email, password, username, referral);
                             } else if (dropdownValue.type == "Individual") {
-                              DocumentSnapshot doc = await DatabaseService(
-                                      userName: result.displayName,
-                                      userType: dropdownValue.type)
-                                  .getDocumentSnapshot();
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (contextCallback) =>
-                                      HomeIndividualPage(
-                                    user: result,
-                                    document: doc,
+                              result = await _auth
+                                  .registerWithEmailAndPasswordIndividual(
+                                      email, password, username);
+                            }
+                            if (result == null) {
+                              setState(() {
+                                error =
+                                    "Invalid email or username already taken";
+                                loading = false;
+                              });
+                            } else {
+                              if (dropdownValue.type == "Worker") {
+                                DocumentSnapshot doc = await DatabaseService(
+                                        userName: result.displayName,
+                                        userType: dropdownValue.type)
+                                    .getDocumentSnapshot();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (contextCallback) =>
+                                        HomeWorkerPage(
+                                      user: result,
+                                      document: doc,
+                                    ),
                                   ),
-                                ),
-                              );
+                                );
+                              } else if (dropdownValue.type == "Client") {
+                                DocumentSnapshot doc = await DatabaseService(
+                                        userName: result.displayName,
+                                        userType: dropdownValue.type)
+                                    .getDocumentSnapshot();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (contextCallback) =>
+                                        HomeClientPage(
+                                      user: result,
+                                      document: doc,
+                                    ),
+                                  ),
+                                );
+                              } else if (dropdownValue.type == "Individual") {
+                                DocumentSnapshot doc = await DatabaseService(
+                                        userName: result.displayName,
+                                        userType: dropdownValue.type)
+                                    .getDocumentSnapshot();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (contextCallback) =>
+                                        HomeIndividualPage(
+                                      user: result,
+                                      document: doc,
+                                    ),
+                                  ),
+                                );
+                              }
                             }
                           }
-                        }
-                      },
+                        },
+                      ),
                     ),
                     SizedBox(
                       height: 12.0,
