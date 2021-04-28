@@ -6,7 +6,9 @@ import 'package:flutter/material.dart';
 class RoutineClientPage extends StatefulWidget {
   final DocumentSnapshot document;
   final User user;
-  RoutineClientPage({@required this.user, @required this.document});
+  final String day;
+  RoutineClientPage(
+      {@required this.user, @required this.document, @required this.day});
   @override
   _RoutineClientPageState createState() => _RoutineClientPageState();
 }

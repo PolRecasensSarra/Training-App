@@ -138,44 +138,55 @@ class _HomeClientPageState extends State<HomeClientPage> {
               SizedBox(
                 height: 30,
               ),
-              Expanded(
-                flex: 5,
-                child: ElevatedButton(
-                  child: Text("Daily Routine"),
-                  onPressed: () {
+              ElevatedButton(
+                child: Text("Daily Routine"),
+                onPressed: () async {
+                  bool result = await checkIfClientHasRoutine();
+                  if (result) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => RoutineClientPage(
-                          user: widget.user,
+                        builder: (contextCallback) => RoutineClientPage(
                           document: clientDocument,
+                          user: widget.user,
+                          day: days[dayIndex],
                         ),
                       ),
                     );
-                  },
-                ),
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        content: Text("No Routine"),
+                        actions: <Widget>[
+                          IconButton(
+                            icon: Icon(
+                              Icons.close,
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
+                },
               ),
               SizedBox(
                 height: 30,
               ),
-              Expanded(
-                flex: 4,
-                child: Container(),
-              ),
-              Expanded(
-                flex: 1,
-                child: ElevatedButton(
-                  child: Text("Survey"),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (contextCallback) => ClientSurveyPage(
-                          user: widget.user,
-                          document: clientDocument,
-                        ),
+              ElevatedButton(
+                child: Text("Survey"),
+                onPressed: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (contextCallback) => ClientSurveyPage(
+                        user: widget.user,
+                        document: clientDocument,
                       ),
-                    );
-                  },
-                ),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -183,5 +194,15 @@ class _HomeClientPageState extends State<HomeClientPage> {
       );
     } else
       return Center(child: CircularProgressIndicator());
+  }
+
+  Future<bool> checkIfClientHasRoutine() async {
+    QuerySnapshot qs =
+        await clientDocument.reference.collection(days[dayIndex]).get();
+
+    if (qs.docs.isNotEmpty) {
+      return true;
+    }
+    return false;
   }
 }

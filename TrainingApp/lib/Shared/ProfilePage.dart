@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
           context, widget.userType, widget.user, widget.document),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 45.0),
+          padding: const EdgeInsets.symmetric(vertical: 35.0),
           child: Column(
             children: [
               Container(
