@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:intl/intl.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,8 @@ class _HomeClientPageState extends State<HomeClientPage> {
   DocumentSnapshot clientDocument;
   DocumentSnapshot workerDocument;
 
+  String actualDay = "";
+
   setup() async {
     await getClientWorker();
   }
@@ -56,6 +59,12 @@ class _HomeClientPageState extends State<HomeClientPage> {
 
   void initState() {
     setup();
+
+    DateTime date = DateTime.now();
+    actualDay = DateFormat('EEEE').format(date);
+
+    dayIndex = days.indexOf(actualDay);
+
     super.initState();
     setState(() {});
   }
