@@ -24,24 +24,61 @@ class _ProfilePageState extends State<ProfilePage> {
       drawer: CustomDrawerState().createCustomDrawer(
           context, widget.userType, widget.user, widget.document),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              "Username",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-              widget.user.displayName,
-            ),
-            SizedBox(height: 50),
-            Text(
-              "User type",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Text(
-                widget.userType.toString().replaceAll(RegExp("UserType."), "")),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 45.0),
+          child: Column(
+            children: [
+              Container(
+                child: CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Color(0xFFBC4B51),
+                  child: Text(
+                    widget.user.displayName[0].toUpperCase(),
+                    style: TextStyle(
+                      fontSize: 42,
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 35,
+              ),
+              Text(
+                "User Name",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              Text(
+                widget.user.displayName,
+                style: TextStyle(fontSize: 18),
+              ),
+              SizedBox(
+                height: 50,
+              ),
+              Text(
+                "E-mail",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              Text(
+                widget.user.email,
+              ),
+              SizedBox(height: 50),
+              Text(
+                "User Type",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 6,
+              ),
+              Text(widget.userType
+                  .toString()
+                  .replaceAll(RegExp("UserType."), "")),
+            ],
+          ),
         ),
       ),
     );
