@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:training_app/main.dart';
 
 class DatabaseService {
   final String userName;
@@ -92,7 +93,18 @@ class DatabaseService {
     return null;
   }
 
-  //------- EXERCISES
+  //-------- PROFILE-------------
+  Future<bool> saveProfilePicture(DocumentSnapshot document, String url) async {
+    try {
+      document.reference.set({'profilePic': url});
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
+
+  //------- EXERCISES------------
   Future<bool> saveExercise(
       DocumentSnapshot doc,
       String day,

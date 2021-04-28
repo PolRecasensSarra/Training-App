@@ -1,5 +1,10 @@
+import 'dart:io';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:training_app/Services/Database.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
@@ -15,6 +20,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  File fileImage;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,15 +39,46 @@ class _ProfilePageState extends State<ProfilePage> {
                 child: CircleAvatar(
                   radius: 50,
                   backgroundColor: Color(0xFFBC4B51),
-                  child: Text(
-                    widget.user.displayName[0].toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 42,
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.document.data()['profilePic'],
+                    placeholder: (context, url) => SpinKitFadingCircle(
+                      color: Colors.teal,
+                      size: 50,
+                    ),
+                    imageBuilder: (context, imageProvider) => Container(
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        image: DecorationImage(
+                            image: imageProvider, fit: BoxFit.cover),
+                      ),
+                    ),
+                    errorWidget: (context, url, error) => Text(
+                      widget.user.displayName[0].toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 42,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Upload Profile picture"),
+                  IconButton(
+                    icon: Icon(Icons.cloud_upload),
+                    onPressed: () async {
+                      fileImage = await DataStorageService().selectFile();
+                      if (fileImage != null) {
+                        String image =
+                            await DataStorageService().uploadFile(fileImage);
+                        await setProfilePicture(image);
+                      }
+                    },
+                  ),
+                ],
               ),
               SizedBox(
                 height: 35,
@@ -82,5 +120,25 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
     );
+  }
+
+  setProfilePicture(String path) async {
+    print(widget.document.data()['profilePic']);
+    bool succes;
+    if (widget.userType == UserType.worker) {
+      succes = await DatabaseService(
+              userName: widget.user.displayName, userType: "Worker")
+          .saveProfilePicture(widget.document, path);
+    } else if (widget.userType == UserType.client) {
+      succes = await DatabaseService(
+              userName: widget.user.displayName, userType: "Client")
+          .saveProfilePicture(widget.document, path);
+    }
+
+    if (succes) {
+      setState(() {
+        print(widget.document.data()['profilePic']);
+      });
+    }
   }
 }

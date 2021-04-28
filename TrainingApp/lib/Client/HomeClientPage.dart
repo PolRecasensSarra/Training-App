@@ -7,7 +7,6 @@ import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
-import 'RoutineClientPage.dart';
 
 class HomeClientPage extends StatefulWidget {
   final DocumentSnapshot document;
