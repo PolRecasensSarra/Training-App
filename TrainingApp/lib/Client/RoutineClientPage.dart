@@ -29,7 +29,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
             shrinkWrap: true,
             children: [
               Card(
-                color: Color(0xFF3E424B),
+                color: Color(0xFF6E7F80),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -50,7 +50,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                 ),
               ),
               Card(
-                color: Color(0xFF687276),
+                color: Color(0xFF536872),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -71,7 +71,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                 ),
               ),
               Card(
-                color: Color(0xFF3E444B),
+                color: Color(0xFF708090),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -92,7 +92,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                 ),
               ),
               Card(
-                color: Color(0xFF808588),
+                color: Color(0xFF536878),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -126,7 +126,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                 ),
               ),
               Card(
-                color: Color(0xFF4E5454),
+                color: Color(0xFF36454F),
                 elevation: 4,
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
