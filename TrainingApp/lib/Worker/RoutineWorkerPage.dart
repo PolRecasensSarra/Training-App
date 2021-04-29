@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:training_app/Client/RoutineClientPage.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
@@ -156,100 +157,15 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                       },
                                     ),
                                     onTap: () {
-                                      showDialog(
-                                          context: context,
-                                          builder: (_) => AlertDialog(
-                                                content: ListView(
-                                                  shrinkWrap: true,
-                                                  children: [
-                                                    Text(
-                                                      "Description",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(snapshot
-                                                        .data.docs[index]
-                                                        .data()['description']),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Container(
-                                                      height: 1,
-                                                      color: Colors.grey[700],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "Image",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    CachedNetworkImage(
-                                                      imageUrl: snapshot
-                                                          .data.docs[index]
-                                                          .data()['imageURL'],
-                                                      placeholder: (context,
-                                                              url) =>
-                                                          SpinKitFadingCircle(
-                                                        color: Colors.teal,
-                                                        size: 50,
-                                                      ),
-                                                      errorWidget: (context,
-                                                              url, error) =>
-                                                          Text(
-                                                        "No images found",
-                                                        style: TextStyle(
-                                                            fontSize: 12),
-                                                      ),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Container(
-                                                      height: 1,
-                                                      color: Colors.grey[700],
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text(
-                                                      "Video",
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                          fontSize: 20),
-                                                    ),
-                                                    SizedBox(
-                                                      height: 10,
-                                                    ),
-                                                    Text((snapshot
-                                                        .data.docs[index]
-                                                        .data()['videoURL'])),
-                                                  ],
-                                                ),
-                                                actions: <Widget>[
-                                                  IconButton(
-                                                    icon: Icon(
-                                                      Icons.close,
-                                                    ),
-                                                    onPressed: () {
-                                                      Navigator.of(context)
-                                                          .pop();
-                                                    },
-                                                  ),
-                                                ],
-                                              ));
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (contextCallback) =>
+                                              RoutineClientPage(
+                                            clientDocument:
+                                                snapshot.data.docs[index],
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
                                 );
