@@ -145,7 +145,7 @@ class CustomDrawerState extends State<CustomDrawer>
               Icons.email,
             ),
             title: Text(
-              'Contact',
+              'Contact Developer',
               style: TextStyle(fontSize: 18),
             ),
             onTap: () {

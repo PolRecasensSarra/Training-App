@@ -142,36 +142,6 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
     );
   }
 
-//--------------- INDIVIDUAL ----------------------
-  homePageIndividual() {
-    return Center(
-      child: Padding(
-        padding:
-            const EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              child: Text("Daily Routine"),
-              onPressed: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => RoutineIndividualPage(),
-                  ),
-                );
-              },
-            ),
-            ElevatedButton(
-              child: Text("Edit"),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
   //----------------------------------------------------------------------
   //----------------------------------------------------------------------
   Future<QuerySnapshot> getData() async {

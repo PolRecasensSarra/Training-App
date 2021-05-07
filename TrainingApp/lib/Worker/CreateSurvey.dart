@@ -14,17 +14,22 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
       ),
       body: Center(
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 38,
+          ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              ElevatedButton(
-                child: Text("ENTER"),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  child: Text("ENTER"),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
               ),
             ],
           ),

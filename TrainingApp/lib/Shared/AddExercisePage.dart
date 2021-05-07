@@ -303,34 +303,37 @@ class _AddExercisePageState extends State<AddExercisePage> {
                           SizedBox(
                             height: 30,
                           ),
-                          ElevatedButton(
-                            child: Text("SAVE"),
-                            onPressed: () async {
-                              if (_formKey.currentState.validate()) {
-                                setState(() => loading = true);
-                                //Upload Image
-                                String image = await DataStorageService()
-                                    .uploadFile(fileImage);
-                                //Upload Video
-                                String video = await DataStorageService()
-                                    .uploadFile(fileVideo);
-                                //Upload Exercises
-                                bool succes = await DatabaseService(
-                                        userName: widget.user.displayName,
-                                        userType: "Worker")
-                                    .saveExercise(widget.document, widget.day,
-                                        name, sxr, description, image, video);
-                                if (succes) {
-                                  setState(() {
-                                    loading = false;
-                                  });
-                                  Navigator.of(context).pop(succes);
-                                } else {
-                                  setState(
-                                      () => error = "Something went wrong");
+                          SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              child: Text("SAVE"),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  setState(() => loading = true);
+                                  //Upload Image
+                                  String image = await DataStorageService()
+                                      .uploadFile(fileImage);
+                                  //Upload Video
+                                  String video = await DataStorageService()
+                                      .uploadFile(fileVideo);
+                                  //Upload Exercises
+                                  bool succes = await DatabaseService(
+                                          userName: widget.user.displayName,
+                                          userType: "Worker")
+                                      .saveExercise(widget.document, widget.day,
+                                          name, sxr, description, image, video);
+                                  if (succes) {
+                                    setState(() {
+                                      loading = false;
+                                    });
+                                    Navigator.of(context).pop(succes);
+                                  } else {
+                                    setState(
+                                        () => error = "Something went wrong");
+                                  }
                                 }
-                              }
-                            },
+                              },
+                            ),
                           ),
                           SizedBox(
                             height: 12.0,

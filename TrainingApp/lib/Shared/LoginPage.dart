@@ -383,7 +383,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your Username',
+              hintText: 'Enter your Username*',
               icon: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -401,9 +401,7 @@ class _LoginPageState extends State<LoginPage> {
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
-            validator: (val) => val.isEmpty
-                ? "Enter a username"
-                : null, //TODO: mirar que no existeixi ja aquest nom d'usuari
+            validator: (val) => val.isEmpty ? "Enter a username" : null,
             onChanged: (val) {
               setState(() {
                 username = val;
@@ -419,7 +417,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your Email',
+              hintText: 'Enter your Email*',
               icon: Icon(
                 Icons.email,
                 color: Colors.white,
@@ -454,7 +452,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your password',
+              hintText: 'Enter your password*',
               icon: Icon(
                 Icons.lock,
                 color: Colors.white,
@@ -493,7 +491,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your Username',
+              hintText: 'Enter your Username*',
               icon: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -511,9 +509,7 @@ class _LoginPageState extends State<LoginPage> {
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
-            validator: (val) => val.isEmpty
-                ? "Enter a username"
-                : null, //TODO: mirar que no existeixi ja aquest nom d'usuari
+            validator: (val) => val.isEmpty ? "Enter a username" : null,
             onChanged: (val) {
               setState(() {
                 username = val;
@@ -529,7 +525,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your Email',
+              hintText: 'Enter your Email*',
               icon: Icon(
                 Icons.email,
                 color: Colors.white,
@@ -564,7 +560,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your password',
+              hintText: 'Enter your password*',
               icon: Icon(
                 Icons.lock,
                 color: Colors.white,
@@ -603,7 +599,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your Username',
+              hintText: 'Enter your Username*',
               icon: Icon(
                 Icons.person,
                 color: Colors.white,
@@ -637,7 +633,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your Email',
+              hintText: 'Enter your Email*',
               icon: Icon(
                 Icons.email,
                 color: Colors.white,
@@ -672,7 +668,7 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter your password',
+              hintText: 'Enter your password*',
               icon: Icon(
                 Icons.lock,
                 color: Colors.white,
@@ -707,7 +703,10 @@ class _LoginPageState extends State<LoginPage> {
               contentPadding: EdgeInsets.all(8.0), //here your padding
               fillColor: Colors.grey[800],
               filled: true,
-              hintText: 'Enter worker username',
+              hintText: 'Enter worker username*',
+              helperText:
+                  "You need to provide your worker's name in order to link them",
+              helperMaxLines: 2,
               icon: Icon(
                 Icons.animation,
                 color: Colors.white,

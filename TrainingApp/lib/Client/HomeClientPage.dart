@@ -94,8 +94,10 @@ class _HomeClientPageState extends State<HomeClientPage> {
     if (clientDocument != null && clientDocument.exists) {
       return Center(
         child: Padding(
-          padding:
-              const EdgeInsets.only(top: 20, bottom: 20, left: 16, right: 16),
+          padding: const EdgeInsets.symmetric(
+            vertical: 20,
+            horizontal: 16,
+          ),
           child: Column(
             children: [
               Row(
@@ -197,8 +199,8 @@ class _HomeClientPageState extends State<HomeClientPage> {
                             ConnectionState.done &&
                         snapshot.data.docs.isEmpty) {
                       return Text(
-                        "No routines added yet :(",
-                        style: TextStyle(color: Colors.greenAccent),
+                        "No routines added yet",
+                        style: TextStyle(color: Colors.orangeAccent),
                       );
                     }
                     return CircularProgressIndicator();
@@ -209,18 +211,24 @@ class _HomeClientPageState extends State<HomeClientPage> {
               Expanded(
                 child: Align(
                   alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    child: Text("Survey"),
-                    onPressed: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (contextCallback) => ClientSurveyPage(
-                            user: widget.user,
-                            document: clientDocument,
-                          ),
-                        ),
-                      );
-                    },
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: ElevatedButton(
+                        child: Text("Survey"),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (contextCallback) => ClientSurveyPage(
+                                user: widget.user,
+                                document: clientDocument,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
                   ),
                 ),
               ),

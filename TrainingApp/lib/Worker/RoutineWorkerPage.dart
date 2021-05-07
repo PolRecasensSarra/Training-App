@@ -185,33 +185,46 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                     SizedBox(
                       height: 20,
                     ),
-                    ElevatedButton(
-                      child: Text("Add exercise"),
-                      onPressed: () {
-                        Navigator.of(context)
-                            .push(
-                          MaterialPageRoute(
-                            builder: (contextCallback) => AddExercisePage(
-                              user: widget.user,
-                              document: widget.clientDocument,
-                              day: days[dayIndex],
-                            ),
-                          ),
-                        )
-                            .then((value) {
-                          setState(() {});
-                        });
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          child: Text("Add exercise"),
+                          onPressed: () {
+                            Navigator.of(context)
+                                .push(
+                              MaterialPageRoute(
+                                builder: (contextCallback) => AddExercisePage(
+                                  user: widget.user,
+                                  document: widget.clientDocument,
+                                  day: days[dayIndex],
+                                ),
+                              ),
+                            )
+                                .then((value) {
+                              setState(() {});
+                            });
+                          },
+                        ),
+                      ),
                     ),
-                    ElevatedButton(
-                      child: Text("Create Survey"),
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (contextCallback) => CreateSurveyPage(),
-                          ),
-                        );
-                      },
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 26),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          child: Text("Create Survey"),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (contextCallback) =>
+                                    CreateSurveyPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ],
                 ),
