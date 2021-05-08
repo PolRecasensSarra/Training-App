@@ -218,6 +218,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
               Text(
                 error,
+                textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Colors.red,
                   fontSize: 14,
