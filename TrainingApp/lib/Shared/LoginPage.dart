@@ -94,7 +94,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 20,
                     ),
                     Text(
-                      "Welcome to \n Training App",
+                      "Welcome to \n ReHealth",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                         fontSize: 24,

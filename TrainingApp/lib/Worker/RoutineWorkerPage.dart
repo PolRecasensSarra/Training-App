@@ -180,7 +180,11 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                             style: TextStyle(color: Colors.red),
                           );
                         }
-                        return CircularProgressIndicator();
+                        return Align(
+                            alignment: Alignment.center,
+                            child: SpinKitFadingCircle(
+                              color: Colors.blueAccent,
+                            ));
                       }),
                 ),
                 SizedBox(
