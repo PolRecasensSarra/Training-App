@@ -61,19 +61,20 @@ class _LoginPageState extends State<LoginPage> {
                 ],
               ),*/
               bottomNavigationBar: BottomNavigationBar(
-                fixedColor: Colors.blue[50],
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+                selectedItemColor: Colors.tealAccent,
                 backgroundColor: Colors.grey[800],
                 items: [
                   BottomNavigationBarItem(
                     label: "Sign In",
-                    icon: Icon(Icons.login, color: Colors.greenAccent),
+                    icon: Icon(
+                      Icons.login,
+                    ),
                   ),
                   BottomNavigationBarItem(
                     label: "Sign Up",
                     icon: Icon(
                       Icons.app_registration,
-                      color: Colors.blueAccent,
                     ),
                   ),
                 ],
