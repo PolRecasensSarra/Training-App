@@ -68,7 +68,7 @@ class CustomDrawerState extends State<CustomDrawer>
               ),
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundColor: Color(0xFFBC4B51),
+              backgroundColor: Color(0xFFF04C24),
               child: Text(
                 user.displayName[0].toUpperCase(),
                 style: TextStyle(
