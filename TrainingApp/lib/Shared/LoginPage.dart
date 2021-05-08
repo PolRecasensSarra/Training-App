@@ -37,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _onItemTapped(int index) {
     setState(() {
+      error = "";
       _selectedIndex = index;
     });
   }
@@ -49,17 +50,6 @@ class _LoginPageState extends State<LoginPage> {
             onWillPop: () async => false,
             child: Scaffold(
               resizeToAvoidBottomInset: true,
-              /*appBar: AppBar(
-                leading: Container(),
-                leadingWidth: 0.0,
-                title: Text(
-                  _titleList[_selectedIndex],
-                ),
-                actions: <Widget>[
-                  Image.network(
-                      "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/logo.png")
-                ],
-              ),*/
               bottomNavigationBar: BottomNavigationBar(
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 selectedItemColor: Colors.tealAccent,

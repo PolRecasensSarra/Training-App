@@ -98,141 +98,160 @@ class _HomeClientPageState extends State<HomeClientPage> {
             vertical: 20,
             horizontal: 16,
           ),
-          child: Column(
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 3,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_back_ios),
-                      onPressed: () {
-                        if (dayIndex == 0)
-                          setState(() {
-                            dayIndex = 6;
-                          });
-                        else
-                          setState(() {
-                            dayIndex--;
-                          });
-                      },
-                    ),
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                Expanded(
+                  flex: 10,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        flex: 3,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_back_ios),
+                          onPressed: () {
+                            if (dayIndex == 0)
+                              setState(() {
+                                dayIndex = 6;
+                              });
+                            else
+                              setState(() {
+                                dayIndex--;
+                              });
+                          },
+                        ),
+                      ),
+                      Expanded(
+                        flex: 4,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            days[dayIndex],
+                            style: TextStyle(
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: IconButton(
+                          icon: Icon(Icons.arrow_forward_ios),
+                          onPressed: () {
+                            if (dayIndex == 6)
+                              setState(() {
+                                dayIndex = 0;
+                              });
+                            else
+                              setState(() {
+                                dayIndex++;
+                              });
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-                  Expanded(
-                    flex: 4,
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: Text(
-                        days[dayIndex],
-                        style: TextStyle(
-                          fontSize: 18,
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Expanded(
+                  flex: 85,
+                  child: FutureBuilder(
+                    future: getData(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.data.docs.isNotEmpty) {
+                        return Scrollbar(
+                          isAlwaysShown: true,
+                          child: ListView.builder(
+                            padding: EdgeInsets.symmetric(horizontal: 26),
+                            shrinkWrap: true,
+                            itemCount: snapshot.data.docs.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                child: ListTile(
+                                  trailing: Icon(Icons.open_in_new_outlined),
+                                  title: Text(
+                                    snapshot.data.docs[index].data()['name'],
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  subtitle: Text(
+                                    "SxR: " +
+                                        snapshot.data.docs[index].data()['sxr'],
+                                    textAlign: TextAlign.start,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 12,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (contextCallback) =>
+                                            RoutineClientPage(
+                                          clientDocument:
+                                              snapshot.data.docs[index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                ),
+                              );
+                            },
+                          ),
+                        );
+                      } else if (snapshot.connectionState ==
+                              ConnectionState.done &&
+                          snapshot.data.docs.isEmpty) {
+                        return Text(
+                          "No routines added yet",
+                          style: TextStyle(color: Colors.orangeAccent),
+                        );
+                      }
+                      return Align(
+                          alignment: Alignment.center,
+                          child: SpinKitFadingCircle(
+                            color: Colors.blueAccent,
+                          ));
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Expanded(
+                  flex: 25,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: ElevatedButton(
+                          child: Text("Survey"),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (contextCallback) => ClientSurveyPage(
+                                  user: widget.user,
+                                  document: clientDocument,
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 3,
-                    child: IconButton(
-                      icon: Icon(Icons.arrow_forward_ios),
-                      onPressed: () {
-                        if (dayIndex == 6)
-                          setState(() {
-                            dayIndex = 0;
-                          });
-                        else
-                          setState(() {
-                            dayIndex++;
-                          });
-                      },
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 30,
-              ),
-              FutureBuilder(
-                  future: getData(),
-                  builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.data.docs.isNotEmpty) {
-                      return ListView.builder(
-                        padding: EdgeInsets.symmetric(horizontal: 26),
-                        shrinkWrap: true,
-                        itemCount: snapshot.data.docs.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            child: ListTile(
-                              trailing: Icon(Icons.open_in_new_outlined),
-                              title: Text(
-                                snapshot.data.docs[index].data()['name'],
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 14,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              subtitle: Text(
-                                "SxR: " +
-                                    snapshot.data.docs[index].data()['sxr'],
-                                textAlign: TextAlign.start,
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12,
-                                ),
-                              ),
-                              onTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (contextCallback) =>
-                                        RoutineClientPage(
-                                      clientDocument: snapshot.data.docs[index],
-                                    ),
-                                  ),
-                                );
-                              },
-                            ),
-                          );
-                        },
-                      );
-                    } else if (snapshot.connectionState ==
-                            ConnectionState.done &&
-                        snapshot.data.docs.isEmpty) {
-                      return Text(
-                        "No routines added yet",
-                        style: TextStyle(color: Colors.orangeAccent),
-                      );
-                    }
-                    return CircularProgressIndicator();
-                  }),
-              SizedBox(
-                height: 30,
-              ),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ElevatedButton(
-                        child: Text("Survey"),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (contextCallback) => ClientSurveyPage(
-                                user: widget.user,
-                                document: clientDocument,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       );
