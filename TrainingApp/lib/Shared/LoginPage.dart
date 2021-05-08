@@ -189,38 +189,38 @@ class _LoginPageState extends State<LoginPage> {
                     SizedBox(
                       height: 50.0,
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        child: Text("Sign In"),
-                        onPressed: () async {
-                          if (_formKey.currentState.validate()) {
-                            setState(() => loading = true);
-                            dynamic result = await _auth
-                                .signInWithEmailAndPassword(email, password);
-                            if (result == null) {
-                              setState(() {
-                                error = "Email or password incorrect";
-                                loading = false;
-                              });
-                            } else {
-                              navigateToUserHomePage(result);
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Text(
-                      error,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                      ),
-                    )
                   ],
+                ),
+              ),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  child: Text("Sign In"),
+                  onPressed: () async {
+                    if (_formKey.currentState.validate()) {
+                      setState(() => loading = true);
+                      dynamic result = await _auth.signInWithEmailAndPassword(
+                          email, password);
+                      if (result == null) {
+                        setState(() {
+                          error = "Email or password incorrect";
+                          loading = false;
+                        });
+                      } else {
+                        navigateToUserHomePage(result);
+                      }
+                    }
+                  },
+                ),
+              ),
+              SizedBox(
+                height: 12.0,
+              ),
+              Text(
+                error,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 14,
                 ),
               ),
             ],
