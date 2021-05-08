@@ -53,7 +53,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
           child: Align(
             alignment: Alignment.topCenter,
             child: Column(
@@ -120,56 +120,60 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
-                          return ListView.builder(
-                            padding: EdgeInsets.symmetric(horizontal: 26),
-                            shrinkWrap: true,
-                            itemCount: snapshot.data.docs.length,
-                            itemBuilder: (context, index) {
-                              return Card(
-                                child: ListTile(
-                                  title: Text(
-                                    snapshot.data.docs[index].data()['name'],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  subtitle: Text(
-                                    "SxR: " +
-                                        snapshot.data.docs[index].data()['sxr'],
-                                    textAlign: TextAlign.start,
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 12,
+                          return Scrollbar(
+                            isAlwaysShown: true,
+                            child: ListView.builder(
+                              padding: EdgeInsets.symmetric(horizontal: 26),
+                              shrinkWrap: true,
+                              itemCount: snapshot.data.docs.length,
+                              itemBuilder: (context, index) {
+                                return Card(
+                                  child: ListTile(
+                                    title: Text(
+                                      snapshot.data.docs[index].data()['name'],
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold),
                                     ),
-                                  ),
-                                  trailing: IconButton(
-                                    icon: Icon(Icons.delete),
-                                    onPressed: () async {
-                                      bool result = await deleteExercise(
-                                          snapshot.data.docs[index]);
-                                      if (!result) {
-                                        print(
-                                            "Something went wrond deleting this exercise");
-                                      } else {
-                                        setState(() {});
-                                      }
+                                    subtitle: Text(
+                                      "SxR: " +
+                                          snapshot.data.docs[index]
+                                              .data()['sxr'],
+                                      textAlign: TextAlign.start,
+                                      style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12,
+                                      ),
+                                    ),
+                                    trailing: IconButton(
+                                      icon: Icon(Icons.delete),
+                                      onPressed: () async {
+                                        bool result = await deleteExercise(
+                                            snapshot.data.docs[index]);
+                                        if (!result) {
+                                          print(
+                                              "Something went wrond deleting this exercise");
+                                        } else {
+                                          setState(() {});
+                                        }
+                                      },
+                                    ),
+                                    onTap: () {
+                                      Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                          builder: (contextCallback) =>
+                                              RoutineClientPage(
+                                            clientDocument:
+                                                snapshot.data.docs[index],
+                                          ),
+                                        ),
+                                      );
                                     },
                                   ),
-                                  onTap: () {
-                                    Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                        builder: (contextCallback) =>
-                                            RoutineClientPage(
-                                          clientDocument:
-                                              snapshot.data.docs[index],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              );
-                            },
+                                );
+                              },
+                            ),
                           );
                         } else if (snapshot.connectionState ==
                                 ConnectionState.done &&
