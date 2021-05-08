@@ -23,7 +23,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
         title: Text("Routine Info"),
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 26, vertical: 32),
         child: ListView(
           shrinkWrap: true,
           children: [
@@ -38,7 +38,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                     Text(
                       "Name",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(
                       height: 10,
@@ -59,7 +59,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                     Text(
                       "Series and Repetitions",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(
                       height: 10,
@@ -80,7 +80,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                     Text(
                       "Description",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(
                       height: 10,
@@ -101,7 +101,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                     Text(
                       "Image",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(
                       height: 10,
@@ -135,7 +135,7 @@ class _RoutineClientPageState extends State<RoutineClientPage> {
                     Text(
                       "Video",
                       style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                     ),
                     SizedBox(
                       height: 10,
