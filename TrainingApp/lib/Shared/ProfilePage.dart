@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:training_app/Services/Database.dart';
+import 'package:training_app/Services/tools.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
@@ -38,7 +39,9 @@ class _ProfilePageState extends State<ProfilePage> {
           context, widget.userType, widget.user, widget.document),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 35.0),
+          padding: const EdgeInsets.symmetric(
+            vertical: 50,
+          ),
           child: Column(
             children: [
               Container(
@@ -47,7 +50,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   backgroundColor: Color(0xFFBC4B51),
                   child: CachedNetworkImage(
                     key: ValueKey(new Random().nextInt(100)),
-                    imageUrl: widget.document.data()['profilePic'],
+                    imageUrl: /*widget.document.data()['profilePic']*/ "https://firebasestorage.googleapis.com/v0/b/training-app-3f8c0.appspot.com/o/files%2F20210330_021947.jpg?alt=media&token=30627c67-e80b-46f5-9c3c-9a4d8dae17f8",
                     placeholder: (context, url) => SpinKitFadingCircle(
                       color: Colors.teal,
                       size: 50,
@@ -88,43 +91,47 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               SizedBox(
-                height: 35,
+                height: 40,
               ),
-              Text(
-                "User Name",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              Card(
+                color: Colors.grey[850],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20.0),
+                  child: ListTile(
+                    leading: Icon(
+                      Icons.person,
+                    ),
+                    title: Text(
+                      widget.user.displayName,
+                      style: TextStyle(fontSize: 18),
+                    ),
+                  ),
+                ),
               ),
-              SizedBox(
-                height: 6,
+              Card(
+                color: Colors.grey[850],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: ListTile(
+                    leading: Icon(Icons.mail),
+                    title: Text(
+                      widget.user.email,
+                    ),
+                  ),
+                ),
               ),
-              Text(
-                widget.user.displayName,
-                style: TextStyle(fontSize: 18),
+              Card(
+                color: Colors.grey[850],
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20),
+                  child: ListTile(
+                    leading: Icon(Icons.accessibility),
+                    title: Text(widget.userType
+                        .toString()
+                        .replaceAll(RegExp("UserType."), "")),
+                  ),
+                ),
               ),
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                "E-mail",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Text(
-                widget.user.email,
-              ),
-              SizedBox(height: 50),
-              Text(
-                "User Type",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(
-                height: 6,
-              ),
-              Text(widget.userType
-                  .toString()
-                  .replaceAll(RegExp("UserType."), "")),
             ],
           ),
         ),
