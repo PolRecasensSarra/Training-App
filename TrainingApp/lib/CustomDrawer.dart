@@ -68,7 +68,7 @@ class CustomDrawerState extends State<CustomDrawer>
               ),
             ),
             currentAccountPicture: CircleAvatar(
-              backgroundColor: Color(0xFFF04C24),
+              backgroundColor: Color(0xFFF05F3C),
               child: Text(
                 user.displayName[0].toUpperCase(),
                 style: TextStyle(
@@ -79,7 +79,7 @@ class CustomDrawerState extends State<CustomDrawer>
               ),
             ),
             decoration: BoxDecoration(
-              color: Tools().createMaterialColor(Color(0xFF227A73)),
+              color: Tools().createMaterialColor(Color(0xFF3A7A75)),
             ),
           ),
           ListTile(
