@@ -134,7 +134,6 @@ class CustomDrawerState extends State<CustomDrawer>
                   builder: (contextCallback) => ProfilePage(
                     userType: typeUser,
                     user: user,
-                    document: document,
                   ),
                 ),
               );
