@@ -1,18 +1,18 @@
 import 'dart:io';
 import 'dart:math';
-
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:training_app/Services/Database.dart';
-import 'package:training_app/Services/tools.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
 
+// ignore: must_be_immutable
 class ProfilePage extends StatefulWidget {
-  final DocumentSnapshot document;
+  DocumentSnapshot document;
   final UserType userType;
   final User user;
   ProfilePage(
@@ -47,10 +47,10 @@ class _ProfilePageState extends State<ProfilePage> {
               Container(
                 child: CircleAvatar(
                   radius: 50,
-                  backgroundColor: Color(0xFFBC4B51),
+                  backgroundColor: Colors.white,
                   child: CachedNetworkImage(
                     key: ValueKey(new Random().nextInt(100)),
-                    imageUrl: /*widget.document.data()['profilePic']*/ "https://firebasestorage.googleapis.com/v0/b/training-app-3f8c0.appspot.com/o/files%2F20210330_021947.jpg?alt=media&token=30627c67-e80b-46f5-9c3c-9a4d8dae17f8",
+                    imageUrl: widget.document.data()['profilePic'],
                     placeholder: (context, url) => SpinKitFadingCircle(
                       color: Colors.teal,
                       size: 50,
@@ -141,6 +141,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   setProfilePicture(String path) async {
     bool succes;
+    String lastPath = widget.document.data()['profilePic'];
     if (widget.userType == UserType.worker) {
       succes = await DatabaseService(
               userName: widget.user.displayName, userType: "Worker")
@@ -152,8 +153,22 @@ class _ProfilePageState extends State<ProfilePage> {
     }
 
     if (succes) {
-      imageCache.clear();
-      imageCache.clearLiveImages();
+      await CachedNetworkImage.evictFromCache(lastPath);
+
+      DocumentSnapshot dc;
+      if (widget.userType == UserType.worker) {
+        dc = await FirebaseFirestore.instance
+            .collection("Worker")
+            .doc(widget.user.displayName)
+            .get();
+      } else if (widget.userType == UserType.client) {
+        dc = await FirebaseFirestore.instance
+            .collection("Client")
+            .doc(widget.user.displayName)
+            .get();
+      }
+      widget.document = dc;
+
       setState(() {});
     }
   }
