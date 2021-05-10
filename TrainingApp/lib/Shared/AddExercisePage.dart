@@ -4,13 +4,18 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_app/Services/Database.dart';
 import 'package:training_app/Shared/Loading.dart';
+import 'package:training_app/main.dart';
 
 class AddExercisePage extends StatefulWidget {
   final User user;
   final DocumentSnapshot document;
   final String day;
+  final UserType userType;
   AddExercisePage(
-      {@required this.user, @required this.document, @required this.day});
+      {@required this.user,
+      @required this.document,
+      @required this.day,
+      @required this.userType});
   @override
   _AddExercisePageState createState() => _AddExercisePageState();
 }
@@ -317,11 +322,33 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                   String video = await DataStorageService()
                                       .uploadFile(fileVideo);
                                   //Upload Exercises
-                                  bool succes = await DatabaseService(
-                                          userName: widget.user.displayName,
-                                          userType: "Worker")
-                                      .saveExercise(widget.document, widget.day,
-                                          name, sxr, description, image, video);
+                                  bool succes;
+                                  if (widget.userType == UserType.worker) {
+                                    succes = await DatabaseService(
+                                            userName: widget.user.displayName,
+                                            userType: "Worker")
+                                        .saveExercise(
+                                            widget.document,
+                                            widget.day,
+                                            name,
+                                            sxr,
+                                            description,
+                                            image,
+                                            video);
+                                  } else if (widget.userType ==
+                                      UserType.individual) {
+                                    succes = await DatabaseService(
+                                            userName: widget.user.displayName,
+                                            userType: "Individual")
+                                        .saveExercise(
+                                            widget.document,
+                                            widget.day,
+                                            name,
+                                            sxr,
+                                            description,
+                                            image,
+                                            video);
+                                  }
                                   if (succes) {
                                     setState(() {
                                       loading = false;

@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -46,7 +45,13 @@ class _ProfilePageState extends State<ProfilePage> {
           .collection("Client")
           .doc(widget.user.displayName)
           .get();
+    } else if (widget.userType == UserType.individual) {
+      document = await FirebaseFirestore.instance
+          .collection("individual")
+          .doc(widget.user.displayName)
+          .get();
     }
+
     loading = false;
     setState(() {});
   }
@@ -174,26 +179,15 @@ class _ProfilePageState extends State<ProfilePage> {
       succes = await DatabaseService(
               userName: widget.user.displayName, userType: "Client")
           .saveProfilePicture(document, path);
+    } else if (widget.userType == UserType.individual) {
+      succes = await DatabaseService(
+              userName: widget.user.displayName, userType: "Individual")
+          .saveProfilePicture(document, path);
     }
 
     if (succes) {
       await CachedNetworkImage.evictFromCache(lastPath);
-
-      /*DocumentSnapshot dc;
-      if (widget.userType == UserType.worker) {
-        dc = await FirebaseFirestore.instance
-            .collection("Worker")
-            .doc(widget.user.displayName)
-            .get();
-      } else if (widget.userType == UserType.client) {
-        dc = await FirebaseFirestore.instance
-            .collection("Client")
-            .doc(widget.user.displayName)
-            .get();
-      }
-      widget.document = dc;*/
       getDocument();
-
       setState(() {});
     }
   }

@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
-import '../Individual/RoutineIndividualPage.dart';
 import 'RoutineWorkerPage.dart';
 
 class HomeWorkerPage extends StatefulWidget {
