@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
-import 'package:training_app/Client/RoutineClientPage.dart';
+import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
@@ -47,7 +47,7 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
           context, UserType.individual, widget.user, widget.document),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
           child: Align(
             alignment: Alignment.topCenter,
             child: Column(
@@ -117,7 +117,7 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                           return Scrollbar(
                             isAlwaysShown: true,
                             child: ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 10),
+                              padding: EdgeInsets.only(left: 16, right: 10),
                               shrinkWrap: true,
                               itemCount: snapshot.data.docs.length,
                               itemBuilder: (context, index) {
@@ -151,7 +151,7 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                                             Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (contextCallback) =>
-                                                    RoutineClientPage(
+                                                    RoutineInfoPage(
                                                   clientDocument:
                                                       snapshot.data.docs[index],
                                                 ),
@@ -203,9 +203,6 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                               color: Colors.blueAccent,
                             ));
                       }),
-                ),
-                SizedBox(
-                  height: 20,
                 ),
                 Expanded(
                   flex: 20,

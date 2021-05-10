@@ -1,21 +1,19 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class RoutineClientPage extends StatefulWidget {
+class RoutineInfoPage extends StatefulWidget {
   final DocumentSnapshot clientDocument;
 
-  RoutineClientPage({
+  RoutineInfoPage({
     @required this.clientDocument,
   });
   @override
-  _RoutineClientPageState createState() => _RoutineClientPageState();
+  _RoutineInfoPageState createState() => _RoutineInfoPageState();
 }
 
-class _RoutineClientPageState extends State<RoutineClientPage> {
+class _RoutineInfoPageState extends State<RoutineInfoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

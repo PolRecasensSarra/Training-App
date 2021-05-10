@@ -4,7 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
-import 'package:training_app/Client/RoutineClientPage.dart';
+import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
 import '../CustomDrawer.dart';
@@ -194,7 +194,7 @@ class _HomeClientPageState extends State<HomeClientPage> {
                                     Navigator.of(context).push(
                                       MaterialPageRoute(
                                         builder: (contextCallback) =>
-                                            RoutineClientPage(
+                                            RoutineInfoPage(
                                           clientDocument:
                                               snapshot.data.docs[index],
                                         ),

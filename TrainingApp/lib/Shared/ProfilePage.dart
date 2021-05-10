@@ -47,7 +47,7 @@ class _ProfilePageState extends State<ProfilePage> {
           .get();
     } else if (widget.userType == UserType.individual) {
       document = await FirebaseFirestore.instance
-          .collection("individual")
+          .collection("Individual")
           .doc(widget.user.displayName)
           .get();
     }
@@ -81,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           key: ValueKey(new Random().nextInt(100)),
                           imageUrl: document.data()['profilePic'],
                           placeholder: (context, url) => SpinKitFadingCircle(
-                            color: Colors.teal,
+                            color: Colors.blueAccent,
                             size: 50,
                           ),
                           imageBuilder: (context, imageProvider) => Container(
