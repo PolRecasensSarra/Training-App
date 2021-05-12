@@ -2,6 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:training_app/Shared/VideoPage.dart';
+import 'package:training_app/Widgets/VideoPlayerWidget.dart';
+import 'package:video_player/video_player.dart';
 
 class RoutineInfoPage extends StatefulWidget {
   final DocumentSnapshot clientDocument;
@@ -127,18 +130,31 @@ class _RoutineInfoPageState extends State<RoutineInfoPage> {
               elevation: 4,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                child: Row(
                   children: [
-                    Text(
-                      "Video",
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    Expanded(
+                      child: Text(
+                        "Video",
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
                     ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text((widget.clientDocument.data()['videoURL'])),
+                    Expanded(
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: IconButton(
+                            icon: Icon(Icons.open_in_new_outlined),
+                            onPressed: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (contextCallback) => Videopage(
+                                    document: widget.clientDocument,
+                                  ),
+                                ),
+                              );
+                            }),
+                      ),
+                    )
                   ],
                 ),
               ),
