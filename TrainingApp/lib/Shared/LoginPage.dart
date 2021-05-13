@@ -267,14 +267,15 @@ class _LoginPageState extends State<LoginPage> {
       //------------------------------ REGISTER---------------------
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
             children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  children: [
-                    DropdownButton<Item>(
+              Expanded(
+                flex: 2,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    child: DropdownButton<Item>(
                       hint: Text("Select user"),
                       value: dropdownValue,
                       icon: const Icon(
@@ -300,102 +301,146 @@ class _LoginPageState extends State<LoginPage> {
                         );
                       }).toList(),
                     ),
-                    SizedBox(
-                      width: 200.0,
-                      height: 30.0,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 6,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Container(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            children: [
+                              userContainer(), // ALL THE STUFF FOR EVERY USER
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                    userContainer(), // ALL THE STUFF FOR EVERY USER
-                    SizedBox(
-                      height: 50.0,
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 2,
+                child: Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Container(
+                    child: Column(
+                      children: [
+                        Expanded(
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: SizedBox(
+                              width: double.infinity,
+                              child: ElevatedButton(
+                                child: Text("Register"),
+                                onPressed: () async {
+                                  if (dropdownValue == null) return;
+                                  if (_formKey.currentState.validate()) {
+                                    setState(() => loading = true);
+                                    User result;
+                                    if (dropdownValue.type == "Worker") {
+                                      result = await _auth
+                                          .registerWithEmailAndPasswordWorker(
+                                              email, password, username);
+                                    } else if (dropdownValue.type == "Client") {
+                                      result = await _auth
+                                          .registerWithEmailAndPasswordClient(
+                                              email,
+                                              password,
+                                              username,
+                                              referral);
+                                    } else if (dropdownValue.type ==
+                                        "Individual") {
+                                      result = await _auth
+                                          .registerWithEmailAndPasswordIndividual(
+                                              email, password, username);
+                                    }
+                                    if (result == null) {
+                                      setState(() {
+                                        error =
+                                            "Invalid email or username already taken";
+                                        loading = false;
+                                      });
+                                    } else {
+                                      if (dropdownValue.type == "Worker") {
+                                        DocumentSnapshot doc =
+                                            await DatabaseService(
+                                                    userName:
+                                                        result.displayName,
+                                                    userType:
+                                                        dropdownValue.type)
+                                                .getDocumentSnapshot();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (contextCallback) =>
+                                                HomeWorkerPage(
+                                              user: result,
+                                              document: doc,
+                                            ),
+                                          ),
+                                        );
+                                      } else if (dropdownValue.type ==
+                                          "Client") {
+                                        DocumentSnapshot doc =
+                                            await DatabaseService(
+                                                    userName:
+                                                        result.displayName,
+                                                    userType:
+                                                        dropdownValue.type)
+                                                .getDocumentSnapshot();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (contextCallback) =>
+                                                HomeClientPage(
+                                              user: result,
+                                              document: doc,
+                                            ),
+                                          ),
+                                        );
+                                      } else if (dropdownValue.type ==
+                                          "Individual") {
+                                        DocumentSnapshot doc =
+                                            await DatabaseService(
+                                                    userName:
+                                                        result.displayName,
+                                                    userType:
+                                                        dropdownValue.type)
+                                                .getDocumentSnapshot();
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                            builder: (contextCallback) =>
+                                                HomeIndividualPage(
+                                              user: result,
+                                              document: doc,
+                                            ),
+                                          ),
+                                        );
+                                      }
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Text(
+                            error,
+                            style: TextStyle(
+                              color: Colors.red,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton(
-                        child: Text("Register"),
-                        onPressed: () async {
-                          if (dropdownValue == null) return;
-                          if (_formKey.currentState.validate()) {
-                            setState(() => loading = true);
-                            User result;
-                            if (dropdownValue.type == "Worker") {
-                              result = await _auth
-                                  .registerWithEmailAndPasswordWorker(
-                                      email, password, username);
-                            } else if (dropdownValue.type == "Client") {
-                              result = await _auth
-                                  .registerWithEmailAndPasswordClient(
-                                      email, password, username, referral);
-                            } else if (dropdownValue.type == "Individual") {
-                              result = await _auth
-                                  .registerWithEmailAndPasswordIndividual(
-                                      email, password, username);
-                            }
-                            if (result == null) {
-                              setState(() {
-                                error =
-                                    "Invalid email or username already taken";
-                                loading = false;
-                              });
-                            } else {
-                              if (dropdownValue.type == "Worker") {
-                                DocumentSnapshot doc = await DatabaseService(
-                                        userName: result.displayName,
-                                        userType: dropdownValue.type)
-                                    .getDocumentSnapshot();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (contextCallback) =>
-                                        HomeWorkerPage(
-                                      user: result,
-                                      document: doc,
-                                    ),
-                                  ),
-                                );
-                              } else if (dropdownValue.type == "Client") {
-                                DocumentSnapshot doc = await DatabaseService(
-                                        userName: result.displayName,
-                                        userType: dropdownValue.type)
-                                    .getDocumentSnapshot();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (contextCallback) =>
-                                        HomeClientPage(
-                                      user: result,
-                                      document: doc,
-                                    ),
-                                  ),
-                                );
-                              } else if (dropdownValue.type == "Individual") {
-                                DocumentSnapshot doc = await DatabaseService(
-                                        userName: result.displayName,
-                                        userType: dropdownValue.type)
-                                    .getDocumentSnapshot();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (contextCallback) =>
-                                        HomeIndividualPage(
-                                      user: result,
-                                      document: doc,
-                                    ),
-                                  ),
-                                );
-                              }
-                            }
-                          }
-                        },
-                      ),
-                    ),
-                    SizedBox(
-                      height: 12.0,
-                    ),
-                    Text(
-                      error,
-                      style: TextStyle(
-                        color: Colors.red,
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ],
@@ -445,7 +490,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,
@@ -479,7 +524,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,
