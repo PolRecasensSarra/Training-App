@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_app/Services/Database.dart';
+import 'package:training_app/Services/tools.dart';
 import 'package:training_app/Shared/Loading.dart';
 import 'package:training_app/main.dart';
 
@@ -30,7 +31,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   String pathImage = "";
   String pathVideo = "";
   File fileImage;
-  File fileVideo;
+  bool validURL;
 
   @override
   Widget build(BuildContext context) {
@@ -178,6 +179,42 @@ class _AddExercisePageState extends State<AddExercisePage> {
                           SizedBox(
                             height: 25,
                           ),
+                          TextFormField(
+                            cursorColor: Colors.white,
+                            decoration: InputDecoration(
+                              filled: true,
+                              fillColor: Colors.grey[800],
+                              labelText: "Video URL",
+                              labelStyle: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: 16),
+                              contentPadding:
+                                  EdgeInsets.all(8.0), //here your padding
+                              hintText: 'Enter a video URL',
+                              hintStyle: TextStyle(fontSize: 12),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(color: Colors.grey[700]),
+                              ),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(color: Colors.grey[800]),
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                                borderSide: BorderSide(color: Colors.grey[800]),
+                              ),
+                            ),
+                            onChanged: (val) {
+                              setState(() {
+                                pathVideo = val;
+                              });
+                            },
+                          ),
+                          SizedBox(
+                            height: 25,
+                          ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -241,63 +278,6 @@ class _AddExercisePageState extends State<AddExercisePage> {
                           SizedBox(
                             height: 15,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Text(
-                                  "Video",
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-                              Expanded(
-                                child: Align(
-                                  alignment: Alignment.centerRight,
-                                  child: ElevatedButton(
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(
-                                          Icons.attach_file,
-                                          color: Colors.white,
-                                        ),
-                                        Text(
-                                          "Select Video",
-                                          style: TextStyle(color: Colors.white),
-                                        ),
-                                      ],
-                                    ),
-                                    onPressed: () async {
-                                      fileVideo = await DataStorageService()
-                                          .selectFile();
-                                      if (fileVideo != null) {
-                                        setState(() {
-                                          pathVideo =
-                                              fileVideo.path.split('/').last;
-                                        });
-                                      }
-                                    },
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 8,
-                          ),
-                          Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              pathVideo,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontStyle: FontStyle.italic,
-                              ),
-                            ),
-                          ),
                           SizedBox(
                             height: 8,
                           ),
@@ -314,13 +294,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               child: Text("SAVE"),
                               onPressed: () async {
                                 if (_formKey.currentState.validate()) {
+                                  validURL =
+                                      await Tools().canLaunchURL(pathVideo);
+                                  if (!validURL && pathVideo.isNotEmpty) {
+                                    setState(
+                                        () => error = "Video URL not valid");
+                                    return;
+                                  }
                                   setState(() => loading = true);
                                   //Upload Image
                                   String image = await DataStorageService()
                                       .uploadFile(fileImage);
-                                  //Upload Video
-                                  String video = await DataStorageService()
-                                      .uploadFile(fileVideo);
                                   //Upload Exercises
                                   bool succes;
                                   if (widget.userType == UserType.worker) {
@@ -334,7 +318,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                             sxr,
                                             description,
                                             image,
-                                            video);
+                                            pathVideo);
                                   } else if (widget.userType ==
                                       UserType.individual) {
                                     succes = await DatabaseService(
@@ -347,7 +331,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                             sxr,
                                             description,
                                             image,
-                                            video);
+                                            pathVideo);
                                   }
                                   if (succes) {
                                     setState(() {
@@ -363,7 +347,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             ),
                           ),
                           SizedBox(
-                            height: 12.0,
+                            height: 5.0,
                           ),
                           Text(
                             error,

@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Expanded(
-                flex: 2,
+                flex: 25,
                 child: Container(
                   child: Column(
                     children: [
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Expanded(
-                flex: 6,
+                flex: 55,
                 child: Align(
                   alignment: Alignment.center,
                   child: Container(
@@ -214,7 +214,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
               ),
               Expanded(
-                flex: 2,
+                flex: 20,
                 child: Container(
                   child: Column(
                     children: [
@@ -309,18 +309,21 @@ class _LoginPageState extends State<LoginPage> {
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Container(
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: [
-                        Form(
-                          key: _formKey,
-                          child: Column(
-                            children: [
-                              userContainer(), // ALL THE STUFF FOR EVERY USER
-                            ],
+                    child: Scrollbar(
+                      isAlwaysShown: true,
+                      child: ListView(
+                        shrinkWrap: true,
+                        children: [
+                          Form(
+                            key: _formKey,
+                            child: Column(
+                              children: [
+                                userContainer(), // ALL THE STUFF FOR EVERY USER
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -598,7 +601,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,
@@ -632,7 +635,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,
@@ -673,6 +676,7 @@ class _LoginPageState extends State<LoginPage> {
     //----------------CLIENT------------------
     else if (dropdownValue.type == "Client") {
       return Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextFormField(
             cursorColor: Colors.white,
@@ -706,7 +710,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,
@@ -740,7 +744,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,
@@ -776,7 +780,7 @@ class _LoginPageState extends State<LoginPage> {
             },
           ),
           SizedBox(
-            height: 30.0,
+            height: 50.0,
           ),
           TextFormField(
             cursorColor: Colors.white,

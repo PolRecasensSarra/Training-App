@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:training_app/Services/tools.dart';
 import 'package:training_app/Shared/VideoPage.dart';
 import 'package:training_app/Widgets/VideoPlayerWidget.dart';
 import 'package:video_player/video_player.dart';
@@ -92,6 +93,41 @@ class _RoutineInfoPageState extends State<RoutineInfoPage> {
               ),
             ),
             Card(
+              color: Color(0xFF708090),
+              elevation: 4,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Video",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    GestureDetector(
+                      child: Text(
+                        widget.clientDocument.data()['videoURL'],
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: Colors.orangeAccent,
+                          decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      onTap: () {
+                        String url = widget.clientDocument.data()['videoURL'];
+                        if (url.isEmpty) return;
+                        Tools().customLaunch(url);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Card(
               color: Color(0xFF536878),
               elevation: 4,
               child: Padding(
@@ -121,40 +157,6 @@ class _RoutineInfoPageState extends State<RoutineInfoPage> {
                         ),
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            Card(
-              color: Color(0xFF36454F),
-              elevation: 4,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        "Video",
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 16),
-                      ),
-                    ),
-                    Expanded(
-                      child: Align(
-                        alignment: Alignment.centerRight,
-                        child: IconButton(
-                            icon: Icon(Icons.open_in_new_outlined),
-                            onPressed: () {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (contextCallback) => Videopage(
-                                    document: widget.clientDocument,
-                                  ),
-                                ),
-                              );
-                            }),
-                      ),
-                    )
                   ],
                 ),
               ),

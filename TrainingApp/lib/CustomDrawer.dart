@@ -33,14 +33,6 @@ class CustomDrawerState extends State<CustomDrawer>
     _controller.dispose();
   }
 
-  void customLaunch(command) async {
-    if (await canLaunch(command)) {
-      await launch(command);
-    } else {
-      print('could not launch $command');
-    }
-  }
-
   final AuthService _auth = AuthService();
 
   @override
@@ -148,7 +140,7 @@ class CustomDrawerState extends State<CustomDrawer>
               style: TextStyle(fontSize: 18),
             ),
             onTap: () {
-              customLaunch(
+              Tools().customLaunch(
                   'mailto:polrecasenssarra@hotmail.com?subject=Assumpte&body=Descripció');
             },
           ),

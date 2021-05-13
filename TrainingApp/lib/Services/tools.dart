@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
 
+import 'package:url_launcher/url_launcher.dart';
+
 class Tools {
   Tools();
 
@@ -22,6 +24,21 @@ class Tools {
       );
     });
     return MaterialColor(color.value, swatch);
+  }
+
+  void customLaunch(command) async {
+    if (await canLaunch(command)) {
+      await launch(command);
+    } else {
+      print('could not launch $command');
+    }
+  }
+
+  Future<bool> canLaunchURL(url) async {
+    if (await canLaunch(url)) {
+      return true;
+    } else
+      return false;
   }
 
   int generateRandomColor() {
