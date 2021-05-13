@@ -49,7 +49,7 @@ class _LoginPageState extends State<LoginPage> {
         : WillPopScope(
             onWillPop: () async => false,
             child: Scaffold(
-              resizeToAvoidBottomInset: true,
+              resizeToAvoidBottomInset: false,
               bottomNavigationBar: BottomNavigationBar(
                 selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
                 selectedItemColor: Colors.tealAccent,
@@ -71,6 +71,10 @@ class _LoginPageState extends State<LoginPage> {
                 currentIndex: _selectedIndex,
                 onTap: _onItemTapped,
               ),
+              appBar: AppBar(
+                backgroundColor: Colors.grey[850],
+                elevation: 0,
+              ),
               body: toggleSignInSignUp(_selectedIndex),
             ),
           );
@@ -81,138 +85,178 @@ class _LoginPageState extends State<LoginPage> {
       //------------------------------ LOGIN---------------------
       return Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: ListView(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Form(
-                key: _formKey,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      "Welcome to \n ReHealth",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "A digital app that allows \n to create exercise routines for your patients",
-                      style: TextStyle(
-                        fontSize: 12,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                    SizedBox(
-                      height: 50.0,
-                    ),
-                    TextFormField(
-                      cursorColor: Colors.white,
-                      validator: (val) => val.isEmpty ? "Enter an email" : null,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0), //here your padding
-                        fillColor: Colors.grey[800],
-                        filled: true,
-                        hintText: 'Email',
-                        icon: Icon(
-                          Icons.email,
-                          color: Colors.white,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey[700]),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey[800]),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey[800]),
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                    children: [
+                      Text(
+                        "Welcome to \n ReHealth",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      onChanged: (val) {
-                        email = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 50.0,
-                    ),
-                    TextFormField(
-                      cursorColor: Colors.white,
-                      validator: (val) =>
-                          val.isEmpty ? "Enter a password" : null,
-                      obscureText: true,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(8.0), //here your padding
-                        fillColor: Colors.grey[800],
-                        filled: true,
-                        hintText: 'password',
-                        icon: Icon(
-                          Icons.lock,
-                          color: Colors.white,
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey[700]),
-                        ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey[800]),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                          borderSide: BorderSide(color: Colors.grey[800]),
-                        ),
+                      SizedBox(
+                        height: 10,
                       ),
-                      onChanged: (val) {
-                        password = val;
-                      },
-                    ),
-                    SizedBox(
-                      height: 50.0,
-                    ),
-                  ],
+                      Text(
+                        "A digital app that allows \n to create exercise routines for your patients",
+                        style: TextStyle(
+                          fontSize: 12,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  child: Text("Sign In"),
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      setState(() => loading = true);
-                      dynamic result = await _auth.signInWithEmailAndPassword(
-                          email, password);
-                      if (result == null) {
-                        setState(() {
-                          error = "Email or password incorrect";
-                          loading = false;
-                        });
-                      } else {
-                        navigateToUserHomePage(result);
-                      }
-                    }
-                  },
+              Expanded(
+                flex: 6,
+                child: Align(
+                  alignment: Alignment.center,
+                  child: Container(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Form(
+                          key: _formKey,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              TextFormField(
+                                cursorColor: Colors.white,
+                                validator: (val) =>
+                                    val.isEmpty ? "Enter an email" : null,
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.all(8.0), //here your padding
+                                  fillColor: Colors.grey[800],
+                                  filled: true,
+                                  hintText: 'Email',
+                                  icon: Icon(
+                                    Icons.email,
+                                    color: Colors.white,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[700]),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[800]),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[800]),
+                                  ),
+                                ),
+                                onChanged: (val) {
+                                  email = val;
+                                },
+                              ),
+                              SizedBox(
+                                height: 50.0,
+                              ),
+                              TextFormField(
+                                cursorColor: Colors.white,
+                                validator: (val) =>
+                                    val.isEmpty ? "Enter a password" : null,
+                                obscureText: true,
+                                decoration: InputDecoration(
+                                  contentPadding:
+                                      EdgeInsets.all(8.0), //here your padding
+                                  fillColor: Colors.grey[800],
+                                  filled: true,
+                                  hintText: 'password',
+                                  icon: Icon(
+                                    Icons.lock,
+                                    color: Colors.white,
+                                  ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[700]),
+                                  ),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[800]),
+                                  ),
+                                  enabledBorder: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(15),
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[800]),
+                                  ),
+                                ),
+                                onChanged: (val) {
+                                  password = val;
+                                },
+                              ),
+                              SizedBox(
+                                height: 50.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
-              SizedBox(
-                height: 12.0,
-              ),
-              Text(
-                error,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Colors.red,
-                  fontSize: 14,
+              Expanded(
+                flex: 2,
+                child: Container(
+                  child: Column(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.bottomCenter,
+                          child: SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton(
+                              child: Text("Sign In"),
+                              onPressed: () async {
+                                if (_formKey.currentState.validate()) {
+                                  setState(() => loading = true);
+                                  dynamic result =
+                                      await _auth.signInWithEmailAndPassword(
+                                          email, password);
+                                  if (result == null) {
+                                    setState(() {
+                                      error = "Email or password incorrect";
+                                      loading = false;
+                                    });
+                                  } else {
+                                    navigateToUserHomePage(result);
+                                  }
+                                }
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Text(
+                          error,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
