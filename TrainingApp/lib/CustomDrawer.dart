@@ -1,5 +1,9 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:training_app/Client/HomeClientPage.dart';
 import 'package:training_app/Individual/HomeIndividualPage.dart';
 import 'package:training_app/Services/auth.dart';
@@ -59,17 +63,7 @@ class CustomDrawerState extends State<CustomDrawer>
                 fontSize: 14,
               ),
             ),
-            currentAccountPicture: CircleAvatar(
-              backgroundColor: Color(0xFFF05F3C),
-              child: Text(
-                user.displayName[0].toUpperCase(),
-                style: TextStyle(
-                  fontSize: 28,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
+            currentAccountPicture: selectProfilePic(user, document),
             decoration: BoxDecoration(
               color: Tools().createMaterialColor(Color(0xFF3A7A75)),
             ),
@@ -184,5 +178,49 @@ class CustomDrawerState extends State<CustomDrawer>
         ],
       ),
     );
+  }
+
+  selectProfilePic(User user, DocumentSnapshot doc) {
+    String pic = doc.data()['profilePic'];
+    if (pic == Tools().getProfilePicDefault()) {
+      return CircleAvatar(
+        backgroundColor: Color(0xFFF05F3C),
+        child: Text(
+          user.displayName[0].toUpperCase(),
+          style: TextStyle(
+            fontSize: 28,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      );
+    } else {
+      return CircleAvatar(
+        radius: 50,
+        backgroundColor: Colors.white,
+        child: CachedNetworkImage(
+          key: ValueKey(new Random().nextInt(100)),
+          imageUrl: doc.data()['profilePic'],
+          placeholder: (context, url) => SpinKitFadingCircle(
+            color: Colors.blueAccent,
+            size: 50,
+          ),
+          imageBuilder: (context, imageProvider) => Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              image: DecorationImage(image: imageProvider, fit: BoxFit.cover),
+            ),
+          ),
+          errorWidget: (context, url, error) => Text(
+            user.displayName[0].toUpperCase(),
+            style: TextStyle(
+              fontSize: 42,
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

@@ -58,4 +58,11 @@ class Tools {
     0xFFB80F0A,
     0xFF3BB143
   ];
+
+  //Path Profile Pic
+  String profilePicDefault =
+      "https://raw.githubusercontent.com/PolRecasensSarra/Training-App/main/Assets/userProfile.png";
+  String getProfilePicDefault() {
+    return profilePicDefault;
+  }
 }

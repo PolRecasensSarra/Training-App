@@ -17,17 +17,15 @@ class DatabaseService {
   }
 
   updateUserDataWorker() async {
-    userCollection.doc(userName).set({
-      'profilePic':
-          "https://firebasestorage.googleapis.com/v0/b/training-app-3f8c0.appspot.com/o/files%2FAccountIcon2.png?alt=media&token=fe4c1e88-ce9e-4e85-9b09-4b0a43ed7366"
-    });
+    userCollection
+        .doc(userName)
+        .set({'profilePic': Tools().getProfilePicDefault()});
   }
 
   Future updateUserDataIndividual() async {
-    return await userCollection.doc(userName).set({
-      'profilePic':
-          "https://firebasestorage.googleapis.com/v0/b/training-app-3f8c0.appspot.com/o/files%2FAccountIcon2.png?alt=media&token=fe4c1e88-ce9e-4e85-9b09-4b0a43ed7366"
-    });
+    return await userCollection
+        .doc(userName)
+        .set({'profilePic': Tools().getProfilePicDefault()});
   }
 
   updateUserDataClient(String worker) async {
@@ -41,10 +39,9 @@ class DatabaseService {
         .set({'color': Tools().generateRandomColor()});
 
     //Set the client's worker to client database
-    userCollection.doc(userName).set({
-      'profilePic':
-          "https://firebasestorage.googleapis.com/v0/b/training-app-3f8c0.appspot.com/o/files%2FAccountIcon2.png?alt=media&token=fe4c1e88-ce9e-4e85-9b09-4b0a43ed7366"
-    });
+    userCollection
+        .doc(userName)
+        .set({'profilePic': Tools().getProfilePicDefault()});
     userCollection.doc(userName).collection("worker").doc(worker).set({});
   }
 
