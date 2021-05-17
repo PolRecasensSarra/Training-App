@@ -82,7 +82,7 @@ class _LoginPageState extends State<LoginPage> {
       return SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: SingleChildScrollView(
               child: LimitedBox(
                 maxHeight: MediaQuery.of(context).size.height * 0.75,
@@ -140,25 +140,25 @@ class _LoginPageState extends State<LoginPage> {
                                         fillColor: Colors.grey[800],
                                         filled: true,
                                         hintText: 'Email',
-                                        icon: Icon(
+                                        prefixIcon: Icon(
                                           Icons.email,
                                           color: Colors.white,
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(5),
                                           borderSide: BorderSide(
                                               color: Colors.grey[700]),
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(5),
                                           borderSide: BorderSide(
                                               color: Colors.grey[800]),
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(5),
                                           borderSide: BorderSide(
                                               color: Colors.grey[800]),
                                         ),
@@ -177,30 +177,29 @@ class _LoginPageState extends State<LoginPage> {
                                           : null,
                                       obscureText: true,
                                       decoration: InputDecoration(
-                                        contentPadding: EdgeInsets.all(
-                                            8.0), //here your padding
+                                        contentPadding: EdgeInsets.all(8.0),
                                         fillColor: Colors.grey[800],
                                         filled: true,
                                         hintText: 'password',
-                                        icon: Icon(
+                                        prefixIcon: Icon(
                                           Icons.lock,
                                           color: Colors.white,
                                         ),
                                         focusedBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(5),
                                           borderSide: BorderSide(
                                               color: Colors.grey[700]),
                                         ),
                                         border: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(5),
                                           borderSide: BorderSide(
                                               color: Colors.grey[800]),
                                         ),
                                         enabledBorder: OutlineInputBorder(
                                           borderRadius:
-                                              BorderRadius.circular(15),
+                                              BorderRadius.circular(5),
                                           borderSide: BorderSide(
                                               color: Colors.grey[800]),
                                         ),
@@ -223,6 +222,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             Expanded(
+                              flex: 55,
                               child: Align(
                                 alignment: Alignment.bottomCenter,
                                 child: SizedBox(
@@ -251,12 +251,32 @@ class _LoginPageState extends State<LoginPage> {
                               ),
                             ),
                             Expanded(
+                              flex: 20,
                               child: Text(
                                 error,
                                 textAlign: TextAlign.center,
                                 style: TextStyle(
                                   color: Colors.red,
                                   fontSize: 14,
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 25,
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: GestureDetector(
+                                  child: Text(
+                                    "Have you forgotten the password?",
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 14,
+                                    ),
+                                  ),
+                                  onTap: () {
+                                    //TODO: recuperar contrasenya
+                                  },
                                 ),
                               ),
                             ),
