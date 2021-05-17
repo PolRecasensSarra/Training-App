@@ -133,6 +133,19 @@ class DatabaseService {
     }
     return true;
   }
+
+//--------- SURVEY ---------
+  Future<bool> saveSurvey(DocumentSnapshot doc, String day, String url) async {
+    try {
+      doc.reference.collection(day).doc("Survey").set({
+        'survey': url,
+      });
+    } catch (e) {
+      print(e);
+      return false;
+    }
+    return true;
+  }
 }
 
 class DataStorageService {

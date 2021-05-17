@@ -236,7 +236,11 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
                                     builder: (contextCallback) =>
-                                        CreateSurveyPage(),
+                                        CreateSurveyPage(
+                                      day: days[dayIndex],
+                                      document: widget.clientDocument,
+                                      user: widget.user,
+                                    ),
                                   ),
                                 );
                               },
