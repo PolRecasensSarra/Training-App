@@ -71,6 +71,12 @@ class _LoginPageState extends State<LoginPage> {
                 currentIndex: _selectedIndex,
                 onTap: _onItemTapped,
               ),
+              appBar: AppBar(
+                automaticallyImplyLeading: false,
+                elevation: 0,
+                toolbarHeight: 1,
+                backgroundColor: Colors.grey[850],
+              ),
               body: toggleSignInSignUp(_selectedIndex),
             ),
           );
@@ -82,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
       return SafeArea(
         child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 30),
             child: SingleChildScrollView(
               child: LimitedBox(
                 maxHeight: MediaQuery.of(context).size.height * 0.75,
@@ -293,188 +299,204 @@ class _LoginPageState extends State<LoginPage> {
       );
     } else {
       //------------------------------ REGISTER---------------------
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Expanded(
-                flex: 2,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    child: DropdownButton<Item>(
-                      hint: Text("Select user"),
-                      value: dropdownValue,
-                      icon: const Icon(
-                        Icons.arrow_downward,
-                        color: Colors.white,
+      return SafeArea(
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: SingleChildScrollView(
+              controller: ScrollController(),
+              child: LimitedBox(
+                maxHeight: MediaQuery.of(context).size.height * 0.80,
+                child: Column(
+                  children: [
+                    Expanded(
+                      flex: 20,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          child: DropdownButton<Item>(
+                            hint: Text("Select user"),
+                            value: dropdownValue,
+                            icon: const Icon(
+                              Icons.arrow_downward,
+                              color: Colors.white,
+                            ),
+                            iconSize: 24,
+                            elevation: 16,
+                            style: const TextStyle(fontSize: 16),
+                            underline: Container(
+                              height: 2,
+                              color: Colors.white,
+                            ),
+                            onChanged: (newValue) {
+                              setState(() {
+                                dropdownValue = newValue;
+                              });
+                            },
+                            items: users.map((Item user) {
+                              return DropdownMenuItem<Item>(
+                                value: user,
+                                child: Text(user.type),
+                              );
+                            }).toList(),
+                          ),
+                        ),
                       ),
-                      iconSize: 24,
-                      elevation: 16,
-                      style: const TextStyle(fontSize: 16),
-                      underline: Container(
-                        height: 2,
-                        color: Colors.white,
-                      ),
-                      onChanged: (newValue) {
-                        setState(() {
-                          dropdownValue = newValue;
-                        });
-                      },
-                      items: users.map((Item user) {
-                        return DropdownMenuItem<Item>(
-                          value: user,
-                          child: Text(user.type),
-                        );
-                      }).toList(),
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 6,
-                child: Align(
-                  alignment: Alignment.topCenter,
-                  child: Container(
-                    child: Scrollbar(
-                      isAlwaysShown: true,
-                      child: ListView(
-                        shrinkWrap: true,
-                        children: [
-                          Form(
-                            key: _formKey,
-                            child: Column(
+                    Expanded(
+                      flex: 60,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          child: Scrollbar(
+                            isAlwaysShown: true,
+                            child: ListView(
+                              shrinkWrap: true,
                               children: [
-                                userContainer(), // ALL THE STUFF FOR EVERY USER
+                                Form(
+                                  key: _formKey,
+                                  child: Column(
+                                    children: [
+                                      userContainer(), // ALL THE STUFF FOR EVERY USER
+                                    ],
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                        ],
+                        ),
                       ),
                     ),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 2,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    child: Column(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.bottomCenter,
-                            child: SizedBox(
-                              width: double.infinity,
-                              child: ElevatedButton(
-                                child: Text("Register"),
-                                onPressed: () async {
-                                  if (dropdownValue == null) return;
-                                  if (_formKey.currentState.validate()) {
-                                    setState(() => loading = true);
-                                    User result;
-                                    if (dropdownValue.type == "Worker") {
-                                      result = await _auth
-                                          .registerWithEmailAndPasswordWorker(
-                                              email, password, username);
-                                    } else if (dropdownValue.type == "Client") {
-                                      result = await _auth
-                                          .registerWithEmailAndPasswordClient(
-                                              email,
-                                              password,
-                                              username,
-                                              referral);
-                                    } else if (dropdownValue.type ==
-                                        "Individual") {
-                                      result = await _auth
-                                          .registerWithEmailAndPasswordIndividual(
-                                              email, password, username);
-                                    }
-                                    if (result == null) {
-                                      setState(() {
-                                        error =
-                                            "Invalid email or username already taken";
-                                        loading = false;
-                                      });
-                                    } else {
-                                      if (dropdownValue.type == "Worker") {
-                                        DocumentSnapshot doc =
-                                            await DatabaseService(
-                                                    userName:
-                                                        result.displayName,
-                                                    userType:
-                                                        dropdownValue.type)
-                                                .getDocumentSnapshot();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (contextCallback) =>
-                                                HomeWorkerPage(
-                                              user: result,
-                                              document: doc,
-                                            ),
-                                          ),
-                                        );
-                                      } else if (dropdownValue.type ==
-                                          "Client") {
-                                        DocumentSnapshot doc =
-                                            await DatabaseService(
-                                                    userName:
-                                                        result.displayName,
-                                                    userType:
-                                                        dropdownValue.type)
-                                                .getDocumentSnapshot();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (contextCallback) =>
-                                                HomeClientPage(
-                                              user: result,
-                                              document: doc,
-                                            ),
-                                          ),
-                                        );
-                                      } else if (dropdownValue.type ==
-                                          "Individual") {
-                                        DocumentSnapshot doc =
-                                            await DatabaseService(
-                                                    userName:
-                                                        result.displayName,
-                                                    userType:
-                                                        dropdownValue.type)
-                                                .getDocumentSnapshot();
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                            builder: (contextCallback) =>
-                                                HomeIndividualPage(
-                                              user: result,
-                                              document: doc,
-                                            ),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                  }
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
-                        Expanded(
-                          child: Text(
-                            error,
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 14,
-                            ),
-                          ),
-                        ),
-                      ],
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    Expanded(
+                      flex: 20,
+                      child: Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Expanded(
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: SizedBox(
+                                    width: double.infinity,
+                                    child: ElevatedButton(
+                                      child: Text("Register"),
+                                      onPressed: () async {
+                                        if (dropdownValue == null) return;
+                                        if (_formKey.currentState.validate()) {
+                                          setState(() => loading = true);
+                                          User result;
+                                          if (dropdownValue.type == "Worker") {
+                                            result = await _auth
+                                                .registerWithEmailAndPasswordWorker(
+                                                    email, password, username);
+                                          } else if (dropdownValue.type ==
+                                              "Client") {
+                                            result = await _auth
+                                                .registerWithEmailAndPasswordClient(
+                                                    email,
+                                                    password,
+                                                    username,
+                                                    referral);
+                                          } else if (dropdownValue.type ==
+                                              "Individual") {
+                                            result = await _auth
+                                                .registerWithEmailAndPasswordIndividual(
+                                                    email, password, username);
+                                          }
+                                          if (result == null) {
+                                            setState(() {
+                                              error =
+                                                  "Invalid email or username already taken";
+                                              loading = false;
+                                            });
+                                          } else {
+                                            if (dropdownValue.type ==
+                                                "Worker") {
+                                              DocumentSnapshot doc =
+                                                  await DatabaseService(
+                                                          userName: result
+                                                              .displayName,
+                                                          userType:
+                                                              dropdownValue
+                                                                  .type)
+                                                      .getDocumentSnapshot();
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (contextCallback) =>
+                                                      HomeWorkerPage(
+                                                    user: result,
+                                                    document: doc,
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (dropdownValue.type ==
+                                                "Client") {
+                                              DocumentSnapshot doc =
+                                                  await DatabaseService(
+                                                          userName: result
+                                                              .displayName,
+                                                          userType:
+                                                              dropdownValue
+                                                                  .type)
+                                                      .getDocumentSnapshot();
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (contextCallback) =>
+                                                      HomeClientPage(
+                                                    user: result,
+                                                    document: doc,
+                                                  ),
+                                                ),
+                                              );
+                                            } else if (dropdownValue.type ==
+                                                "Individual") {
+                                              DocumentSnapshot doc =
+                                                  await DatabaseService(
+                                                          userName: result
+                                                              .displayName,
+                                                          userType:
+                                                              dropdownValue
+                                                                  .type)
+                                                      .getDocumentSnapshot();
+                                              Navigator.of(context).push(
+                                                MaterialPageRoute(
+                                                  builder: (contextCallback) =>
+                                                      HomeIndividualPage(
+                                                    user: result,
+                                                    document: doc,
+                                                  ),
+                                                ),
+                                              );
+                                            }
+                                          }
+                                        }
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Expanded(
+                                child: Text(
+                                  error,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-            ],
+            ),
           ),
         ),
       );
@@ -496,20 +518,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your Username*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -530,20 +552,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your Email*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -565,20 +587,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your password*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -604,20 +626,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your Username*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -638,20 +660,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your Email*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -673,20 +695,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your password*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -713,20 +735,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your Username*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.person,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -747,20 +769,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your Email*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.email,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -782,20 +804,20 @@ class _LoginPageState extends State<LoginPage> {
               fillColor: Colors.grey[800],
               filled: true,
               hintText: 'Enter your password*',
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.lock,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
@@ -820,20 +842,20 @@ class _LoginPageState extends State<LoginPage> {
               helperText:
                   "You need to provide your worker's name in order to link them",
               helperMaxLines: 2,
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.animation,
                 color: Colors.white,
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[700]),
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(color: Colors.grey[800]),
               ),
             ),
