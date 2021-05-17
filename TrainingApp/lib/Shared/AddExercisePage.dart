@@ -78,15 +78,15 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               hintText: 'Enter exercise name',
                               hintStyle: TextStyle(fontSize: 12),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[700]),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                             ),
@@ -116,15 +116,15 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               hintText: 'Enter sessions and repetitions',
                               hintStyle: TextStyle(fontSize: 12),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[700]),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                             ),
@@ -156,15 +156,15 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               filled: true,
                               fillColor: Colors.grey[800],
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[700]),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                             ),
@@ -194,15 +194,15 @@ class _AddExercisePageState extends State<AddExercisePage> {
                               hintText: 'Enter a video URL',
                               hintStyle: TextStyle(fontSize: 12),
                               focusedBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[700]),
                               ),
                               border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                               enabledBorder: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(15),
+                                borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                             ),
