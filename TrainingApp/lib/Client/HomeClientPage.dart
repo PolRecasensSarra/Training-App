@@ -164,26 +164,33 @@ class _HomeClientPageState extends State<HomeClientPage> {
                     builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.data.docs.isNotEmpty) {
+                        List<QueryDocumentSnapshot> exercises =
+                            getExerciseList(snapshot.data.docs);
+                        if (exercises.isEmpty) {
+                          return Text(
+                            "No routines added yet",
+                            style: TextStyle(color: Colors.orangeAccent),
+                          );
+                        }
                         return Scrollbar(
                           isAlwaysShown: true,
                           child: ListView.builder(
                             padding: EdgeInsets.symmetric(horizontal: 26),
                             shrinkWrap: true,
-                            itemCount: snapshot.data.docs.length,
+                            itemCount: exercises.length,
                             itemBuilder: (context, index) {
                               return Card(
                                 child: ListTile(
                                   trailing: Icon(Icons.open_in_new_outlined),
                                   title: Text(
-                                    snapshot.data.docs[index].data()['name'],
+                                    exercises[index].data()['name'],
                                     style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   subtitle: Text(
-                                    "SxR: " +
-                                        snapshot.data.docs[index].data()['sxr'],
+                                    "SxR: " + exercises[index].data()['sxr'],
                                     textAlign: TextAlign.start,
                                     style: TextStyle(
                                       color: Colors.white,
@@ -195,8 +202,7 @@ class _HomeClientPageState extends State<HomeClientPage> {
                                       MaterialPageRoute(
                                         builder: (contextCallback) =>
                                             RoutineInfoPage(
-                                          clientDocument:
-                                              snapshot.data.docs[index],
+                                          clientDocument: exercises[index],
                                         ),
                                       ),
                                     );
@@ -271,5 +277,18 @@ class _HomeClientPageState extends State<HomeClientPage> {
 
   Future<QuerySnapshot> getData() async {
     return await clientDocument.reference.collection(days[dayIndex]).get();
+  }
+
+  List<QueryDocumentSnapshot> getExerciseList(
+      List<QueryDocumentSnapshot> snapshot) {
+    int length = snapshot.length;
+    List<QueryDocumentSnapshot> list = List<QueryDocumentSnapshot>();
+    for (int i = 0; i < length; ++i) {
+      String survey = snapshot[i].id;
+      if (survey != "Survey") {
+        list.add(snapshot[i]);
+      }
+    }
+    return list;
   }
 }

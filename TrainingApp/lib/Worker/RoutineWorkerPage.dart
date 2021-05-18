@@ -122,6 +122,12 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                         if (snapshot.connectionState == ConnectionState.done) {
                           List<QueryDocumentSnapshot> exercises =
                               getExerciseList(snapshot.data.docs);
+                          if (exercises.isEmpty) {
+                            return Text(
+                              "No exercises added yet",
+                              style: TextStyle(color: Colors.orangeAccent),
+                            );
+                          }
                           return Scrollbar(
                             isAlwaysShown: true,
                             child: ListView.builder(
