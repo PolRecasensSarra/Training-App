@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
 import 'package:training_app/Client/ClientSurvey.dart';
+import 'package:training_app/Services/tools.dart';
 import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/main.dart';
 import 'package:flutter/material.dart';
@@ -30,8 +31,9 @@ class _HomeClientPageState extends State<HomeClientPage> {
   int dayIndex = 0;
   DocumentSnapshot clientDocument;
   DocumentSnapshot workerDocument;
-
+  String surveyPath = "";
   String actualDay = "";
+  String error = "";
 
   setup() async {
     await getClientWorker();
@@ -112,6 +114,7 @@ class _HomeClientPageState extends State<HomeClientPage> {
                         child: IconButton(
                           icon: Icon(Icons.arrow_back_ios),
                           onPressed: () {
+                            error = "";
                             if (dayIndex == 0)
                               setState(() {
                                 dayIndex = 6;
@@ -140,6 +143,7 @@ class _HomeClientPageState extends State<HomeClientPage> {
                         child: IconButton(
                           icon: Icon(Icons.arrow_forward_ios),
                           onPressed: () {
+                            error = "";
                             if (dayIndex == 6)
                               setState(() {
                                 dayIndex = 0;
@@ -242,19 +246,16 @@ class _HomeClientPageState extends State<HomeClientPage> {
                         child: ElevatedButton(
                           child: Text("Survey"),
                           onPressed: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (contextCallback) => ClientSurveyPage(
-                                  user: widget.user,
-                                  document: clientDocument,
-                                ),
-                              ),
-                            );
+                            launchSurveyURL();
                           },
                         ),
                       ),
                     ),
                   ),
+                ),
+                Text(
+                  error,
+                  style: TextStyle(color: Colors.orangeAccent),
                 ),
               ],
             ),
@@ -290,5 +291,34 @@ class _HomeClientPageState extends State<HomeClientPage> {
       }
     }
     return list;
+  }
+
+  launchSurveyURL() async {
+    String path = await getSurveyPath();
+    if (path.isEmpty) {
+      error = "No surveys added";
+      setState(() {});
+      return;
+    }
+    bool canLaunch = await Tools().canLaunchURL(path);
+    if (canLaunch) {
+      Tools().customLaunch(path);
+      error = "";
+    } else {
+      error = "Error launching survey URL";
+      setState(() {});
+    }
+  }
+
+  getSurveyPath() async {
+    DocumentSnapshot ds = await clientDocument.reference
+        .collection(days[dayIndex])
+        .doc("Survey")
+        .get();
+    if (ds.exists) {
+      return ds.data()["survey"];
+    } else {
+      return "";
+    }
   }
 }
