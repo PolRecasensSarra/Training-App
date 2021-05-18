@@ -76,7 +76,7 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
                             Icons.poll,
                             color: Colors.white,
                           ),
-                          labelText: "",
+                          labelText: pathSurvey,
                           contentPadding:
                               EdgeInsets.all(8.0), //here your padding
                           hintText: 'Enter a survey URL',

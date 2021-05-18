@@ -120,26 +120,26 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                       builder:
                           (context, AsyncSnapshot<QuerySnapshot> snapshot) {
                         if (snapshot.connectionState == ConnectionState.done) {
+                          List<QueryDocumentSnapshot> exercises =
+                              getExerciseList(snapshot.data.docs);
                           return Scrollbar(
                             isAlwaysShown: true,
                             child: ListView.builder(
                               padding: EdgeInsets.symmetric(horizontal: 26),
                               shrinkWrap: true,
-                              itemCount: snapshot.data.docs.length,
+                              itemCount: exercises.length,
                               itemBuilder: (context, index) {
                                 return Card(
                                   child: ListTile(
                                     title: Text(
-                                      snapshot.data.docs[index].data()['name'],
+                                      exercises[index].data()['name'],
                                       style: TextStyle(
                                           color: Colors.white,
                                           fontSize: 14,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     subtitle: Text(
-                                      "SxR: " +
-                                          snapshot.data.docs[index]
-                                              .data()['sxr'],
+                                      "SxR: " + exercises[index].data()['sxr'],
                                       textAlign: TextAlign.start,
                                       style: TextStyle(
                                         color: Colors.white,
@@ -150,7 +150,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                       icon: Icon(Icons.delete),
                                       onPressed: () async {
                                         bool result = await deleteExercise(
-                                            snapshot.data.docs[index]);
+                                            exercises[index]);
                                         if (!result) {
                                           print(
                                               "Something went wrond deleting this exercise");
@@ -164,8 +164,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                         MaterialPageRoute(
                                           builder: (contextCallback) =>
                                               RoutineInfoPage(
-                                            clientDocument:
-                                                snapshot.data.docs[index],
+                                            clientDocument: exercises[index],
                                           ),
                                         ),
                                       );
@@ -281,5 +280,18 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
       print(e);
       return false;
     }
+  }
+
+  List<QueryDocumentSnapshot> getExerciseList(
+      List<QueryDocumentSnapshot> snapshot) {
+    int length = snapshot.length;
+    List<QueryDocumentSnapshot> list = List<QueryDocumentSnapshot>();
+    for (int i = 0; i < length; ++i) {
+      String survey = snapshot[i].id;
+      if (survey != "Survey") {
+        list.add(snapshot[i]);
+      }
+    }
+    return list;
   }
 }
