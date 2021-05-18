@@ -22,9 +22,12 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
   bool validURL;
   String error = "";
   bool loading = false;
+  DocumentSnapshot ds;
+  String surveyError = "";
+  TextEditingController _controller = TextEditingController();
 
   getSurveyPath() async {
-    DocumentSnapshot ds = await widget.document.reference
+    ds = await widget.document.reference
         .collection(widget.day)
         .doc("Survey")
         .get();
@@ -68,6 +71,7 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
                     Form(
                       key: _formKey,
                       child: TextFormField(
+                        controller: _controller,
                         cursorColor: Colors.white,
                         decoration: InputDecoration(
                           filled: true,
@@ -107,6 +111,56 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
                     SizedBox(
                       height: 8,
                     ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: ElevatedButton(
+                        child: Text("Open Survey"),
+                        onPressed: () async {
+                          bool valid = await Tools().canLaunchURL(pathSurvey);
+                          if (valid) {
+                            Tools().customLaunch(pathSurvey);
+                          } else {
+                            surveyError = "Invalid or Null link";
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.6,
+                      child: ElevatedButton(
+                        child: Text("Delete Survey URL"),
+                        style:
+                            ElevatedButton.styleFrom(primary: Colors.red[400]),
+                        onPressed: () async {
+                          if (pathSurvey.isEmpty) {
+                            surveyError = "No Surveys to delete";
+                            setState(() {});
+                            return;
+                          }
+                          bool result = await deleteExercise(ds);
+
+                          if (!result) {
+                            print(
+                                "Something went wrond deleting this exercise");
+                          } else {
+                            print("Deleted Survey");
+                            surveyError = "";
+                            pathSurvey = "";
+                            error = "";
+                            _controller.clear();
+                            setState(() {});
+                          }
+                        },
+                      ),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      surveyError,
+                      style: TextStyle(color: Colors.red),
+                    ),
                     Expanded(
                       child: Align(
                         alignment: Alignment.bottomCenter,
@@ -126,12 +180,14 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    primary: Colors.blueAccent),
                                 child: Text("SAVE"),
                                 onPressed: () async {
                                   if (_formKey.currentState.validate()) {
                                     validURL =
                                         await Tools().canLaunchURL(pathSurvey);
-                                    if (!validURL && pathSurvey.isNotEmpty) {
+                                    if (!validURL) {
                                       setState(
                                           () => error = "Video URL not valid");
                                       return;
@@ -156,6 +212,10 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
                                 },
                               ),
                             ),
+                            Text(
+                              error,
+                              style: TextStyle(color: Colors.red),
+                            ),
                           ],
                         ),
                       ),
@@ -165,5 +225,18 @@ class _CreateSurveyPageState extends State<CreateSurveyPage> {
               ),
             ),
           );
+  }
+
+  Future<bool> deleteExercise(DocumentSnapshot document) async {
+    try {
+      await FirebaseFirestore.instance
+          .runTransaction((Transaction myTransaction) async {
+        myTransaction.delete(document.reference);
+      });
+      return true;
+    } catch (e) {
+      print(e);
+      return false;
+    }
   }
 }
