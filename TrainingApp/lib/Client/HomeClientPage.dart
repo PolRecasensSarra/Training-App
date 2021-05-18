@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
-import 'package:training_app/Client/ClientSurvey.dart';
 import 'package:training_app/Services/tools.dart';
 import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/main.dart';
