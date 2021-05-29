@@ -6,6 +6,7 @@ import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
+import 'package:training_app/Worker/EditRoutineWorker.dart';
 import 'package:training_app/main.dart';
 import 'package:video_player/video_player.dart';
 
@@ -166,14 +167,22 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                                       },
                                     ),
                                     onTap: () {
-                                      Navigator.of(context).push(
+                                      Navigator.of(context)
+                                          .push(
                                         MaterialPageRoute(
-                                          builder: (contextCallback) =>
-                                              RoutineInfoPage(
-                                            clientDocument: exercises[index],
-                                          ),
-                                        ),
-                                      );
+                                            builder: (contextCallback) =>
+                                                EditExercisePage(
+                                                    user: widget.user,
+                                                    document:
+                                                        widget.clientDocument,
+                                                    exerciseDocument:
+                                                        exercises[index],
+                                                    day: days[dayIndex],
+                                                    userType: UserType.worker)),
+                                      )
+                                          .then((value) {
+                                        setState(() {});
+                                      });
                                     },
                                   ),
                                 );
