@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:training_app/Shared/EditExercisePage.dart';
 import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/main.dart';
@@ -117,15 +118,14 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                           return Scrollbar(
                             isAlwaysShown: true,
                             child: ListView.builder(
-                              padding: EdgeInsets.only(left: 16, right: 10),
+                              padding: EdgeInsets.symmetric(horizontal: 13),
                               shrinkWrap: true,
                               itemCount: snapshot.data.docs.length,
                               itemBuilder: (context, index) {
-                                return Row(
-                                  children: [
-                                    Expanded(
-                                      flex: 85,
-                                      child: Card(
+                                return Card(
+                                  child: Row(
+                                    children: [
+                                      Expanded(
                                         child: ListTile(
                                           title: Text(
                                             snapshot.data.docs[index]
@@ -145,10 +145,13 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                                               fontSize: 12,
                                             ),
                                           ),
-                                          trailing:
-                                              Icon(Icons.open_in_new_outlined),
-                                          onTap: () {
-                                            Navigator.of(context).push(
+                                          
+                                        ),
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.open_in_new_outlined),
+                                        onPressed: () {
+                                          Navigator.of(context).push(
                                               MaterialPageRoute(
                                                 builder: (contextCallback) =>
                                                     RoutineInfoPage(
@@ -157,33 +160,45 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                                                 ),
                                               ),
                                             );
-                                          },
-                                        ),
+                                        },
                                       ),
-                                    ),
-                                    SizedBox(
-                                      width: 10,
-                                    ),
-                                    Expanded(
-                                      flex: 15,
-                                      child: Align(
-                                        alignment: Alignment.centerRight,
-                                        child: IconButton(
-                                          icon: Icon(Icons.delete),
-                                          onPressed: () async {
-                                            bool result = await deleteExercise(
-                                                snapshot.data.docs[index]);
-                                            if (!result) {
-                                              print(
-                                                  "Something went wrond deleting this exercise");
-                                            } else {
-                                              setState(() {});
-                                            }
-                                          },
-                                        ),
+                                      IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .push(
+                                            MaterialPageRoute(
+                                                builder: (contextCallback) =>
+                                                    EditExercisePage(
+                                                        user: widget.user,
+                                                        document: widget
+                                                            .document,
+                                                        exerciseDocument:
+                                                             snapshot.data.docs[index],
+                                                        day: days[dayIndex],
+                                                        userType:
+                                                            UserType.individual)),
+                                          )
+                                              .then((value) {
+                                            setState(() {});
+                                          });
+                                        },
                                       ),
-                                    ),
-                                  ],
+                                      IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () async {
+                                          bool result = await deleteExercise(
+                                              snapshot.data.docs[index]);
+                                          if (!result) {
+                                            print(
+                                                "Something went wrond deleting this exercise");
+                                          } else {
+                                            setState(() {});
+                                          }
+                                        },
+                                      ),
+                                    ],
+                                  ),
                                 );
                               },
                             ),

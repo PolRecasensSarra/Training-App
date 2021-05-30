@@ -38,7 +38,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
 
   DocumentSnapshot ds;
 
-  getSurveyPath() async {
+  getExerciseInfo() async {
     if (widget.exerciseDocument.exists) {
       ds = widget.exerciseDocument;
 
@@ -54,7 +54,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
   }
 
   setUp() async {
-    await getSurveyPath();
+    await getExerciseInfo();
   }
 
   @override
