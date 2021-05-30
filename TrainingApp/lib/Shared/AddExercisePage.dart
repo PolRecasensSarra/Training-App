@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -28,6 +29,7 @@ class _AddExercisePageState extends State<AddExercisePage> {
   final _formKey = GlobalKey<FormState>();
   bool loading = false;
   String error = "";
+  String errorImage = "";
   String pathImage = "";
   String pathVideo = "";
   File fileImage;
@@ -248,6 +250,16 @@ class _AddExercisePageState extends State<AddExercisePage> {
                                       fileImage = await DataStorageService()
                                           .selectFile();
                                       if (fileImage != null) {
+                                        int size = await fileImage.length();
+                                        if (size / pow(1024, 2) > 10) {
+                                          setState(() {
+                                            errorImage =
+                                                "Image size cannot exceeds 10 MB";
+                                            fileImage = null;
+                                          });
+                                          return;
+                                        }
+
                                         setState(() {
                                           pathImage =
                                               fileImage.path.split('/').last;
@@ -267,6 +279,17 @@ class _AddExercisePageState extends State<AddExercisePage> {
                             child: Text(
                               pathImage,
                               style: TextStyle(
+                                fontSize: 12,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              errorImage,
+                              style: TextStyle(
+                                color: Colors.red,
                                 fontSize: 12,
                                 fontStyle: FontStyle.italic,
                               ),
