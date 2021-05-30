@@ -98,6 +98,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey[800],
+                              helperText: "Name",
                               labelText: name,
                               labelStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -121,7 +122,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                               ),
                             ),
                             validator: (val) =>
-                                val.isEmpty ? "Enter a name" : null,
+                                name.isEmpty ? "Enter a name" : null,
                             onChanged: (val) {
                               setState(() {
                                 name = val;
@@ -136,6 +137,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey[800],
+                              helperText: "Series and Repetitions",
                               labelText: sxr,
                               labelStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -159,7 +161,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                               ),
                             ),
                             validator: (val) =>
-                                val.isEmpty ? "Enter a SxR" : null,
+                                sxr.isEmpty ? "Enter a SxR" : null,
                             onChanged: (val) {
                               setState(() {
                                 sxr = val;
@@ -174,6 +176,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                             maxLines: null,
                             cursorColor: Colors.white,
                             decoration: InputDecoration(
+                              helperText: "Description",
                               labelText: description,
                               labelStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
@@ -198,8 +201,9 @@ class _EditExercisePageState extends State<EditExercisePage> {
                                 borderSide: BorderSide(color: Colors.grey[800]),
                               ),
                             ),
-                            validator: (val) =>
-                                val.isEmpty ? "Enter a description" : null,
+                            validator: (val) => description.isEmpty
+                                ? "Enter a description"
+                                : null,
                             onChanged: (val) {
                               setState(() {
                                 description = val;
@@ -214,6 +218,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                             decoration: InputDecoration(
                               filled: true,
                               fillColor: Colors.grey[800],
+                              helperText: "Video URL",
                               labelText: pathVideo,
                               labelStyle: TextStyle(
                                   fontWeight: FontWeight.bold,
