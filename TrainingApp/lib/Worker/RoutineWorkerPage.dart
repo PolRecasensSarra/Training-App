@@ -2,11 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:intl/intl.dart';
+import 'package:training_app/Shared/EditExercisePage.dart';
 import 'package:training_app/Shared/RoutineInfoPage.dart';
 import 'package:training_app/Shared/AddExercisePage.dart';
 import 'package:training_app/Worker/CreateSurvey.dart';
 import 'package:flutter/material.dart';
-import 'package:training_app/Worker/EditRoutineWorker.dart';
 import 'package:training_app/main.dart';
 import 'package:video_player/video_player.dart';
 
@@ -132,58 +132,87 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                           return Scrollbar(
                             isAlwaysShown: true,
                             child: ListView.builder(
-                              padding: EdgeInsets.symmetric(horizontal: 26),
+                              padding: EdgeInsets.symmetric(horizontal: 13),
                               shrinkWrap: true,
                               itemCount: exercises.length,
                               itemBuilder: (context, index) {
                                 return Card(
-                                  child: ListTile(
-                                    title: Text(
-                                      exercises[index].data()['name'],
-                                      style: TextStyle(
-                                          color: Colors.white,
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    subtitle: Text(
-                                      "SxR: " + exercises[index].data()['sxr'],
-                                      textAlign: TextAlign.start,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: ListTile(
+                                          title: Text(
+                                            exercises[index].data()['name'],
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          subtitle: Text(
+                                            "SxR: " +
+                                                exercises[index].data()['sxr'],
+                                            textAlign: TextAlign.start,
+                                            style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12,
+                                            ),
+                                          ),
+                                          //onTap: () {},
+                                        ),
                                       ),
-                                    ),
-                                    trailing: IconButton(
-                                      icon: Icon(Icons.delete),
-                                      onPressed: () async {
-                                        bool result = await deleteExercise(
-                                            exercises[index]);
-                                        if (!result) {
-                                          print(
-                                              "Something went wrond deleting this exercise");
-                                        } else {
-                                          setState(() {});
-                                        }
-                                      },
-                                    ),
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(
-                                        MaterialPageRoute(
-                                            builder: (contextCallback) =>
-                                                EditExercisePage(
-                                                    user: widget.user,
-                                                    document:
-                                                        widget.clientDocument,
-                                                    exerciseDocument:
-                                                        exercises[index],
-                                                    day: days[dayIndex],
-                                                    userType: UserType.worker)),
-                                      )
-                                          .then((value) {
-                                        setState(() {});
-                                      });
-                                    },
+                                      IconButton(
+                                        icon: Icon(Icons.open_in_new_outlined),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .push(
+                                            MaterialPageRoute(
+                                              builder: (contextCallback) =>
+                                                  RoutineInfoPage(
+                                                      clientDocument:
+                                                          exercises[index]),
+                                            ),
+                                          )
+                                              .then((value) {
+                                            setState(() {});
+                                          });
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.edit),
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                              .push(
+                                            MaterialPageRoute(
+                                                builder: (contextCallback) =>
+                                                    EditExercisePage(
+                                                        user: widget.user,
+                                                        document: widget
+                                                            .clientDocument,
+                                                        exerciseDocument:
+                                                            exercises[index],
+                                                        day: days[dayIndex],
+                                                        userType:
+                                                            UserType.worker)),
+                                          )
+                                              .then((value) {
+                                            setState(() {});
+                                          });
+                                        },
+                                      ),
+                                      IconButton(
+                                        icon: Icon(Icons.delete),
+                                        onPressed: () async {
+                                          bool result = await deleteExercise(
+                                              exercises[index]);
+                                          if (!result) {
+                                            print(
+                                                "Something went wrond deleting this exercise");
+                                          } else {
+                                            setState(() {});
+                                          }
+                                        },
+                                      ),
+                                    ],
                                   ),
                                 );
                               },
@@ -245,7 +274,7 @@ class _RoutineWorkerPageState extends State<RoutineWorkerPage> {
                           child: SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              child: Text("Create Survey"),
+                              child: Text("Survey"),
                               onPressed: () {
                                 Navigator.of(context).push(
                                   MaterialPageRoute(
