@@ -23,6 +23,7 @@ class _ProfilePageState extends State<ProfilePage> {
   File fileImage;
   DocumentSnapshot document;
   bool loading = true;
+  String errorImage = "";
 
   @override
   void initState() {
@@ -111,13 +112,36 @@ class _ProfilePageState extends State<ProfilePage> {
                           onPressed: () async {
                             fileImage = await DataStorageService().selectFile();
                             if (fileImage != null) {
+                              int size = await fileImage.length();
+                              if (size / pow(1024, 2) > 10) {
+                                setState(() {
+                                  errorImage =
+                                      "Image size cannot exceeds 10 MB";
+                                  fileImage = null;
+                                });
+                                return;
+                              }
                               String image = await DataStorageService()
                                   .uploadFile(fileImage);
                               await setProfilePicture(image);
+                              setState(() {
+                                errorImage = "";
+                              });
                             }
                           },
                         ),
                       ],
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      errorImage,
+                      style: TextStyle(
+                        color: Colors.red,
+                        fontSize: 12,
+                        fontStyle: FontStyle.italic,
+                      ),
                     ),
                     SizedBox(
                       height: 40,
