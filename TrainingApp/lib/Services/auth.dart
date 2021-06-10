@@ -127,4 +127,8 @@ class AuthService {
       return null;
     }
   }
+
+  sendPasswordResetEmail(String email) {
+    _auth.sendPasswordResetEmail(email: email);
+  }
 }

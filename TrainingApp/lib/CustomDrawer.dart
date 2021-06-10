@@ -153,7 +153,7 @@ class CustomDrawerState extends State<CustomDrawer>
                 ),
                 context: contextCallback,
                 applicationVersion: '0.01',
-                applicationName: 'ReHealth',
+                applicationName: 'ImproveMe',
                 applicationLegalese: 'MIT License',
               );
             },

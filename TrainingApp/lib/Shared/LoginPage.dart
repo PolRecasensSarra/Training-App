@@ -6,6 +6,7 @@ import 'package:training_app/Services/Database.dart';
 import 'package:training_app/Services/auth.dart';
 import 'package:flutter/material.dart';
 import 'package:training_app/Shared/Loading.dart';
+import 'package:training_app/Shared/RestorePassword.dart';
 import 'package:training_app/Worker/HomeWorkerPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -101,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             Text(
-                              "Welcome to \n ReHealth",
+                              "Welcome to \n ImproveMe",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 24,
@@ -276,12 +277,17 @@ class _LoginPageState extends State<LoginPage> {
                                     "Have you forgotten the password?",
                                     textAlign: TextAlign.center,
                                     style: TextStyle(
-                                      color: Colors.white,
+                                      color: Colors.orangeAccent,
                                       fontSize: 14,
                                     ),
                                   ),
                                   onTap: () {
-                                    //TODO: recuperar contrasenya
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (contextCallback) =>
+                                            RestorePassword(),
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
