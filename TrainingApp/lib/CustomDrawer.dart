@@ -13,7 +13,6 @@ import 'package:flutter/material.dart';
 import 'Services/tools.dart';
 import 'Worker/HomeWorkerPage.dart';
 import 'Shared/ProfilePage.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class CustomDrawer extends StatefulWidget {
   @override
@@ -152,9 +151,10 @@ class CustomDrawerState extends State<CustomDrawer>
                   child: Image.asset("assets/logo32.png"),
                 ),
                 context: contextCallback,
-                applicationVersion: '0.01',
+                applicationVersion: '1.0',
                 applicationName: 'ImproveMe',
-                applicationLegalese: 'MIT License',
+                applicationLegalese:
+                    'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
               );
             },
           ),
