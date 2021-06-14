@@ -34,6 +34,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
   String error = "";
   String errorImage = "";
   String pathImage = "";
+  String auxPathImage = "";
   String pathVideo = "";
   File fileImage;
   bool validURL;
@@ -48,7 +49,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
       lastName = name = ds.data()["name"];
       sxr = ds.data()["sxr"];
       description = ds.data()["description"];
-      pathImage = ds.data()["imageURL"];
+      pathImage = auxPathImage = ds.data()["imageURL"];
       pathVideo = ds.data()["videoURL"];
 
       setState(() {});
@@ -296,6 +297,7 @@ class _EditExercisePageState extends State<EditExercisePage> {
                                         }
 
                                         setState(() {
+                                          auxPathImage = "";
                                           pathImage =
                                               fileImage.path.split('/').last;
                                         });
@@ -361,8 +363,13 @@ class _EditExercisePageState extends State<EditExercisePage> {
                                   }
                                   setState(() => loading = true);
                                   //Upload Image
-                                  String image = await DataStorageService()
-                                      .uploadFile(fileImage);
+                                  String image;
+                                  if (auxPathImage.isEmpty) {
+                                    image = await DataStorageService()
+                                        .uploadFile(fileImage);
+                                  } else {
+                                    image = auxPathImage;
+                                  }
                                   //Upload Exercises
                                   bool succes;
                                   if (widget.userType == UserType.worker) {
