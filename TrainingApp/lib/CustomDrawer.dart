@@ -151,7 +151,7 @@ class CustomDrawerState extends State<CustomDrawer>
                   child: Image.asset("assets/logo32.png"),
                 ),
                 context: contextCallback,
-                applicationVersion: '1.0',
+                applicationVersion: '1.1',
                 applicationName: 'ImproveMe',
                 applicationLegalese:
                     'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
