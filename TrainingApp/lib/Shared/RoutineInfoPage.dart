@@ -3,9 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:training_app/Services/tools.dart';
-import 'package:training_app/Shared/VideoPage.dart';
-import 'package:training_app/Widgets/VideoPlayerWidget.dart';
-import 'package:video_player/video_player.dart';
 
 class RoutineInfoPage extends StatefulWidget {
   final DocumentSnapshot clientDocument;
