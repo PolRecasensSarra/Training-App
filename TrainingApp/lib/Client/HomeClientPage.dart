@@ -226,7 +226,7 @@ class _HomeClientPageState extends State<HomeClientPage> {
                       return Align(
                           alignment: Alignment.center,
                           child: SpinKitFadingCircle(
-                            color: Colors.blueAccent,
+                            color: Color(0xFF227A73),
                           ));
                     },
                   ),

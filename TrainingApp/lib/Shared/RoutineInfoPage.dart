@@ -148,7 +148,7 @@ class _RoutineInfoPageState extends State<RoutineInfoPage> {
                       child: CachedNetworkImage(
                         imageUrl: widget.clientDocument.data()['imageURL'],
                         placeholder: (context, url) => SpinKitFadingCircle(
-                          color: Colors.teal,
+                          color: Color(0xFF227A73),
                           size: 50,
                         ),
                         errorWidget: (context, url, error) => Text(

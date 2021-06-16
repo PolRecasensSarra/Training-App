@@ -15,7 +15,7 @@ class VideoPlayerWidget extends StatelessWidget {
     return controller != null && controller.value.isInitialized
         ? Container(alignment: Alignment.topCenter, child: buildVideo())
         : SpinKitFadingCircle(
-            color: Colors.blueAccent,
+            color: Color(0xFF227A73),
           );
   }
 

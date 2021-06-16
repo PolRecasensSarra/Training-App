@@ -180,7 +180,7 @@ class _HomeWorkerPageState extends State<HomeWorkerPage> {
             key: ValueKey(new Random().nextInt(100)),
             imageUrl: doc.data()['profilePic'],
             placeholder: (context, url) => SpinKitFadingCircle(
-              color: Colors.blueAccent,
+              color: Color(0xFF227A73),
               size: 30,
             ),
             imageBuilder: (context, imageProvider) => Container(

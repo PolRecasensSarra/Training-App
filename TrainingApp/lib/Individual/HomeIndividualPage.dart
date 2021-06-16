@@ -145,21 +145,20 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                                               fontSize: 12,
                                             ),
                                           ),
-                                          
                                         ),
                                       ),
                                       IconButton(
                                         icon: Icon(Icons.open_in_new_outlined),
                                         onPressed: () {
                                           Navigator.of(context).push(
-                                              MaterialPageRoute(
-                                                builder: (contextCallback) =>
-                                                    RoutineInfoPage(
-                                                  clientDocument:
-                                                      snapshot.data.docs[index],
-                                                ),
+                                            MaterialPageRoute(
+                                              builder: (contextCallback) =>
+                                                  RoutineInfoPage(
+                                                clientDocument:
+                                                    snapshot.data.docs[index],
                                               ),
-                                            );
+                                            ),
+                                          );
                                         },
                                       ),
                                       IconButton(
@@ -171,13 +170,14 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                                                 builder: (contextCallback) =>
                                                     EditExercisePage(
                                                         user: widget.user,
-                                                        document: widget
-                                                            .document,
+                                                        document:
+                                                            widget.document,
                                                         exerciseDocument:
-                                                             snapshot.data.docs[index],
+                                                            snapshot.data
+                                                                .docs[index],
                                                         day: days[dayIndex],
-                                                        userType:
-                                                            UserType.individual)),
+                                                        userType: UserType
+                                                            .individual)),
                                           )
                                               .then((value) {
                                             setState(() {});
@@ -215,7 +215,7 @@ class _HomeIndividualPageState extends State<HomeIndividualPage> {
                         return Align(
                             alignment: Alignment.center,
                             child: SpinKitFadingCircle(
-                              color: Colors.blueAccent,
+                              color: Color(0xFF227A73),
                             ));
                       }),
                 ),

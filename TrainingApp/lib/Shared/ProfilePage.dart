@@ -82,7 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           key: ValueKey(new Random().nextInt(100)),
                           imageUrl: document.data()['profilePic'],
                           placeholder: (context, url) => SpinKitFadingCircle(
-                            color: Colors.blueAccent,
+                            color: Color(0xFF227A73),
                             size: 50,
                           ),
                           imageBuilder: (context, imageProvider) => Container(
