@@ -102,7 +102,7 @@ class _LoginPageState extends State<LoginPage> {
                         child: Column(
                           children: [
                             Text(
-                              "Welcome to \n ImproveMe",
+                              "Welcome to \n ReadaptMe",
                               textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: 24,

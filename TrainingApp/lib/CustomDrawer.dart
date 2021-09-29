@@ -152,7 +152,7 @@ class CustomDrawerState extends State<CustomDrawer>
                 ),
                 context: contextCallback,
                 applicationVersion: '1.1',
-                applicationName: 'ImproveMe',
+                applicationName: 'ReadaptMe',
                 applicationLegalese:
                     'Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International',
               );
